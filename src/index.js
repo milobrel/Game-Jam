@@ -41,7 +41,7 @@ new Phaser.Game(config);
  * On y trouve surtout le chargement des assets (images, son ..)
  */
 function preload() {
-
+this.load.audio('musique', 'assets/theme.wav');
 }
 
 /***********************************************************************/
@@ -55,7 +55,9 @@ function preload() {
  * ainsi que toutes les instructions permettant de planifier des evenements
  */
 function create() {
- 
+ var son_musique 
+son_musique = this.sound.add('musique');
+son_musique.play();
 }
 
 /***********************************************************************/
