@@ -41,6 +41,22 @@ new Phaser.Game(config);
  * On y trouve surtout le chargement des assets (images, son ..)
  */
 function preload() {
+this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
 this.load.audio('musique', 'src/assets/theme.wav');
 }
 
