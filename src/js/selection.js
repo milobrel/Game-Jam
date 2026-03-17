@@ -1,0 +1,131 @@
+var son_musique; 
+ var player;
+ var clavier; 
+var config = {
+  type: Phaser.AUTO,
+  width: 800, // largeur en pixels
+  height: 600, // hauteur en pixels
+  physics: {
+    // définition des parametres physiques
+    default: "arcade", // mode arcade : le plus simple : des rectangles pour gérer les collisions. Pas de pentes
+    arcade: {
+      // parametres du mode arcade
+      debug: false // permet de voir les hitbox et les vecteurs d'acceleration quand mis à true
+    }
+  },
+  scene: {
+    // une scene est un écran de jeu. Pour fonctionner il lui faut 3 fonctions  : create, preload, update
+    preload: preload, // la phase preload est associée à la fonction preload, du meme nom (on aurait pu avoir un autre nom)
+    create: create, // la phase create est associée à la fonction create, du meme nom (on aurait pu avoir un autre nom)
+    update: update // la phase update est associée à la fonction update, du meme nom (on aurait pu avoir un autre nom)
+  }
+};
+
+// création et lancement du jeu
+new Phaser.Game(config);
+
+
+/***********************************************************************/
+/** FONCTION PRELOAD 
+/***********************************************************************/
+
+/** La fonction preload est appelée une et une seule fois,
+ * lors du chargement de la scene dans le jeu.
+ * On y trouve surtout le chargement des assets (images, son ..)
+ */
+export default class selection extends Phaser.Scene {
+ 
+  constructor() {
+     super({key : "selection"}); // mettre le meme nom que le nom de la classe
+  }
+preload() {
+this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
+    frameWidth: 48,
+    frameHeight: 68
+  }); 
+this.load.audio('musique', 'src/assets/theme.wav');
+}
+
+/***********************************************************************/
+/** FONCTION CREATE 
+/***********************************************************************/
+
+/* La fonction create est appelée lors du lancement de la scene
+ * si on relance la scene, elle sera appelée a nouveau
+ * on y trouve toutes les instructions permettant de créer la scene
+ * placement des peronnages, des sprites, des platesformes, création des animations
+ * ainsi que toutes les instructions permettant de planifier des evenements
+ */
+ create() {
+son_musique = this.sound.add('musique');
+son_musique.play();
+player = this.physics.add.sprite(100, 450, 'bas_perso');
+player.setCollideWorldBounds(true);
+clavier = this.input.keyboard.createCursorKeys();
+this.anims.create({
+    key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_droite", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_haut", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_bas", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_face",
+    frames: [{ key: "bas_perso", frame: 0 }],
+    frameRate: 20
+  }); 
+}
+
+/***********************************************************************/
+/** FONCTION UPDATE 
+/***********************************************************************/
+
+ update() {
+  if (clavier.right.isDown) {
+    player.setVelocityX(160);
+    player.anims.play('anim_tourne_droite', true); 
+  } 
+  else if (clavier.left.isDown) {
+    player.setVelocityX(-160);
+    player.anims.play('anim_tourne_gauche', true); 
+  } else if (clavier.up.isDown) {
+    player.setVelocityY(-160);
+    player.anims.play('anim_tourne_haut', true); 
+  } else if (clavier.down.isDown) {
+    player.setVelocityY(160);
+    player.anims.play('anim_tourne_bas', true);
+  } else {
+    player.setVelocity(0);
+    player.anims.play('anim_face'); 
+  } 
+}
+}
