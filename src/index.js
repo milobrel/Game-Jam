@@ -5,6 +5,9 @@
 /***********************************************************************/
 
 // configuration générale du jeu
+var son_musique; 
+ var player;
+ var clavier; 
 var config = {
   type: Phaser.AUTO,
   width: 800, // largeur en pixels
@@ -14,9 +17,6 @@ var config = {
     default: "arcade", // mode arcade : le plus simple : des rectangles pour gérer les collisions. Pas de pentes
     arcade: {
       // parametres du mode arcade
-      gravity: {
-        y: 300 // gravité verticale : acceleration ddes corps en pixels par seconde
-      },
       debug: false // permet de voir les hitbox et les vecteurs d'acceleration quand mis à true
     }
   },
@@ -71,9 +71,6 @@ this.load.audio('musique', 'src/assets/theme.wav');
  * ainsi que toutes les instructions permettant de planifier des evenements
  */
 function create() {
- var son_musique; 
- var player;
- var clavier; 
 son_musique = this.sound.add('musique');
 son_musique.play();
 player = this.physics.add.sprite(100, 450, 'bas_perso');
@@ -123,13 +120,13 @@ function update() {
     player.setVelocityX(-160);
     player.anims.play('anim_tourne_gauche', true); 
   } else if (clavier.up.isDown) {
-    player.setVelocityY(160);
+    player.setVelocityY(-160);
     player.anims.play('anim_tourne_haut', true); 
   } else if (clavier.down.isDown) {
-    player.setVelocityY(-160);
+    player.setVelocityY(160);
     player.anims.play('anim_tourne_bas', true);
   } else {
-    player.setVelocityX(0);
+    player.setVelocity(0);
     player.anims.play('anim_face'); 
   } 
 }
