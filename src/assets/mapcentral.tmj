@@ -254,20 +254,31 @@
  "tileheight":12,
  "tilesets":[
         {
+         "columns":16,
          "firstgid":1,
-         "source":"..\/First Asset pack.tsx"
+         "image":"First Asset pack.png",
+         "imageheight":192,
+         "imagewidth":192,
+         "margin":0,
+         "name":"First Asset pack",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":12,
+         "tilewidth":12
         }, 
         {
+         "columns":16,
          "firstgid":1025,
-         "source":"..\/maps\/TilesA2.tsx"
-        }, 
-        {
-         "firstgid":1441,
-         "source":"..\/maps\/ChatGPT Image 17 mars 2026, 10_34_01.tsx"
-        }, 
-        {
-         "firstgid":12321,
-         "source":"..\/maps\/terrain.tsx"
+         "image":"TilesA2.png",
+         "imageheight":192,
+         "imagewidth":192,
+         "margin":0,
+         "name":"TilesA2",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":12,
+         "tilewidth":12
+        }
         }],
  "tilewidth":12,
  "type":"map",
