@@ -71,9 +71,43 @@ this.load.audio('musique', 'src/assets/theme.wav');
  * ainsi que toutes les instructions permettant de planifier des evenements
  */
 function create() {
- var son_musique 
+ var son_musique; 
+ var player;
+ var clavier; 
 son_musique = this.sound.add('musique');
 son_musique.play();
+player = this.physics.add.sprite(100, 450, 'bas_perso');
+player.setCollideWorldBounds(true);
+clavier = this.input.keyboard.createCursorKeys();
+this.anims.create({
+    key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_droite", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_haut", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_tourne_bas", // key est le nom de l'animation : doit etre unique poru la scene.
+    frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
+    frameRate: 10, // vitesse de défilement des frames
+    repeat: -1 // nombre de répétitions de l'animation. -1 = infini
+  }); 
+this.anims.create({
+    key: "anim_face",
+    frames: [{ key: "bas_perso", frame: 0 }],
+    frameRate: 20
+  }); 
 }
 
 /***********************************************************************/
@@ -81,6 +115,22 @@ son_musique.play();
 /***********************************************************************/
 
 function update() {
- 
+  if (clavier.right.isDown) {
+    player.setVelocityX(160);
+    player.anims.play('anim_tourne_droite', true); 
+  } 
+  else if (clavier.left.isDown) {
+    player.setVelocityX(-160);
+    player.anims.play('anim_tourne_gauche', true); 
+  } else if (clavier.up.isDown) {
+    player.setVelocityY(160);
+    player.anims.play('anim_tourne_haut', true); 
+  } else if (clavier.down.isDown) {
+    player.setVelocityY(-160);
+    player.anims.play('anim_tourne_bas', true);
+  } else {
+    player.setVelocityX(0);
+    player.anims.play('anim_face'); 
+  } 
 }
 
