@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="12" tileheight="12" infinite="0" nextlayerid="5" nextobjectid="1">
- <tileset firstgid="1" source="First Asset pack.tsx"/>
- <tileset firstgid="1025" source="TilesA2.tsx"/>
- <tileset firstgid="1441" source="ChatGPT Image 17 mars 2026, 10_34_01.tsx"/>
- <tileset firstgid="12321" source="terrain.tsx"/>
+ <tileset firstgid="1" source="FirstAssetpack.tsj"/>
+ <tileset firstgid="1025" source="TilesA2.tsj"/>
+ <tileset firstgid="1441" source="ChatGPT Image 17 mars 2026, 10_34_01.tsj"/>
+ <tileset firstgid="12321" source="terrain.tsj"/>
  <layer id="3" name="Calque de Tuiles 3" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
