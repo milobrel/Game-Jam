@@ -83,7 +83,7 @@ export default class selection extends Phaser.Scene {
     this.load.audio('musique', 'src/assets/theme.wav');
 
     // Charger les cartes
-    this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral.tmj');
+    this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
