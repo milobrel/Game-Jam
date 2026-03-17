@@ -1,0 +1,14 @@
+{ "columns":7,
+ "image":"..\/..\/..\/..\/..\/Downloads\/tilesetformattedupdate1.png",
+ "imageheight":192,
+ "imagewidth":112,
+ "margin":0,
+ "name":"tilesetformattedupdate1",
+ "spacing":0,
+ "tilecount":84,
+ "tiledversion":"1.11.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}
