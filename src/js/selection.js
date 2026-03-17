@@ -25,12 +25,16 @@ export default class selection extends Phaser.Scene {
     if (this.calqueHaut) {
       this.calqueHaut.destroy();
     }
+    if (this.calqueQuatre) {
+      this.calqueQuatre.destroy();
+    }
 
     // Créer la nouvelle carte
     this.map = this.make.tilemap({ key: mapKey });
     this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
     this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
-    this.tilesets = [this.tileset1, this.tileset2];
+    this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
+    this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
 
     // Créer les calques s'ils existent
     if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
@@ -46,10 +50,23 @@ export default class selection extends Phaser.Scene {
     if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
       this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
     }
+    if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
+      this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
+    }
 
     // Définir les collisions si le calque milieu existe
     if (this.calqueMilieu) {
-      this.calqueMilieu.setCollisionByProperty({ collides: true });
+
+      this.calqueMilieu.setCollisionByProperty({ estsolide: true });
+    }
+    if (this.calqueQuatre) {
+      this.calqueQuatre.setCollisionByProperty({ estsolide: true });
+    }
+    if (this.CalqueHaut) {
+      this.CalqueHaut.setCollisionByProperty({ estsolide: true });
+    }
+    if (this.CalqueFond) {
+      this.CalqueFond.setCollisionByProperty({ estsolide: true });
     }
 
     // Repositionner le joueur si nécessaire
@@ -88,6 +105,11 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
+    this.load.image('terrain', 'src/assets/terrain.png');
+    this.load.image('nuage', 'src/assets/nuage.png');
+    this.load.image('surface', 'src/assets/surface.png');
+    this.load.image('haut', 'src/assets/haut.png');
+    this.load.image('quatre', 'src/assets/quatre.png');
   }
 
   create() {
@@ -98,6 +120,7 @@ export default class selection extends Phaser.Scene {
     this.loadMap(this.currentMap);
 
     this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
+    this.player.setScale(0.3);
     this.player.setCollideWorldBounds(true);
 
     this.clavier = this.input.keyboard.createCursorKeys();
