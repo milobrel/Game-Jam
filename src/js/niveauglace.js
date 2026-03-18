@@ -317,7 +317,7 @@ export default class niveauglace extends Phaser.Scene {
       this.glaceInertia.x *= friction;
       this.glaceInertia.y *= friction;
 
-      // IMPORTANT: Ne peut accélérer/tourner que si en contact avec du sol (vertical) ou près d'une tuile solide
+      // Peut accélérer/tourner s'il est sur du sol glissant et en contact vertical ou près d'une tuile solide
       if ((onVerticalGround || nearSolidGround) && onSlipperyGround) {
         // Augmenter progressivement la vélocité dans les directions pressées
         if (this.clavier.right.isDown && this.clavier.up.isDown) {

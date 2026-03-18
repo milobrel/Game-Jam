@@ -29,6 +29,9 @@ export default class selection extends Phaser.Scene {
     if (this.zoneEntreePorteGlace) this.zoneEntreePorteGlace.destroy();
     if (this.zoneTeleportPont) this.zoneTeleportPont.destroy();
     if (this.merlin) this.merlin.destroy();
+    if (this.maison) this.maison.destroy();
+    if (this.zoneEntreeMaison) this.zoneEntreeMaison.destroy();
+    if (this.ombreMaison) this.ombreMaison.destroy();
 
     if (this.calqueQuatre) this.calqueQuatre.destroy();
 
@@ -187,6 +190,28 @@ export default class selection extends Phaser.Scene {
       this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
       this.merlin.refreshBody();
       this.merlin.setDepth(100);
+
+      // Maison au centre de la carte
+      const maisonX = 340;
+      const maisonY = 260;
+      const maisonWidth = this.map.tileWidth * 3;
+      const maisonHeight = this.map.tileHeight * 3;
+
+      // Ombre sous la maison
+      this.ombreMaison = this.add.ellipse(maisonX, maisonY + maisonHeight / 2 + 10, maisonWidth - 10, 10, 0x000000, 0.22);
+      this.ombreMaison.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+
+      // Sprite maison (rectangle placeholder en attendant une vraie spritesheet)
+      this.maison = this.physics.add.staticSprite(maisonX, maisonY, 'merlin'); // On utilise merlin comme placeholder
+      this.maison.setOrigin(0.5, 0.5);
+      this.maison.setDisplaySize(maisonWidth, maisonHeight);
+      this.maison.setAlpha(0.7); // Transparent pour voir que c'est un placeholder
+      this.maison.refreshBody();
+      this.maison.setDepth(30);
+
+      // Zone pour entrer dans la maison (zone au-dessus)
+      this.zoneEntreeMaison = this.add.zone(maisonX, maisonY - maisonHeight / 2 + 10, maisonWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreeMaison, true);
     } else {
       this.porteAir = null;
       this.ombrePorteAir = null;
@@ -200,6 +225,9 @@ export default class selection extends Phaser.Scene {
       this.zoneTeleportPont = null;
       this.timerTeleportPont = null;
       this.merlin = null;
+      this.maison = null;
+      this.zoneEntreeMaison = null;
+      this.ombreMaison = null;
     }
 
     // Calcul du zoom pour remplir l'écran sans bordures noires
@@ -505,6 +533,7 @@ export default class selection extends Phaser.Scene {
     this.handleDoorFeuInteraction();
     this.handleDoorGlaceInteraction();
     this.handleTeleportPont();
+    this.handleMaisonInteraction();
     this.handleMerlinInteraction();
 
     // Vérifier les transitions de carte
@@ -714,6 +743,26 @@ export default class selection extends Phaser.Scene {
     // Retour à mapcentral depuis glace
     else if (this.currentMap === 'glace' && this.player.y < 50) {
       this.scene.restart({ map: 'mapcentral', startX: 100, startY: 1400 });
+    }
+  }
+
+  // === INTERACTION AVEC LA MAISON ===
+
+  handleMaisonInteraction() {
+    if (!this.maison || this.currentMap !== 'mapcentral') {
+      return;
+    }
+
+    const estSurLaMaison = this.physics.overlap(this.player, this.maison);
+    const estDansEntree = this.zoneEntreeMaison
+      ? this.physics.overlap(this.player, this.zoneEntreeMaison)
+      : false;
+
+    if (estDansEntree && !this.teleportEnCours) {
+      this.teleportEnCours = true;
+      this.time.delayedCall(150, () => {
+        this.scene.start('interieur', { startX: 100, startY: 450 });
+      });
     }
   }
 

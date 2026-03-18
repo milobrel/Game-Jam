@@ -4,8 +4,9 @@
 /** CONFIGURATION GLOBALE DU JEU ET LANCEMENT 
 /***********************************************************************/
 import selection from "./js/selection.js";
-import niveau1 from "./js/niveauglace.js"; 
+import niveau1 from "./js/niveauglace.js";
 import mapeau from "./js/mapeau.js";
+import interieur from "./js/interieur.js";
 
 var config = {
   type: Phaser.AUTO,
@@ -18,7 +19,7 @@ var config = {
       debug: false
     }
   },
-  scene: [selection, niveau1, mapeau] // ✅ corrigé
+  scene: [selection, niveau1, mapeau, interieur] // ✅ corrigé
 };
 
 var game = new Phaser.Game(config);
