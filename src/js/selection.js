@@ -228,6 +228,7 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
+    this.load.tilemapTiledJSON('mapeau', 'src/assets/map eau.tmj');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
     this.load.image('terrain', 'src/assets/terrain.png');
