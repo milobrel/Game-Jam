@@ -730,29 +730,30 @@ export default class selection extends Phaser.Scene {
   afficherDialogueTexte(texte) {
     this.fermerDialogueUI();
 
-    const cam = this.cameras.main;
-    const vw = cam.width / cam.zoom;
-    const vh = cam.height / cam.zoom;
+    const z = this.cameras.main.zoom;
+    const vw = this.scale.width / z;
+    const vh = this.scale.height / z;
     const boxW = vw * 0.94;
-    const boxH = 24;
+    const boxH = 36;
     const boxX = (vw - boxW) / 2;
-    const boxY = vh - boxH - 2;
+    const boxY = vh - boxH - 3;
 
     this.dialogueElements = [];
 
     const fond = this.add.rectangle(boxX + boxW / 2, boxY + boxH / 2, boxW, boxH, 0x000000, 0.88)
       .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
 
-    const nomMerlin = this.add.text(boxX + 5, boxY + 3, 'Merlin :', {
-      font: 'bold 9px Arial', fill: '#ffdd44'
+    const nomMerlin = this.add.text(boxX + 6, boxY + 4, 'Merlin :', {
+      fontFamily: 'Arial', fontSize: '11px', fontStyle: 'bold', color: '#ffdd44'
     }).setScrollFactor(0).setDepth(1001);
 
-    const contenu = this.add.text(boxX + 48, boxY + 3, texte, {
-      font: '8px Arial', fill: '#ffffff', wordWrap: { width: boxW - 70 }
+    const contenu = this.add.text(boxX + 55, boxY + 4, texte, {
+      fontFamily: 'Arial', fontSize: '10px', color: '#ffffff',
+      wordWrap: { width: boxW - 80 }
     }).setScrollFactor(0).setDepth(1001);
 
-    const suite = this.add.text(boxX + boxW - 32, boxY + boxH - 9, '[ESPACE]', {
-      font: '5px Arial', fill: '#aaaaaa'
+    const suite = this.add.text(boxX + boxW - 40, boxY + boxH - 12, '[ESPACE]', {
+      fontFamily: 'Arial', fontSize: '7px', color: '#aaaaaa'
     }).setScrollFactor(0).setDepth(1001);
 
     this.dialogueElements.push(fond, nomMerlin, contenu, suite);
@@ -761,13 +762,13 @@ export default class selection extends Phaser.Scene {
   afficherChoixRoyaumes(avecExit) {
     this.fermerDialogueUI();
 
-    const cam = this.cameras.main;
-    const vw = cam.width / cam.zoom;
-    const vh = cam.height / cam.zoom;
+    const z = this.cameras.main.zoom;
+    const vw = this.scale.width / z;
+    const vh = this.scale.height / z;
     const boxW = vw * 0.94;
-    const boxH = avecExit ? 34 : 28;
+    const boxH = avecExit ? 44 : 36;
     const boxX = (vw - boxW) / 2;
-    const boxY = vh - boxH - 2;
+    const boxY = vh - boxH - 3;
 
     this.dialogueElements = [];
 
@@ -775,8 +776,8 @@ export default class selection extends Phaser.Scene {
       .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
     this.dialogueElements.push(fond);
 
-    const titre = this.add.text(boxX + 5, boxY + 2, 'Merlin : Quel royaume veux-tu explorer ?', {
-      font: '7px Arial', fill: '#ffdd44'
+    const titre = this.add.text(boxX + 6, boxY + 3, 'Merlin : Quel royaume veux-tu explorer ?', {
+      fontFamily: 'Arial', fontSize: '9px', color: '#ffdd44'
     }).setScrollFactor(0).setDepth(1001);
     this.dialogueElements.push(titre);
 
@@ -787,17 +788,17 @@ export default class selection extends Phaser.Scene {
       { nom: 'Glace', couleur: '#aaeeff', quete: "Le royaume de glace est pris par un hiver sans fin. Aokiji t'attend la-bas." }
     ];
 
-    const btnW = (boxW - 25) / 4;
-    const btnY = boxY + 18;
+    const btnW = (boxW - 30) / 4;
+    const btnY = boxY + 22;
 
     royaumes.forEach((r, i) => {
-      const bx = boxX + 5 + i * (btnW + 5);
-      const btnFond = this.add.rectangle(bx + btnW / 2, btnY, btnW, 10, 0x333333, 0.9)
+      const bx = boxX + 6 + i * (btnW + 6);
+      const btnFond = this.add.rectangle(bx + btnW / 2, btnY, btnW, 14, 0x333333, 0.9)
         .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1001);
       btnFond.setInteractive({ useHandCursor: true });
 
       const btnTexte = this.add.text(bx + btnW / 2, btnY, r.nom, {
-        font: '6px Arial', fill: r.couleur
+        fontFamily: 'Arial', fontSize: '8px', color: r.couleur
       }).setOrigin(0.5).setScrollFactor(0).setDepth(1002);
 
       btnFond.on('pointerover', () => btnFond.setFillStyle(0x555555, 1));
@@ -812,8 +813,8 @@ export default class selection extends Phaser.Scene {
     });
 
     if (avecExit) {
-      const exitTexte = this.add.text(boxX + boxW / 2, boxY + boxH - 5, '[E] Quitter', {
-        font: '5px Arial', fill: '#ff8888'
+      const exitTexte = this.add.text(boxX + boxW / 2, boxY + boxH - 8, '[E] Quitter', {
+        fontFamily: 'Arial', fontSize: '7px', color: '#ff8888'
       }).setOrigin(0.5).setScrollFactor(0).setDepth(1001);
       this.dialogueElements.push(exitTexte);
     }
@@ -822,30 +823,31 @@ export default class selection extends Phaser.Scene {
   afficherAdieu() {
     this.fermerDialogueUI();
 
-    const cam = this.cameras.main;
-    const vw = cam.width / cam.zoom;
-    const vh = cam.height / cam.zoom;
+    const z = this.cameras.main.zoom;
+    const vw = this.scale.width / z;
+    const vh = this.scale.height / z;
     const boxW = vw * 0.94;
-    const boxH = 24;
+    const boxH = 36;
     const boxX = (vw - boxW) / 2;
-    const boxY = vh - boxH - 2;
+    const boxY = vh - boxH - 3;
 
     this.dialogueElements = [];
 
     const fond = this.add.rectangle(boxX + boxW / 2, boxY + boxH / 2, boxW, boxH, 0x000000, 0.88)
       .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
 
-    const nomMerlin = this.add.text(boxX + 5, boxY + 2, 'Merlin :', {
-      font: 'bold 8px Arial', fill: '#ffdd44'
+    const nomMerlin = this.add.text(boxX + 6, boxY + 3, 'Merlin :', {
+      fontFamily: 'Arial', fontSize: '10px', fontStyle: 'bold', color: '#ffdd44'
     }).setScrollFactor(0).setDepth(1001);
 
-    const texte = this.add.text(boxX + 5, boxY + 12,
+    const texte = this.add.text(boxX + 6, boxY + 16,
       "Bonne chance ! Barbe Blanche (air), Luffy (eau), Ace (feu), Aokiji (glace).", {
-      font: '7px Arial', fill: '#ffffff', wordWrap: { width: boxW - 10 }
+      fontFamily: 'Arial', fontSize: '9px', color: '#ffffff',
+      wordWrap: { width: boxW - 12 }
     }).setScrollFactor(0).setDepth(1001);
 
-    const suite = this.add.text(boxX + boxW - 32, boxY + boxH - 9, '[ESPACE]', {
-      font: '5px Arial', fill: '#aaaaaa'
+    const suite = this.add.text(boxX + boxW - 40, boxY + boxH - 12, '[ESPACE]', {
+      fontFamily: 'Arial', fontSize: '7px', color: '#aaaaaa'
     }).setScrollFactor(0).setDepth(1001);
 
     this.dialogueElements.push(fond, nomMerlin, texte, suite);
