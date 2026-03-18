@@ -898,6 +898,19 @@
                          "wangid":[0, 0, 0, 0, 0, 0, 0, 4]
                         }]
                 }]
+        }, 
+        {
+         "columns":7,
+         "firstgid":257,
+         "image":"..\/..\/..\/..\/..\/Downloads\/tilesetformattedupdate1.png",
+         "imageheight":192,
+         "imagewidth":112,
+         "margin":0,
+         "name":"tilesetformattedupdate1",
+         "spacing":0,
+         "tilecount":84,
+         "tileheight":16,
+         "tilewidth":16
         }],
  "tilewidth":16,
  "type":"map",
