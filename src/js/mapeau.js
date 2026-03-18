@@ -1,58 +1,65 @@
 export default class mapeau extends Phaser.Scene {
-    constructor() {
-        super({ key: 'mapeau' });
-    }
+  constructor() {
+    super({ key: 'mapeau' });
+  }
 
-    preload() {
-
+  preload() {
     // 1. Charger l'image du jeu de tuiles (le tileset)
-    // 'tiles' est l'étiquette (le surnom) qu'on donne à l'image
     this.load.image('tiles', 'src/assets/tileset_16x16_interior.png');
 
     // 2. Charger le fichier JSON de la carte créé avec Tiled
-    this.load.tilemapTiledJSON('map-eau', 'src/assets/map eau.tmj');
+    this.load.tilemapTiledJSON('mapeau', 'src/assets/mapeau.tmj');
 
-    // 3. Charger le personnage (si ce n'est pas déjà fait dans une scène globale)
+    // 3. Charger le personnage (même sprite que dans selection.js)
     this.load.spritesheet('player', 'src/assets/playerRight.png', {
-        frameWidth: 32, // À ajuster selon la taille de ton sprite
-        frameHeight: 32
+      frameWidth: 48,
+      frameHeight: 68
     });
-}
-    
+  }
 
-    create(data) {
-        // Création de la map
-const map = this.make.tilemap({ key: 'map-eau' });
-// Ajout du jeu de tuiles (le nom 'tiles' doit correspondre à celui dans Tiled)
-const tileset = map.addTilesetImage('tileset_16x16_inter...', 'tiles');
+  create(data) {
+    // Création de la carte
+    const map = this.make.tilemap({ key: 'mapeau' });
 
-// Création des calques
-const calque_sol = map.createLayer('nom_du_calque_sol', tileset, 0, 0);
-const calque_murs = map.createLayer('nom_du_calque_murs', tileset, 0, 0);
-// On place le perso aux coordonnées (x, y)
-this.player = this.physics.add.sprite(100, 450, 'player');
+    // Ajout du jeu de tuiles (le nom doit correspondre au champ "name" dans Map eau.tsj)
+    const tileset = map.addTilesetImage('Map eau', 'tiles');
 
-// On l'empêche de sortir des limites de la map
-this.player.setCollideWorldBounds(true);
-// On active la collision pour les tuiles qui ont la propriété "collides" dans Tiled
-calque_murs.setCollisionByProperty({ collides: true });
+    // Calque solide principal
+    const calque_sol = map.createLayer('calques eau', tileset, 0, 0);
+    calque_sol.setCollisionByProperty({ collides: true });
 
-// On ajoute la collision entre le joueur et le calque
-this.physics.add.collider(this.player, calque_murs);
+    // Position de départ
+    const startX = data.startX || 100;
+    const startY = data.startY || 450;
+    this.player = this.physics.add.sprite(startX, startY, 'player');
+    this.player.setScale(0.3);
+    this.player.setCollideWorldBounds(true);
 
-this.cursors = this.input.keyboard.createCursorKeys();
+    // Collisions
+    this.physics.add.collider(this.player, calque_sol);
+
+    // Caméra
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+  }
+
+  update() {
+    const speed = 120;
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-speed);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(speed);
     }
 
-    update() {
-        if (this.cursors.left.isDown) {
-    this.player.setVelocityX(-160);
-    this.player.anims.play('left', true);
-} else if (this.cursors.right.isDown) {
-    this.player.setVelocityX(160);
-    this.player.anims.play('right', true);
-} else {
-    this.player.setVelocityX(0);
-    this.player.anims.play('turn');
-}
+    if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-speed);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(speed);
     }
+  }
 }

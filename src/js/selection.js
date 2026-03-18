@@ -34,45 +34,57 @@ export default class selection extends Phaser.Scene {
 
     // Créer la nouvelle carte
     this.map = this.make.tilemap({ key: mapKey });
-    this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
-    this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
-    this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
-    this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
+    if (mapKey === 'map_eau') {
+      this.tileset1 = this.map.addTilesetImage('Map eau', 'tileset_16x16_interior');
+      this.tilesets = [this.tileset1];
 
-    // Création des calques dans l'ordre voulu (3 d'abord, puis 1, 2, 4)
-    // Calque 3 (secondaire, doit être en-dessous)
-    if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
-      this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
-      this.calqueHaut.setDepth(10); // profondeur basse
-    } else {
-      this.calqueHaut = null;
-    }
-    // Calque 1 (primaire)
-    if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
-      this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
+      // Map "eau" ne possède qu'un calque principal
+      this.calqueFond = this.map.createLayer('calques eau', this.tilesets, 0, 0);
       this.calqueFond.setDepth(30);
-    } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
-      this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-    } else {
-      this.calqueFond = null;
-    }
-    // Calque 2 (primaire)
-    if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
-      this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
-      this.calqueMilieu.setDepth(40);
-    } else if (this.map.getLayerIndex('calque_surface') !== null) {
-      this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
-      this.calqueMilieu.setDepth(40);
-    } else {
       this.calqueMilieu = null;
-    }
-    // Calque 4 (primaire)
-    if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
-      this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
-      this.calqueQuatre.setDepth(50);
-    } else {
+      this.calqueHaut = null;
       this.calqueQuatre = null;
+    } else {
+      this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
+      this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
+      this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
+      this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
+
+      // Création des calques dans l'ordre voulu (3 d'abord, puis 1, 2, 4)
+      // Calque 3 (secondaire, doit être en-dessous)
+      if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
+        this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
+        this.calqueHaut.setDepth(10); // profondeur basse
+      } else {
+        this.calqueHaut = null;
+      }
+      // Calque 1 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
+        this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
+        this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else {
+        this.calqueFond = null;
+      }
+      // Calque 2 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
+        this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else if (this.map.getLayerIndex('calque_surface') !== null) {
+        this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else {
+        this.calqueMilieu = null;
+      }
+      // Calque 4 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
+        this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
+        this.calqueQuatre.setDepth(50);
+      } else {
+        this.calqueQuatre = null;
+      }
     }
 
     // Collisions sur tous les calques présents
@@ -228,7 +240,8 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
-    this.load.tilemapTiledJSON('mapeau', 'src/assets/map eau.tmj');
+    this.load.tilemapTiledJSON('map_eau', 'src/assets/mapeau.tmj');
+    this.load.image('tileset_16x16_interior', 'src/assets/tileset_16x16_interior.png');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
     this.load.image('terrain', 'src/assets/terrain.png');
