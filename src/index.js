@@ -7,8 +7,9 @@ import selection from "./js/selection.js";
 
 var config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
+  pixelArt: true,
   physics: {
     default: "arcade",
     arcade: {
