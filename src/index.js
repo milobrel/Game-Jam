@@ -5,6 +5,7 @@
 /***********************************************************************/
 import selection from "./js/selection.js";
 import niveau1 from "./js/niveauglace.js"; 
+
 var config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
@@ -16,7 +17,7 @@ var config = {
       debug: false
     }
   },
-  scene: [selection, niveauglace]
+  scene: [selection, niveau1] // ✅ corrigé
 };
 
 var game = new Phaser.Game(config);
