@@ -626,7 +626,7 @@ export default class selection extends Phaser.Scene {
     if (estDansEntree && this.porteGlace.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        this.scene.restart({ map: 'glace', startX: 120, startY: 320 });
+        this.scene.restart('niveauglace', { startX: 10, startY: 320 });
       });
     }
   }
