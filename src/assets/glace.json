@@ -134,11 +134,17 @@
         {
          "columns":26,
          "firstgid":1,
-         "image":"TilesA2.png",
+         "image":"..\/..\/Downloads\/TilesA2.png",
          "imageheight":192,
          "imagewidth":320,
          "margin":0,
          "name":"TilesA2",
+         "properties":[
+                {
+                 "name":"estglissant",
+                 "type":"bool",
+                 "value":false
+                }],
          "spacing":0,
          "tilecount":416,
          "tileheight":12,
@@ -146,6 +152,11 @@
                 {
                  "id":0,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -156,6 +167,11 @@
                  "id":1,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -164,6 +180,11 @@
                 {
                  "id":2,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -174,6 +195,11 @@
                  "id":3,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -182,6 +208,11 @@
                 {
                  "id":4,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -192,6 +223,11 @@
                  "id":5,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -200,6 +236,11 @@
                 {
                  "id":6,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -210,6 +251,11 @@
                  "id":7,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -218,6 +264,11 @@
                 {
                  "id":8,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -228,6 +279,11 @@
                  "id":9,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -236,6 +292,11 @@
                 {
                  "id":10,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -246,6 +307,11 @@
                  "id":11,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -254,6 +320,11 @@
                 {
                  "id":12,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -264,6 +335,11 @@
                  "id":13,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -272,6 +348,11 @@
                 {
                  "id":14,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -282,6 +363,11 @@
                  "id":15,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -290,6 +376,11 @@
                 {
                  "id":16,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -300,6 +391,11 @@
                  "id":17,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -308,6 +404,11 @@
                 {
                  "id":18,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -318,6 +419,11 @@
                  "id":19,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -326,6 +432,11 @@
                 {
                  "id":20,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -336,6 +447,11 @@
                  "id":21,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -344,6 +460,11 @@
                 {
                  "id":22,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -354,6 +475,11 @@
                  "id":23,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -362,6 +488,11 @@
                 {
                  "id":24,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -372,6 +503,11 @@
                  "id":25,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -380,6 +516,11 @@
                 {
                  "id":26,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -390,6 +531,11 @@
                  "id":27,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -398,6 +544,11 @@
                 {
                  "id":28,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -408,6 +559,11 @@
                  "id":29,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -416,6 +572,11 @@
                 {
                  "id":30,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -426,6 +587,11 @@
                  "id":31,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -434,6 +600,11 @@
                 {
                  "id":32,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -444,6 +615,11 @@
                  "id":33,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -452,6 +628,11 @@
                 {
                  "id":34,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -462,6 +643,11 @@
                  "id":35,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -470,6 +656,11 @@
                 {
                  "id":36,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -480,6 +671,11 @@
                  "id":37,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -488,6 +684,11 @@
                 {
                  "id":38,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -498,6 +699,11 @@
                  "id":39,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -506,6 +712,11 @@
                 {
                  "id":40,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -516,6 +727,11 @@
                  "id":41,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -524,6 +740,11 @@
                 {
                  "id":42,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -534,6 +755,11 @@
                  "id":43,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -542,6 +768,11 @@
                 {
                  "id":44,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -552,6 +783,11 @@
                  "id":45,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -560,6 +796,11 @@
                 {
                  "id":46,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -570,6 +811,11 @@
                  "id":47,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -579,6 +825,11 @@
                  "id":48,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -587,6 +838,11 @@
                 {
                  "id":49,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -598,6 +854,11 @@
                  "id":50,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -606,6 +867,11 @@
                 {
                  "id":51,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -616,6 +882,11 @@
                  "id":52,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -624,6 +895,11 @@
                 {
                  "id":53,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -634,6 +910,11 @@
                  "id":54,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -642,6 +923,11 @@
                 {
                  "id":55,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -652,6 +938,11 @@
                  "id":56,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -660,6 +951,11 @@
                 {
                  "id":57,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -670,6 +966,11 @@
                  "id":58,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -678,6 +979,11 @@
                 {
                  "id":59,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -688,6 +994,11 @@
                  "id":60,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -696,6 +1007,11 @@
                 {
                  "id":61,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -706,6 +1022,11 @@
                  "id":62,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -714,6 +1035,11 @@
                 {
                  "id":63,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -724,6 +1050,11 @@
                  "id":64,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -732,6 +1063,11 @@
                 {
                  "id":65,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -742,6 +1078,11 @@
                  "id":66,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -750,6 +1091,11 @@
                 {
                  "id":67,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -760,6 +1106,11 @@
                  "id":68,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -768,6 +1119,11 @@
                 {
                  "id":69,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -778,6 +1134,11 @@
                  "id":70,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -786,6 +1147,11 @@
                 {
                  "id":71,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -796,6 +1162,11 @@
                  "id":72,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -804,6 +1175,11 @@
                 {
                  "id":73,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -814,6 +1190,11 @@
                  "id":74,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -822,6 +1203,11 @@
                 {
                  "id":75,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -832,6 +1218,11 @@
                  "id":76,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -840,6 +1231,11 @@
                 {
                  "id":77,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -850,6 +1246,11 @@
                  "id":78,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -858,6 +1259,11 @@
                 {
                  "id":79,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -868,6 +1274,11 @@
                  "id":80,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -876,6 +1287,11 @@
                 {
                  "id":81,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -886,6 +1302,11 @@
                  "id":82,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -894,6 +1315,11 @@
                 {
                  "id":83,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -904,6 +1330,11 @@
                  "id":84,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -912,6 +1343,11 @@
                 {
                  "id":85,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -922,6 +1358,11 @@
                  "id":86,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -930,6 +1371,11 @@
                 {
                  "id":87,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -940,6 +1386,11 @@
                  "id":88,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -948,6 +1399,11 @@
                 {
                  "id":89,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -958,6 +1414,11 @@
                  "id":90,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -966,6 +1427,11 @@
                 {
                  "id":91,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -976,6 +1442,11 @@
                  "id":92,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -984,6 +1455,11 @@
                 {
                  "id":93,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -994,6 +1470,11 @@
                  "id":94,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1002,6 +1483,11 @@
                 {
                  "id":95,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1012,6 +1498,11 @@
                  "id":96,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1020,6 +1511,11 @@
                 {
                  "id":97,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1030,6 +1526,11 @@
                  "id":98,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1038,6 +1539,11 @@
                 {
                  "id":99,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1049,6 +1555,11 @@
                  "id":100,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1057,6 +1568,11 @@
                 {
                  "id":101,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1067,6 +1583,11 @@
                  "id":102,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1075,6 +1596,11 @@
                 {
                  "id":103,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1085,6 +1611,11 @@
                  "id":104,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1093,6 +1624,11 @@
                 {
                  "id":105,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1103,6 +1639,11 @@
                  "id":106,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1111,6 +1652,11 @@
                 {
                  "id":107,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1121,6 +1667,11 @@
                  "id":108,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1129,6 +1680,11 @@
                 {
                  "id":109,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1139,6 +1695,11 @@
                  "id":110,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1147,6 +1708,11 @@
                 {
                  "id":111,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1157,6 +1723,11 @@
                  "id":112,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1165,6 +1736,11 @@
                 {
                  "id":113,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1175,6 +1751,11 @@
                  "id":114,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1183,6 +1764,11 @@
                 {
                  "id":115,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1193,6 +1779,11 @@
                  "id":116,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1201,6 +1792,11 @@
                 {
                  "id":117,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1211,6 +1807,11 @@
                  "id":118,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1219,6 +1820,11 @@
                 {
                  "id":119,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1229,6 +1835,11 @@
                  "id":120,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1237,6 +1848,11 @@
                 {
                  "id":121,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1247,6 +1863,11 @@
                  "id":122,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1255,6 +1876,11 @@
                 {
                  "id":123,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1265,6 +1891,11 @@
                  "id":124,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1273,6 +1904,11 @@
                 {
                  "id":125,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1283,6 +1919,11 @@
                  "id":126,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1291,6 +1932,11 @@
                 {
                  "id":127,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1301,6 +1947,11 @@
                  "id":128,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1309,6 +1960,11 @@
                 {
                  "id":129,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1319,6 +1975,11 @@
                  "id":130,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1327,6 +1988,11 @@
                 {
                  "id":131,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1337,6 +2003,11 @@
                  "id":132,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1345,6 +2016,11 @@
                 {
                  "id":133,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1355,6 +2031,11 @@
                  "id":134,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1363,6 +2044,11 @@
                 {
                  "id":135,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1373,6 +2059,11 @@
                  "id":136,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1381,6 +2072,11 @@
                 {
                  "id":137,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1391,6 +2087,11 @@
                  "id":138,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1399,6 +2100,11 @@
                 {
                  "id":139,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1409,6 +2115,11 @@
                  "id":140,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1417,6 +2128,11 @@
                 {
                  "id":141,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1427,6 +2143,11 @@
                  "id":142,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1435,6 +2156,11 @@
                 {
                  "id":143,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1445,6 +2171,11 @@
                  "id":144,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1453,6 +2184,11 @@
                 {
                  "id":145,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1463,6 +2199,11 @@
                  "id":146,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1471,6 +2212,11 @@
                 {
                  "id":147,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1481,6 +2227,11 @@
                  "id":148,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1489,6 +2240,11 @@
                 {
                  "id":149,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1500,6 +2256,11 @@
                  "id":150,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1508,6 +2269,11 @@
                 {
                  "id":151,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1518,6 +2284,11 @@
                  "id":152,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1526,6 +2297,11 @@
                 {
                  "id":153,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1536,6 +2312,11 @@
                  "id":154,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1544,6 +2325,11 @@
                 {
                  "id":155,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1554,6 +2340,11 @@
                  "id":156,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1562,6 +2353,11 @@
                 {
                  "id":157,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1572,6 +2368,11 @@
                  "id":158,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1580,6 +2381,11 @@
                 {
                  "id":159,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1590,6 +2396,11 @@
                  "id":160,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1598,6 +2409,11 @@
                 {
                  "id":161,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1608,6 +2424,11 @@
                  "id":162,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1616,6 +2437,11 @@
                 {
                  "id":163,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1626,6 +2452,11 @@
                  "id":164,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1634,6 +2465,11 @@
                 {
                  "id":165,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1644,6 +2480,11 @@
                  "id":166,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1652,6 +2493,11 @@
                 {
                  "id":167,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1662,6 +2508,11 @@
                  "id":168,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1670,6 +2521,11 @@
                 {
                  "id":169,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1680,6 +2536,11 @@
                  "id":170,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1688,6 +2549,11 @@
                 {
                  "id":171,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1698,6 +2564,11 @@
                  "id":172,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1706,6 +2577,11 @@
                 {
                  "id":173,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1716,6 +2592,11 @@
                  "id":174,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1724,6 +2605,11 @@
                 {
                  "id":175,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1734,6 +2620,11 @@
                  "id":176,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1742,6 +2633,11 @@
                 {
                  "id":177,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1752,6 +2648,11 @@
                  "id":178,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1760,6 +2661,11 @@
                 {
                  "id":179,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1770,6 +2676,11 @@
                  "id":180,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1778,6 +2689,11 @@
                 {
                  "id":181,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1788,6 +2704,11 @@
                  "id":182,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1796,6 +2717,11 @@
                 {
                  "id":183,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1806,6 +2732,11 @@
                  "id":184,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1814,6 +2745,11 @@
                 {
                  "id":185,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1824,6 +2760,11 @@
                  "id":186,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1832,6 +2773,11 @@
                 {
                  "id":187,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1842,6 +2788,11 @@
                  "id":188,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1850,6 +2801,11 @@
                 {
                  "id":189,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1860,6 +2816,11 @@
                  "id":190,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1868,6 +2829,11 @@
                 {
                  "id":191,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1878,6 +2844,11 @@
                  "id":192,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1886,6 +2857,11 @@
                 {
                  "id":193,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1896,6 +2872,11 @@
                  "id":194,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1904,6 +2885,11 @@
                 {
                  "id":195,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1914,6 +2900,11 @@
                  "id":196,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -1922,6 +2913,11 @@
                 {
                  "id":197,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1932,6 +2928,11 @@
                  "id":198,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1940,6 +2941,11 @@
                 {
                  "id":199,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1951,6 +2957,11 @@
                  "id":200,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1959,6 +2970,11 @@
                 {
                  "id":201,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1969,6 +2985,11 @@
                  "id":202,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1977,6 +2998,11 @@
                 {
                  "id":203,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -1987,6 +3013,11 @@
                  "id":204,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -1995,6 +3026,11 @@
                 {
                  "id":205,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2005,6 +3041,11 @@
                  "id":206,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2013,6 +3054,11 @@
                 {
                  "id":207,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2023,6 +3069,11 @@
                  "id":208,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2031,6 +3082,11 @@
                 {
                  "id":209,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2041,6 +3097,11 @@
                  "id":210,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2049,6 +3110,11 @@
                 {
                  "id":211,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2059,6 +3125,11 @@
                  "id":212,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2067,6 +3138,11 @@
                 {
                  "id":213,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2077,6 +3153,11 @@
                  "id":214,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2085,6 +3166,11 @@
                 {
                  "id":215,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2095,6 +3181,11 @@
                  "id":216,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2103,6 +3194,11 @@
                 {
                  "id":217,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2113,6 +3209,11 @@
                  "id":218,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2121,6 +3222,11 @@
                 {
                  "id":219,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2131,6 +3237,11 @@
                  "id":220,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2139,6 +3250,11 @@
                 {
                  "id":221,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2149,6 +3265,11 @@
                  "id":222,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2157,6 +3278,11 @@
                 {
                  "id":223,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2167,6 +3293,11 @@
                  "id":224,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2175,6 +3306,11 @@
                 {
                  "id":225,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2185,6 +3321,11 @@
                  "id":226,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2193,6 +3334,11 @@
                 {
                  "id":227,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2203,6 +3349,11 @@
                  "id":228,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2211,6 +3362,11 @@
                 {
                  "id":229,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2221,6 +3377,11 @@
                  "id":230,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2229,6 +3390,11 @@
                 {
                  "id":231,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2239,6 +3405,11 @@
                  "id":232,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2247,6 +3418,11 @@
                 {
                  "id":233,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2257,6 +3433,11 @@
                  "id":234,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2265,6 +3446,11 @@
                 {
                  "id":235,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2275,6 +3461,11 @@
                  "id":236,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2283,6 +3474,11 @@
                 {
                  "id":237,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2293,6 +3489,11 @@
                  "id":238,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2301,6 +3502,11 @@
                 {
                  "id":239,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2311,6 +3517,11 @@
                  "id":240,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2319,6 +3530,11 @@
                 {
                  "id":241,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2329,6 +3545,11 @@
                  "id":242,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2337,6 +3558,11 @@
                 {
                  "id":243,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2347,6 +3573,11 @@
                  "id":244,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2355,6 +3586,11 @@
                 {
                  "id":245,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2365,6 +3601,11 @@
                  "id":246,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2373,6 +3614,11 @@
                 {
                  "id":247,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2383,6 +3629,11 @@
                  "id":248,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2391,6 +3642,11 @@
                 {
                  "id":249,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2402,6 +3658,11 @@
                  "id":250,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2410,6 +3671,11 @@
                 {
                  "id":251,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2420,6 +3686,11 @@
                  "id":252,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2428,6 +3699,11 @@
                 {
                  "id":253,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2438,6 +3714,11 @@
                  "id":254,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2446,6 +3727,11 @@
                 {
                  "id":255,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2456,6 +3742,11 @@
                  "id":256,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2464,6 +3755,11 @@
                 {
                  "id":257,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2474,6 +3770,11 @@
                  "id":258,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2482,6 +3783,11 @@
                 {
                  "id":259,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2492,6 +3798,11 @@
                  "id":260,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2500,6 +3811,11 @@
                 {
                  "id":261,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2510,6 +3826,11 @@
                  "id":262,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2518,6 +3839,11 @@
                 {
                  "id":263,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2528,6 +3854,11 @@
                  "id":264,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2536,6 +3867,11 @@
                 {
                  "id":265,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2546,6 +3882,11 @@
                  "id":266,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2554,6 +3895,11 @@
                 {
                  "id":267,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2564,6 +3910,11 @@
                  "id":268,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2572,6 +3923,11 @@
                 {
                  "id":269,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2582,6 +3938,11 @@
                  "id":270,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2590,6 +3951,11 @@
                 {
                  "id":271,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2600,6 +3966,11 @@
                  "id":272,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2608,6 +3979,11 @@
                 {
                  "id":273,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2618,6 +3994,11 @@
                  "id":274,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2626,6 +4007,11 @@
                 {
                  "id":275,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2636,6 +4022,11 @@
                  "id":276,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2644,6 +4035,11 @@
                 {
                  "id":277,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2654,6 +4050,11 @@
                  "id":278,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2662,6 +4063,11 @@
                 {
                  "id":279,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2672,6 +4078,11 @@
                  "id":280,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2680,6 +4091,11 @@
                 {
                  "id":281,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2690,6 +4106,11 @@
                  "id":282,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2698,6 +4119,11 @@
                 {
                  "id":283,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2708,6 +4134,11 @@
                  "id":284,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2716,6 +4147,11 @@
                 {
                  "id":285,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2726,6 +4162,11 @@
                  "id":286,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2735,14 +4176,24 @@
                  "id":287,
                  "properties":[
                         {
-                         "name":"estsolide",
+                         "name":"estglissant",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"estsolide",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
                  "id":288,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2753,6 +4204,11 @@
                  "id":289,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2761,6 +4217,11 @@
                 {
                  "id":290,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2771,6 +4232,11 @@
                  "id":291,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2779,6 +4245,11 @@
                 {
                  "id":292,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2789,6 +4260,11 @@
                  "id":293,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2797,6 +4273,11 @@
                 {
                  "id":294,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2807,6 +4288,11 @@
                  "id":295,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2815,6 +4301,11 @@
                 {
                  "id":296,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2825,6 +4316,11 @@
                  "id":297,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2834,6 +4330,11 @@
                  "id":298,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2842,6 +4343,11 @@
                 {
                  "id":299,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2853,6 +4359,11 @@
                  "id":300,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2861,6 +4372,11 @@
                 {
                  "id":301,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2871,6 +4387,11 @@
                  "id":302,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2879,6 +4400,11 @@
                 {
                  "id":303,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2889,6 +4415,11 @@
                  "id":304,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2897,6 +4428,11 @@
                 {
                  "id":305,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2907,6 +4443,11 @@
                  "id":306,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2915,6 +4456,11 @@
                 {
                  "id":307,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2925,6 +4471,11 @@
                  "id":308,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2933,6 +4484,11 @@
                 {
                  "id":309,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2943,6 +4499,11 @@
                  "id":310,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2951,6 +4512,11 @@
                 {
                  "id":311,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2961,6 +4527,11 @@
                  "id":312,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -2969,6 +4540,11 @@
                 {
                  "id":313,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2979,6 +4555,11 @@
                  "id":314,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -2987,6 +4568,11 @@
                 {
                  "id":315,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -2997,6 +4583,11 @@
                  "id":316,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3005,6 +4596,11 @@
                 {
                  "id":317,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3015,6 +4611,11 @@
                  "id":318,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3023,6 +4624,11 @@
                 {
                  "id":319,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3033,6 +4639,11 @@
                  "id":320,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3041,6 +4652,11 @@
                 {
                  "id":321,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3051,6 +4667,11 @@
                  "id":322,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3059,6 +4680,11 @@
                 {
                  "id":323,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3069,6 +4695,11 @@
                  "id":324,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3077,6 +4708,11 @@
                 {
                  "id":325,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3087,6 +4723,11 @@
                  "id":326,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3095,6 +4736,11 @@
                 {
                  "id":327,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3105,6 +4751,11 @@
                  "id":328,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3113,6 +4764,11 @@
                 {
                  "id":329,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3123,6 +4779,11 @@
                  "id":330,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3131,6 +4792,11 @@
                 {
                  "id":331,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3141,6 +4807,11 @@
                  "id":332,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3149,6 +4820,11 @@
                 {
                  "id":333,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3159,6 +4835,11 @@
                  "id":334,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3167,6 +4848,11 @@
                 {
                  "id":335,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3177,6 +4863,11 @@
                  "id":336,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3185,6 +4876,11 @@
                 {
                  "id":337,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3195,6 +4891,11 @@
                  "id":338,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -3203,6 +4904,11 @@
                 {
                  "id":339,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3213,6 +4919,11 @@
                  "id":340,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3221,6 +4932,11 @@
                 {
                  "id":341,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3231,6 +4947,11 @@
                  "id":342,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3239,6 +4960,11 @@
                 {
                  "id":343,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3249,6 +4975,11 @@
                  "id":344,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3257,6 +4988,11 @@
                 {
                  "id":345,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3267,6 +5003,11 @@
                  "id":346,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3275,6 +5016,11 @@
                 {
                  "id":347,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3285,6 +5031,11 @@
                  "id":348,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3293,6 +5044,11 @@
                 {
                  "id":349,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3304,6 +5060,11 @@
                  "id":350,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3312,6 +5073,11 @@
                 {
                  "id":351,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3322,6 +5088,11 @@
                  "id":352,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3330,6 +5101,11 @@
                 {
                  "id":353,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3340,6 +5116,11 @@
                  "id":354,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3348,6 +5129,11 @@
                 {
                  "id":355,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3358,6 +5144,11 @@
                  "id":356,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3366,6 +5157,11 @@
                 {
                  "id":357,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3376,6 +5172,11 @@
                  "id":358,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3384,6 +5185,11 @@
                 {
                  "id":359,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3394,6 +5200,11 @@
                  "id":360,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3402,6 +5213,11 @@
                 {
                  "id":361,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3412,6 +5228,11 @@
                  "id":362,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3420,6 +5241,11 @@
                 {
                  "id":363,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3430,6 +5256,11 @@
                  "id":364,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -3438,6 +5269,11 @@
                 {
                  "id":365,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3448,6 +5284,11 @@
                  "id":366,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3456,6 +5297,11 @@
                 {
                  "id":367,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3466,6 +5312,11 @@
                  "id":368,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3474,6 +5325,11 @@
                 {
                  "id":369,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3484,6 +5340,11 @@
                  "id":370,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3492,6 +5353,11 @@
                 {
                  "id":371,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3502,6 +5368,11 @@
                  "id":372,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3510,6 +5381,11 @@
                 {
                  "id":373,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3520,6 +5396,11 @@
                  "id":374,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3528,6 +5409,11 @@
                 {
                  "id":375,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3538,6 +5424,11 @@
                  "id":376,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3546,6 +5437,11 @@
                 {
                  "id":377,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3556,6 +5452,11 @@
                  "id":378,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3564,6 +5465,11 @@
                 {
                  "id":379,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3574,6 +5480,11 @@
                  "id":380,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3582,6 +5493,11 @@
                 {
                  "id":381,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3592,6 +5508,11 @@
                  "id":382,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3600,6 +5521,11 @@
                 {
                  "id":383,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3610,6 +5536,11 @@
                  "id":384,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3618,6 +5549,11 @@
                 {
                  "id":385,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3628,6 +5564,11 @@
                  "id":386,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3636,6 +5577,11 @@
                 {
                  "id":387,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3646,6 +5592,11 @@
                  "id":388,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3654,6 +5605,11 @@
                 {
                  "id":389,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3664,6 +5620,11 @@
                  "id":390,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -3672,6 +5633,11 @@
                 {
                  "id":391,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3682,6 +5648,11 @@
                  "id":392,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3690,6 +5661,11 @@
                 {
                  "id":393,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3700,6 +5676,11 @@
                  "id":394,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":true
@@ -3708,6 +5689,11 @@
                 {
                  "id":395,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3718,6 +5704,11 @@
                  "id":396,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3726,6 +5717,11 @@
                 {
                  "id":397,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3736,6 +5732,11 @@
                  "id":398,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3744,6 +5745,11 @@
                 {
                  "id":399,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3755,6 +5761,11 @@
                  "id":400,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3763,6 +5774,11 @@
                 {
                  "id":401,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3773,6 +5789,11 @@
                  "id":402,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3781,6 +5802,11 @@
                 {
                  "id":403,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3791,6 +5817,11 @@
                  "id":404,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3799,6 +5830,11 @@
                 {
                  "id":405,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3809,6 +5845,11 @@
                  "id":406,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3817,6 +5858,11 @@
                 {
                  "id":407,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3827,6 +5873,11 @@
                  "id":408,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3835,6 +5886,11 @@
                 {
                  "id":409,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3845,6 +5901,11 @@
                  "id":410,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3853,6 +5914,11 @@
                 {
                  "id":411,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3863,6 +5929,11 @@
                  "id":412,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3871,6 +5942,11 @@
                 {
                  "id":413,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
@@ -3881,6 +5957,11 @@
                  "id":414,
                  "properties":[
                         {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
                          "name":"estsolide",
                          "type":"bool",
                          "value":false
@@ -3889,6 +5970,11 @@
                 {
                  "id":415,
                  "properties":[
+                        {
+                         "name":"estglissant",
+                         "type":"bool",
+                         "value":false
+                        }, 
                         {
                          "name":"estsolide",
                          "type":"bool",
