@@ -240,7 +240,7 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
-    this.load.tilemapTiledJSON('map_eau', 'src/assets/mapeau.tmj');
+    this.load.tilemapTiledJSON('map_eau', 'src/assets/map_eau.tmj');
     this.load.image('tileset_16x16_interior', 'src/assets/tileset_16x16_interior.png');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
@@ -685,7 +685,7 @@ export default class selection extends Phaser.Scene {
         this.timerTeleportPont = this.time.delayedCall(2000, () => {
           if (!this.teleportEnCours) {
             this.teleportEnCours = true;
-            this.scene.restart({ map: 'map_eau', startX: 120, startY: 320 });
+            this.scene.start('mapeau', { startX: 120, startY: 320 });
           }
         });
       }

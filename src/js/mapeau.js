@@ -4,35 +4,44 @@ export default class mapeau extends Phaser.Scene {
   }
 
   preload() {
-    // 1. Charger l'image du jeu de tuiles (le tileset)
-    this.load.image('tiles', 'src/assets/tileset_16x16_interior.png');
-
-    // 2. Charger le fichier JSON de la carte créé avec Tiled
-    this.load.tilemapTiledJSON('mapeau', 'src/assets/mapeau.tmj');
-
-    // 3. Charger le personnage (même sprite que dans selection.js)
-    this.load.spritesheet('player', 'src/assets/playerRight.png', {
-      frameWidth: 48,
-      frameHeight: 68
-    });
-  }
+    // On charge les images et la map.
+    // ATTENTION : on enlève "src/" car tes dossiers sont à la racine
+    this.load.image('tiles_eau', 'src/assets/Water-themed adventure level layout.png');
+    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau.tmj');
+    this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
+        frameWidth: 48,
+        frameHeight: 68
+      });
+    this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
+        frameWidth: 48,
+        frameHeight: 68
+      });
+    this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
+        frameWidth: 48,
+        frameHeight: 68
+      });
+    this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
+        frameWidth: 48,
+        frameHeight: 68
+      });
+}
 
   create(data) {
     // Création de la carte
-    const map = this.make.tilemap({ key: 'mapeau' });
+    const map = this.make.tilemap({ key: 'carte_eau' });
 
     // Ajout du jeu de tuiles (le nom doit correspondre au champ "name" dans Map eau.tsj)
-    const tileset = map.addTilesetImage('Map eau', 'tiles');
+    const tileset = map.addTilesetImage('Water-themed adventure level layout', 'tiles_eau');
 
     // Calque solide principal
     const calque_sol = map.createLayer('calques eau', tileset, 0, 0);
-    calque_sol.setCollisionByProperty({ collides: true });
+    calque_sol.setCollisionByProperty({ estSolide: true });
 
     // Position de départ
     const startX = data.startX || 100;
     const startY = data.startY || 450;
-    this.player = this.physics.add.sprite(startX, startY, 'player');
-    this.player.setScale(0.3);
+    this.player = this.physics.add.sprite(startX, startY, 'bas_perso');
+    this.player.setScale(0.6);
     this.player.setCollideWorldBounds(true);
 
     // Collisions
@@ -44,22 +53,96 @@ export default class mapeau extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // Créer les animations directionnelles
+    this.anims.create({
+        key: "anim_tourne_gauche",
+        frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
+    this.anims.create({
+        key: "anim_tourne_droite",
+        frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
+    this.anims.create({
+        key: "anim_tourne_haut",
+        frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
+    this.anims.create({
+        key: "anim_tourne_bas",
+        frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
+    this.anims.create({
+        key: "anim_face",
+        frames: [{ key: "bas_perso", frame: 0 }],
+        frameRate: 20
+      });
   }
 
   update() {
     const speed = 120;
     this.player.setVelocity(0);
+    let isMoving = false;
 
-    if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-speed);
-    } else if (this.cursors.right.isDown) {
+    // Vérifier les mouvements diagonaux et cardinaux
+    if (this.cursors.right.isDown && this.cursors.up.isDown) {
+      // Diagonal haut-droite
       this.player.setVelocityX(speed);
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    }
+    else if (this.cursors.right.isDown && this.cursors.down.isDown) {
+      // Diagonal bas-droite
+      this.player.setVelocityX(speed);
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_droite', true);
+      isMoving = true;
+    }
+    else if (this.cursors.left.isDown && this.cursors.up.isDown) {
+      // Diagonal haut-gauche
+      this.player.setVelocityX(-speed);
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    }
+    else if (this.cursors.left.isDown && this.cursors.down.isDown) {
+      // Diagonal bas-gauche
+      this.player.setVelocityX(-speed);
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_gauche', true);
+      isMoving = true;
+    }
+    else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(speed);
+      this.player.anims.play('anim_tourne_droite', true);
+      isMoving = true;
+    }
+    else if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-speed);
+      this.player.anims.play('anim_tourne_gauche', true);
+      isMoving = true;
+    }
+    else if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    }
+    else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_bas', true);
+      isMoving = true;
     }
 
-    if (this.cursors.up.isDown) {
-      this.player.setVelocityY(-speed);
-    } else if (this.cursors.down.isDown) {
-      this.player.setVelocityY(speed);
+    if (!isMoving) {
+      this.player.anims.play('anim_face');
     }
   }
 }

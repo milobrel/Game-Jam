@@ -18,7 +18,7 @@ var config = {
       debug: false
     }
   },
-  scene: [selection, niveau1,mapeau] // ✅ corrigé
+  scene: [selection, niveau1, mapeau] // ✅ corrigé
 };
 
 var game = new Phaser.Game(config);
