@@ -111,18 +111,67 @@ export default class niveauglace extends Phaser.Scene {
   }
 
   update() {
-    if (this.clavier.left.isDown) {
-      this.player.setVelocityX(-160);
-      this.player.anims.play("anim_tourne_gauche", true);
-    } else if (this.clavier.right.isDown) {
-      this.player.setVelocityX(160);
-      this.player.anims.play("anim_tourne_droite", true);
-    } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play("anim_face");
+    this.player.setVelocity(0);
+
+    const speed = 100; // Vitesse réduite
+    let isMoving = false;
+
+    // Vérifier les mouvements diagonaux et cardinaux
+    if (this.clavier.right.isDown && this.clavier.up.isDown) {
+      // Diagonal haut-droite
+      this.player.setVelocityX(speed);
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.right.isDown && this.clavier.down.isDown) {
+      // Diagonal bas-droite
+      this.player.setVelocityX(speed);
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_droite', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.left.isDown && this.clavier.up.isDown) {
+      // Diagonal haut-gauche
+      this.player.setVelocityX(-speed);
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.left.isDown && this.clavier.down.isDown) {
+      // Diagonal bas-gauche
+      this.player.setVelocityX(-speed);
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_gauche', true);
+      isMoving = true;
     }
-    if (this.clavier.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330);
+    else if (this.clavier.right.isDown) {
+      this.player.setVelocityX(speed);
+      this.player.anims.play('anim_tourne_droite', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.left.isDown) {
+      this.player.setVelocityX(-speed);
+      this.player.anims.play('anim_tourne_gauche', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.up.isDown) {
+      this.player.setVelocityY(-speed);
+      this.player.anims.play('anim_tourne_haut', true);
+      isMoving = true;
+    } 
+    else if (this.clavier.down.isDown) {
+      this.player.setVelocityY(speed);
+      this.player.anims.play('anim_tourne_bas', true);
+      isMoving = true;
     }
-  }
+    
+    if (!isMoving) {
+      this.player.anims.play('anim_face'); 
+    }
+
+    this.handleDoorInteraction();
+    this.handleDoorFeuInteraction();
+
+}
 }
