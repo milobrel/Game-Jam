@@ -626,7 +626,7 @@ export default class selection extends Phaser.Scene {
     if (estDansEntree && this.porteGlace.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        this.scene.restart('niveauglace', { startX: 10, startY: 320 });
+        this.scene.restart({ map: 'glace', startX: 120, startY: 320 });
       });
     }
   }
@@ -691,7 +691,7 @@ export default class selection extends Phaser.Scene {
     }
     // Pour mapcentral vers glace
     else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
-     this.scene.start('niveauglace', { startX: 0, startY: 50 });
+      this.scene.restart({ map: 'glace', startX: 400, startY: 50 });
     }
     // Retour à mapcentral depuis map_air
     else if (this.currentMap === 'map_air' && this.player.x < 50) {
@@ -724,6 +724,7 @@ export default class selection extends Phaser.Scene {
       "Chaque royaume est menace par de terribles dangers...",
       "Choisis le royaume que tu veux explorer !"
     ];
+
     this.afficherDialogueTexte(this.dialoguePages[0]);
   }
 
