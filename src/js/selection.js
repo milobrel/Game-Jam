@@ -353,8 +353,9 @@ export default class selection extends Phaser.Scene {
     if (this.calqueHaut) {
       this.physics.add.collider(this.player, this.calqueHaut);
     }
-    
-    
+    if (this.calqueQuatre) {
+      this.physics.add.collider(this.player, this.calqueQuatre);
+    }
 
     this.clavier = this.input.keyboard.createCursorKeys();
     this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
