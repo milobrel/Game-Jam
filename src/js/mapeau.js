@@ -60,7 +60,7 @@ export default class mapeau extends Phaser.Scene {
 
     // JOUEUR
     this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
-    this.player.setScale(0.3);
+    this.player.setScale(0.45);
     this.player.setCollideWorldBounds(true);
     this.player.body.setSize(28, 20);
     this.player.body.setOffset(10, 48);

@@ -9,6 +9,10 @@ export default class niveaufeu extends Phaser.Scene {
   init(data) {
     this.playerStartX = data.startX || 768;
     this.playerStartY = data.startY || 736;
+    this.returnMap = data.returnMap || 'mapcentral';
+    this.returnX = data.returnX || 100;
+    this.returnY = data.returnY || 450;
+    this.teleportEnCours = false;
   }
 
   preload() {
@@ -16,6 +20,7 @@ export default class niveaufeu extends Phaser.Scene {
     this.load.spritesheet('gauche_perso', 'src/assets/playerLeft.png',  { frameWidth: 48, frameHeight: 68 });
     this.load.spritesheet('haut_perso',   'src/assets/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
     this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
+    this.load.spritesheet('porte_feu', 'src/assets/porte_feu.png', { frameWidth: 96, frameHeight: 120 });
 
     this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
     this.load.image('terrain', 'src/assets/terrain.png');
@@ -89,6 +94,7 @@ export default class niveaufeu extends Phaser.Scene {
     if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
     if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
     this.creerCollisionsBords();
+    this.creerPorteRetourFeu();
 
     // CAMERA
     this.cameras.main.setZoom(3);
@@ -97,10 +103,13 @@ export default class niveaufeu extends Phaser.Scene {
 
     // CLAVIER
     this.clavier = this.input.keyboard.createCursorKeys();
+    this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // ANIMATIONS
     creerAnimationsDuPerso(this);
+    this.creerAnimationPorteRetour('anim_ouvreporte_retour_feu', 0, 5);
+    this.creerAnimationPorteRetour('anim_fermeporte_retour_feu', 5, 0);
   }
 
   creerCollisionsBords() {
@@ -122,6 +131,38 @@ export default class niveaufeu extends Phaser.Scene {
     });
   }
 
+  creerPorteRetourFeu() {
+    this.porteRetourFeu = this.physics.add.staticSprite(this.playerStartX, this.playerStartY, 'porte_feu', 0);
+    this.porteRetourFeu.setOrigin(0.5, 1);
+    this.porteRetourFeu.setDisplaySize(this.map.tileWidth * 3.5, this.map.tileHeight * 2.4);
+    this.porteRetourFeu.refreshBody();
+    this.porteRetourFeu.body.setSize(this.map.tileWidth * 3.5 - 14, this.map.tileHeight * 2.4 - 10, true);
+    this.porteRetourFeu.setDepth(60);
+    this.porteRetourFeu.ouverte = false;
+    this.porteRetourFeu.enAnimation = false;
+
+    this.zoneEntreePorteRetourFeu = this.add.zone(
+      this.porteRetourFeu.x,
+      this.porteRetourFeu.y - this.map.tileHeight * 2.4 + 16,
+      this.map.tileWidth * 3.5 - 24,
+      16
+    );
+    this.physics.add.existing(this.zoneEntreePorteRetourFeu, true);
+  }
+
+  creerAnimationPorteRetour(key, start, end) {
+    if (this.anims.exists(key)) {
+      return;
+    }
+
+    this.anims.create({
+      key,
+      frames: this.anims.generateFrameNumbers('porte_feu', { start, end }),
+      frameRate: 10,
+      repeat: 0
+    });
+  }
+
   update() {
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
       this.registry.set('resumeKey', 'niveaufeu');
@@ -130,6 +171,8 @@ export default class niveaufeu extends Phaser.Scene {
       this.scene.bringToTop('accueil');
       return;
     }
+
+    this.handlePorteRetourFeu();
 
     const speed = 100;
     this.player.setVelocity(0);
@@ -154,5 +197,55 @@ export default class niveaufeu extends Phaser.Scene {
     }
 
     if (!moving) this.player.anims.play('anim_face');
+  }
+
+  handlePorteRetourFeu() {
+    if (!this.porteRetourFeu) {
+      return;
+    }
+
+    const estSurLaPorte = this.physics.overlap(this.player, this.porteRetourFeu);
+    const estDansEntree = this.zoneEntreePorteRetourFeu
+      ? this.physics.overlap(this.player, this.zoneEntreePorteRetourFeu)
+      : false;
+
+    if (estSurLaPorte && Phaser.Input.Keyboard.JustDown(this.toucheEspace) && !this.porteRetourFeu.enAnimation) {
+      if (this.porteRetourFeu.ouverte) {
+        this.fermerPorteRetourFeu();
+      } else {
+        this.ouvrirPorteRetourFeu();
+      }
+    }
+
+    if (estDansEntree && this.porteRetourFeu.ouverte && !this.teleportEnCours) {
+      this.teleportEnCours = true;
+      this.time.delayedCall(150, () => {
+        this.scene.start('selection', {
+          map: this.returnMap,
+          startX: this.returnX,
+          startY: this.returnY
+        });
+      });
+    }
+  }
+
+  ouvrirPorteRetourFeu() {
+    this.porteRetourFeu.enAnimation = true;
+    this.porteRetourFeu.anims.play('anim_ouvreporte_retour_feu');
+    this.porteRetourFeu.once('animationcomplete', () => {
+      this.porteRetourFeu.ouverte = true;
+      this.porteRetourFeu.enAnimation = false;
+      this.porteRetourFeu.setFrame(5);
+    });
+  }
+
+  fermerPorteRetourFeu() {
+    this.porteRetourFeu.enAnimation = true;
+    this.porteRetourFeu.anims.play('anim_fermeporte_retour_feu');
+    this.porteRetourFeu.once('animationcomplete', () => {
+      this.porteRetourFeu.ouverte = false;
+      this.porteRetourFeu.enAnimation = false;
+      this.porteRetourFeu.setFrame(0);
+    });
   }
 }

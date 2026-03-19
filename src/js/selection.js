@@ -55,7 +55,7 @@ export default class selection extends Phaser.Scene {
   }
 
   chargerSpritesheetsPortes() {
-    const portes = ['porte_air', 'porte_feu', 'porte_glace'];
+    const portes = ['porte_air', 'porte_feu', 'porte_retourglace'];
 
     portes.forEach((porte) => {
       this.load.spritesheet(porte, `src/assets/${porte}.png`, {
@@ -120,8 +120,8 @@ export default class selection extends Phaser.Scene {
     this.creerAnimationPorte('porte_air', 'anim_fermeporte_air', 5, 0);
     this.creerAnimationPorte('porte_feu', 'anim_ouvreporte_feu', 0, 5);
     this.creerAnimationPorte('porte_feu', 'anim_fermeporte_feu', 5, 0);
-    this.creerAnimationPorte('porte_glace', 'anim_ouvreporte_glace', 0, 5);
-    this.creerAnimationPorte('porte_glace', 'anim_fermeporte_glace', 5, 0);
+    this.creerAnimationPorte('porte_retourglace', 'anim_ouvreporte_glace', 0, 5);
+    this.creerAnimationPorte('porte_retourglace', 'anim_fermeporte_glace', 5, 0);
   }
 
   chargerCalquesCarte() {
@@ -215,7 +215,7 @@ export default class selection extends Phaser.Scene {
 
     this.creerPorteElementaire({
       key: 'Glace',
-      texture: 'porte_glace',
+      texture: 'porte_retourglace',
       x: 588 - this.map.tileWidth,
       y: 228 + this.map.tileHeight * 7,
       largeur: largeurPorte,
@@ -412,7 +412,13 @@ export default class selection extends Phaser.Scene {
       porte: this.porteFeu,
       zoneEntree: this.zoneEntreePorteFeu,
       sceneAction: () => {
-        this.scene.start('niveaufeu', { startX: 768, startY: 736 });
+        this.scene.start('niveaufeu', {
+          startX: 768,
+          startY: 736,
+          returnMap: this.currentMap,
+          returnX: this.player.x,
+          returnY: this.player.y
+        });
       },
       ouvrir: () => this.ouvrirPorteFeu(),
       fermer: () => this.fermerPorteFeu()
@@ -432,7 +438,13 @@ export default class selection extends Phaser.Scene {
       porte: this.porteGlace,
       zoneEntree: this.zoneEntreePorteGlace,
       sceneAction: () => {
-        this.scene.start('niveauglace', { startX: 12, startY: 300 });
+        this.scene.start('niveauglace', {
+          startX: 12,
+          startY: 300,
+          returnMap: this.currentMap,
+          returnX: this.player.x,
+          returnY: this.player.y
+        });
       },
       ouvrir: () => this.ouvrirPorteGlace(),
       fermer: () => this.fermerPorteGlace()
@@ -530,6 +542,7 @@ export default class selection extends Phaser.Scene {
     }
     // Pour mapcentral vers glace
     else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
+      this.sauvegarderPositionRetourDepuisGlace();
       this.scene.start('niveauglace', { startX: 0, startY: 50 });
     }
     // Retour à mapcentral depuis map_air

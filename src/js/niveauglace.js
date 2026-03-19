@@ -9,6 +9,10 @@ export default class niveauglace extends Phaser.Scene {
   init(data) {
     this.playerStartX = data.startX || 100;
     this.playerStartY = data.startY || 450;
+    this.teleportEnCours = false;
+    this.returnMap = data.returnMap || 'mapcentral';
+    this.returnX = data.returnX || 100;
+    this.returnY = data.returnY || 450;
   }
 
   preload() {
@@ -41,6 +45,10 @@ export default class niveauglace extends Phaser.Scene {
     this.load.image('surface', 'src/assets/surface.png');
     this.load.image('haut', 'src/assets/haut.png');
     this.load.image('quatre', 'src/assets/quatre.png');
+    this.load.spritesheet('porte_retourglace', 'src/assets/porte_retourglace.png', {
+      frameWidth: 96,
+      frameHeight: 120
+    });
   }
 
   create() {
@@ -113,7 +121,24 @@ export default class niveauglace extends Phaser.Scene {
     if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
     if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
 
+    this.porteRetourGlace = this.physics.add.staticSprite(0, 300, 'porte_retourglace', 0);
+    this.porteRetourGlace.setOrigin(0, 0.5);
+    this.porteRetourGlace.setDisplaySize(this.map.tileWidth * 3.5, this.map.tileHeight * 2.4);
+    this.porteRetourGlace.refreshBody();
+    this.porteRetourGlace.body.setSize(this.map.tileWidth * 3.5 - 14, this.map.tileHeight * 2.4 - 10, true);
+    this.porteRetourGlace.setDepth(60);
+    this.porteRetourGlace.ouverte = false;
+    this.porteRetourGlace.enAnimation = false;
+    this.zoneEntreePorteRetourGlace = this.add.zone(
+      this.porteRetourGlace.x + 24,
+      this.porteRetourGlace.y,
+      16,
+      this.map.tileHeight * 2.4 - 24
+    );
+    this.physics.add.existing(this.zoneEntreePorteRetourGlace, true);
+
     this.clavier = this.input.keyboard.createCursorKeys();
+    this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // Etat de glisse : direction actuelle (x=-1/0/1, y=-1/0/1)
@@ -131,7 +156,22 @@ export default class niveauglace extends Phaser.Scene {
     // ANIMATIONS
     // -------------------------------------------------------
     creerAnimationsDuPerso(this);
+    this.creerAnimationPorteRetour('anim_ouvreporte_retour_glace', 0, 5);
+    this.creerAnimationPorteRetour('anim_fermeporte_retour_glace', 5, 0);
 
+  }
+
+  creerAnimationPorteRetour(key, start, end) {
+    if (this.anims.exists(key)) {
+      return;
+    }
+
+    this.anims.create({
+      key,
+      frames: this.anims.generateFrameNumbers('porte_retourglace', { start, end }),
+      frameRate: 10,
+      repeat: 0
+    });
   }
 
   update() {
@@ -146,6 +186,8 @@ export default class niveauglace extends Phaser.Scene {
 
     const speed = 120;
     const onIce = this.isOnSlipperyTile();
+
+    this.handlePorteRetourGlace();
 
     if (this.isSliding) {
       // En train de glisser : vérifier si on a heurté un mur
@@ -203,6 +245,56 @@ export default class niveauglace extends Phaser.Scene {
         }
       }
     }
+  }
+
+  handlePorteRetourGlace() {
+    if (!this.porteRetourGlace) {
+      return;
+    }
+
+    const estSurLaPorte = this.physics.overlap(this.player, this.porteRetourGlace);
+    const estDansEntree = this.zoneEntreePorteRetourGlace
+      ? this.physics.overlap(this.player, this.zoneEntreePorteRetourGlace)
+      : false;
+
+    if (estSurLaPorte && Phaser.Input.Keyboard.JustDown(this.toucheEspace) && !this.porteRetourGlace.enAnimation) {
+      if (this.porteRetourGlace.ouverte) {
+        this.fermerPorteRetourGlace();
+      } else {
+        this.ouvrirPorteRetourGlace();
+      }
+    }
+
+    if (estDansEntree && this.porteRetourGlace.ouverte && !this.teleportEnCours) {
+      this.teleportEnCours = true;
+      this.time.delayedCall(150, () => {
+        this.scene.start('selection', {
+          map: this.returnMap,
+          startX: this.returnX,
+          startY: this.returnY
+        });
+      });
+    }
+  }
+
+  ouvrirPorteRetourGlace() {
+    this.porteRetourGlace.enAnimation = true;
+    this.porteRetourGlace.anims.play('anim_ouvreporte_retour_glace');
+    this.porteRetourGlace.once('animationcomplete', () => {
+      this.porteRetourGlace.ouverte = true;
+      this.porteRetourGlace.enAnimation = false;
+      this.porteRetourGlace.setFrame(5);
+    });
+  }
+
+  fermerPorteRetourGlace() {
+    this.porteRetourGlace.enAnimation = true;
+    this.porteRetourGlace.anims.play('anim_fermeporte_retour_glace');
+    this.porteRetourGlace.once('animationcomplete', () => {
+      this.porteRetourGlace.ouverte = false;
+      this.porteRetourGlace.enAnimation = false;
+      this.porteRetourGlace.setFrame(0);
+    });
   }
 
   isOnSlipperyTile() {
