@@ -1,14 +1,14 @@
 import { creerAnimationsDuPerso } from './animations_perso.js';
 
-export default class niveau_air extends Phaser.Scene {
+export default class niveaufeu extends Phaser.Scene {
 
   constructor() {
-    super({ key: 'niveau_air' });
+    super({ key: 'niveaufeu' });
   }
 
   init(data) {
-    this.playerStartX = data.startX || 100;
-    this.playerStartY = data.startY || 300;
+    this.playerStartX = data.startX || 768;
+    this.playerStartY = data.startY || 736;
   }
 
   preload() {
@@ -17,41 +17,60 @@ export default class niveau_air extends Phaser.Scene {
     this.load.spritesheet('haut_perso',   'src/assets/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
     this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
 
-    this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
-    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/ChatGPT Image 17 mars 2026, 10_34_01.png');
+    this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
+    this.load.image('terrain', 'src/assets/terrain.png');
+    this.load.image('top_down_quarter__4_-removebg-preview', 'src/assets/top_down_quarter__4_-removebg-preview.png');
   }
 
   create() {
     this.sound.stopAll();
 
     // CARTE
-    this.map = this.make.tilemap({ key: 'map_air' });
-    const tileset = this.map.addTilesetImage('ChatGPT Image 17 mars 2026, 10_34_01', 'ChatGPT Image 17 mars 2026, 10_34_01');
+    this.map = this.make.tilemap({ key: 'lave' });
+    const terrainTileset = this.map.addTilesetImage('terrain', 'terrain');
+    const quarterTileset = this.map.addTilesetImage(
+      'top_down_quarter__4_-removebg-preview',
+      'top_down_quarter__4_-removebg-preview'
+    );
+    const tilesets = [terrainTileset, quarterTileset].filter(Boolean);
+
+    if (tilesets.length === 0) {
+      console.error('Erreur : aucun tileset charge pour la carte lave');
+      return;
+    }
 
     const chargerCalque = (nomDuCalque, profondeur) => {
       if (this.map.getLayerIndex(nomDuCalque) === null) {
         return null;
       }
 
-      const calque = this.map.createLayer(nomDuCalque, tileset, 0, 0);
+      const calque = this.map.createLayer(nomDuCalque, tilesets, 0, 0);
       calque.setDepth(profondeur);
       return calque;
     };
 
-    // chargement du calque Calque_nuage
-    this.calqueFond = chargerCalque('Calque_nuage', 10);
+    // chargement du calque Calque de Tuiles 1
+    this.calqueFond = chargerCalque('Calque de Tuiles 1', 10);
 
-    // chargement du calque calque_surface
-    this.calqueSurface = chargerCalque('calque_surface', 30);
+    // chargement du calque Calque de Tuiles 3
+    this.calqueHaut = chargerCalque('Calque de Tuiles 3', 30);
 
-    // Collisions sur estsolide
-    [this.calqueFond, this.calqueSurface].forEach(layer => {
+    // chargement du calque Calque de Tuiles 4
+    this.calqueQuatre = chargerCalque('Calque de Tuiles 4', 40);
+
+    // Collisions
+    const setSolidOnLayer = (layer) => {
       if (!layer) return;
-      layer.forEachTile(tile => {
+      layer.forEachTile((tile) => {
         const prop = tile.properties?.estsolide;
-        if (prop === true || prop === 'true') tile.setCollision(true);
+        if (prop === true || prop === 'true') {
+          tile.setCollision(true);
+        }
       });
-    });
+    };
+    setSolidOnLayer(this.calqueFond);
+    setSolidOnLayer(this.calqueHaut);
+    setSolidOnLayer(this.calqueQuatre);
 
     // Limites monde
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -65,12 +84,10 @@ export default class niveau_air extends Phaser.Scene {
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
-    if (this.calqueFond) {
-      this.physics.add.collider(this.player, this.calqueFond);
-    }
-    if (this.calqueSurface) {
-      this.physics.add.collider(this.player, this.calqueSurface);
-    }
+    // Collisions joueur
+    if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
+    if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
+    if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
 
     // CAMERA
     this.cameras.main.setZoom(3);
@@ -87,8 +104,8 @@ export default class niveau_air extends Phaser.Scene {
 
   update() {
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
-      this.registry.set('resumeKey', 'niveau_air');
-      this.scene.pause('niveau_air');
+      this.registry.set('resumeKey', 'niveaufeu');
+      this.scene.pause('niveaufeu');
       this.scene.run('accueil');
       this.scene.bringToTop('accueil');
       return;

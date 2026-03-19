@@ -67,6 +67,7 @@ export default class accueil extends Phaser.Scene {
       texteJouer.setStyle({ fill: '#aaffaa' });
     });
     fondJouer.on('pointerdown', () => {
+      if (this.resumeKey) this.scene.stop(this.resumeKey);
       this.scene.start('selection', { map: 'mapcentral', startX: 300, startY: 450 });
     });
 

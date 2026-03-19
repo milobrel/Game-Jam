@@ -6,7 +6,7 @@ export default class mapeau extends Phaser.Scene {
   preload() {
     // On charge les images et la map.
     // ATTENTION : on enlève "src/" car tes dossiers sont à la racine
-    this.load.image('tiles_eau', 'src/assets/Water-themed adventure level layout.png');
+    this.load.image('terrain', 'src/assets/terrain.png');
     this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau2.tmj');
     this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
         frameWidth: 48,
@@ -28,11 +28,13 @@ export default class mapeau extends Phaser.Scene {
 }
 
   create(data) {
+    this.sound.stopAll();
+
     // Création de la carte
     const map = this.make.tilemap({ key: 'carte_eau' });
 
     // Ajout du jeu de tuiles (le nom doit correspondre au champ "name" dans Map eau.tsj)
-    const tileset = map.addTilesetImage('Water-themed adventure level layout', 'tiles_eau');
+    const tileset = map.addTilesetImage('terrain', 'terrain');
 
     // Calque solide principal
     const calque_sol = map.createLayer('calques eau', tileset, 0, 0);

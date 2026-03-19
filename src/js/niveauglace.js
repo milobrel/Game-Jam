@@ -1,3 +1,5 @@
+import { creerAnimationsDuPerso } from './animations_perso.js';
+
 export default class niveauglace extends Phaser.Scene {
 
   constructor() {
@@ -55,25 +57,27 @@ export default class niveauglace extends Phaser.Scene {
     this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
     this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
 
-    if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
-      this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
-      this.calqueHaut.setDepth(10);
-    } else { this.calqueHaut = null; }
+    const chargerCalque = (nomDuCalque, profondeur) => {
+      if (this.map.getLayerIndex(nomDuCalque) === null) {
+        return null;
+      }
 
-    if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
-      this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-    } else { this.calqueFond = null; }
+      const calque = this.map.createLayer(nomDuCalque, this.tilesets, 0, 0);
+      calque.setDepth(profondeur);
+      return calque;
+    };
 
-    if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
-      this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
-      this.calqueMilieu.setDepth(40);
-    } else { this.calqueMilieu = null; }
+    // chargement du calque Calque de Tuiles 3
+    this.calqueHaut = chargerCalque('Calque de Tuiles 3', 10);
 
-    if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
-      this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
-      this.calqueQuatre.setDepth(50);
-    } else { this.calqueQuatre = null; }
+    // chargement du calque Calque de Tuiles 1
+    this.calqueFond = chargerCalque('Calque de Tuiles 1', 30);
+
+    // chargement du calque Calque de Tuiles 2
+    this.calqueMilieu = chargerCalque('Calque de Tuiles 2', 40);
+
+    // chargement du calque Calque de Tuiles 4
+    this.calqueQuatre = chargerCalque('Calque de Tuiles 4', 50);
 
     // Activer collisions sur tuiles estsolide
     const setSolid = (layer) => {
@@ -100,6 +104,8 @@ export default class niveauglace extends Phaser.Scene {
     this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
     this.player.setScale(0.3);
     this.player.setCollideWorldBounds(true);
+    this.player.body.setSize(28, 20);
+    this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
     if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
@@ -124,31 +130,7 @@ export default class niveauglace extends Phaser.Scene {
     // -------------------------------------------------------
     // ANIMATIONS
     // -------------------------------------------------------
-    this.anims.create({
-      key: "anim_tourne_gauche",
-      frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }),
-      frameRate: 10, repeat: -1
-    });
-    this.anims.create({
-      key: "anim_tourne_droite",
-      frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }),
-      frameRate: 10, repeat: -1
-    });
-    this.anims.create({
-      key: "anim_tourne_haut",
-      frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }),
-      frameRate: 10, repeat: -1
-    });
-    this.anims.create({
-      key: "anim_tourne_bas",
-      frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }),
-      frameRate: 10, repeat: -1
-    });
-    this.anims.create({
-      key: "anim_face",
-      frames: [{ key: "bas_perso", frame: 0 }],
-      frameRate: 20
-    });
+    creerAnimationsDuPerso(this);
 
   }
 
