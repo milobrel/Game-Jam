@@ -7,7 +7,7 @@ export default class mapeau extends Phaser.Scene {
     // On charge les images et la map.
     // ATTENTION : on enlève "src/" car tes dossiers sont à la racine
     this.load.image('tiles_eau', 'src/assets/Water-themed adventure level layout.png');
-    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau.tmj');
+    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau2.tmj');
     this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
         frameWidth: 48,
         frameHeight: 68
@@ -24,6 +24,7 @@ export default class mapeau extends Phaser.Scene {
         frameWidth: 48,
         frameHeight: 68
       });
+    this.load.audio('shatta', 'src/assets/shatta.mp3');
 }
 
   create(data) {
@@ -54,6 +55,9 @@ export default class mapeau extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+
+    // Jouer la musique shatta une seule fois
+    this.sound.play('shatta', { loop: false });
 
     // Créer les animations directionnelles
     this.anims.create({

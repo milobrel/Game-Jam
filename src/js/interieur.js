@@ -31,11 +31,11 @@ export default class interieur extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'carte_interieur' });
 
     // Ajout du jeu de tuiles (le nom doit correspondre au champ "name" dans la tileset)
-    const tileset = map.addTilesetImage('interieur', 'tiles_interieur');
+    const tileset = map.addTilesetImage('interieur.png', 'tiles_interieur');
 
     // Calque solide principal
     const calque_sol = map.createLayer('calques interieur', tileset, 0, 0);
-    calque_sol.setCollisionByProperty({ estSolide: true });
+    calque_sol.setCollisionByProperty({ estsolide: true });
 
     // Position de départ
     const startX = data.startX || 100;
