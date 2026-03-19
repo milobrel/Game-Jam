@@ -274,9 +274,24 @@ export default class selection extends Phaser.Scene {
 
   initialiserDialogueMerlin() {
     this.dialoguePages = [
-      "Je suis Merlin, le gardien des royaumes.",
-      "Je peux te guider vers chaque epreuve.",
-      "Appuie sur espace pour lire, puis choisis un royaume."
+      "Jeune aventurier... je t'attendais.",
+      "Ce monde n'est pas ce qu'il semble etre.",
+      "Ta quete est de retrouver les quatre objets sacres.",
+      "Observe chaque detail autour de toi.",
+      "Deplace les blocs pour avancer.",
+      "Le feu t'attend au nord.",
+      "L'air souffle a l'ouest.",
+      "L'eau coule au sud.",
+      "La glace repose a l'est.",
+      "Quand tu auras tout rassemble...",
+      "Tu accederas a la salle finale.",
+      "Et tu decouvriras le One Piece."
+    ];
+
+    this.dialogueRetourFeu = [
+      "Je sens une nouvelle chaleur autour de toi.",
+      "Tu as recupere l'objet sacre du feu.",
+      "Reprends ton souffle, puis pars chercher les autres artefacts."
     ];
 
     this.choixRoyaumesMerlin = [
@@ -520,11 +535,17 @@ export default class selection extends Phaser.Scene {
     const estDansZone = this.physics.overlap(this.player, this.zoneTeleportPont);
 
     if (estDansZone) {
-      if (!this.timerTeleportPont) {
+      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace) && !this.timerTeleportPont) {
         this.timerTeleportPont = this.time.delayedCall(2000, () => {
           if (!this.teleportEnCours) {
             this.teleportEnCours = true;
-            this.scene.start('mapeau', { startX: 120, startY: 320 });
+            this.scene.start('mapeau', {
+              startX: 120,
+              startY: 320,
+              returnMap: this.currentMap,
+              returnX: this.player.x,
+              returnY: this.player.y
+            });
           }
         });
       }
@@ -542,8 +563,13 @@ export default class selection extends Phaser.Scene {
     }
     // Pour mapcentral vers glace
     else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
-      this.sauvegarderPositionRetourDepuisGlace();
-      this.scene.start('niveauglace', { startX: 0, startY: 50 });
+      this.scene.start('niveauglace', {
+        startX: 0,
+        startY: 50,
+        returnMap: this.currentMap,
+        returnX: this.player.x,
+        returnY: this.player.y
+      });
     }
     // Retour à mapcentral depuis map_air
     else if (this.currentMap === 'niveau_air' && this.player.x < 50) {
@@ -570,7 +596,20 @@ export default class selection extends Phaser.Scene {
     this.dialogueActif = true;
     this.dialogueEtape = 0;
     this.dialogueMode = 'intro';
-    this.afficherDialogueTexte(this.dialoguePages[0]);
+    this.dialoguePagesActuelles = this.obtenirDialogueMerlinActuel();
+    this.afficherDialogueTexte(this.dialoguePagesActuelles[0]);
+  }
+
+  obtenirDialogueMerlinActuel() {
+    const artefactFeuRecupere = this.registry.get('artefactFeuRecupere') === true;
+    const artefactFeuAnnonceParMerlin = this.registry.get('artefactFeuAnnonceParMerlin') === true;
+
+    if (artefactFeuRecupere && !artefactFeuAnnonceParMerlin) {
+      this.registry.set('artefactFeuAnnonceParMerlin', true);
+      return this.dialogueRetourFeu;
+    }
+
+    return this.dialoguePages;
   }
 
   afficherDialogueTexte(texte) {
@@ -648,24 +687,31 @@ export default class selection extends Phaser.Scene {
 
   handleMerlinDialogue() {
     if (!this.dialogueActif) return;
+    const pages = this.dialoguePagesActuelles || this.dialoguePages;
 
-    if (this.dialogueMode === 'intro' && this.dialogueEtape < this.dialoguePages.length - 1) {
+    if (Phaser.Input.Keyboard.JustDown(this.toucheE)) {
+      this.fermerDialogueUI();
+      this.dialogueActif = false;
+      this.dialogueMode = 'intro';
+      this.dialogueEtape = 0;
+      this.dialoguePagesActuelles = this.dialoguePages;
+      return;
+    }
+
+    if (this.dialogueMode === 'intro' && this.dialogueEtape < pages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.dialogueEtape++;
-        this.afficherDialogueTexte(this.dialoguePages[this.dialogueEtape]);
+        this.afficherDialogueTexte(pages[this.dialogueEtape]);
       }
     }
-    else if (this.dialogueMode === 'intro' && this.dialogueEtape === this.dialoguePages.length - 1) {
+    else if (this.dialogueMode === 'intro' && this.dialogueEtape === pages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.dialogueMode = 'choix';
         this.afficherChoixRoyaumes();
       }
     }
     else if (this.dialogueMode === 'choix') {
-      if (Phaser.Input.Keyboard.JustDown(this.toucheE)) {
-        this.fermerDialogueUI();
-        this.dialogueActif = false;
-      }
+      // Les clics souris gerent le choix, E ferme deja plus haut
     }
     else if (this.dialogueMode === 'detail') {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {

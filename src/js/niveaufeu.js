@@ -7,12 +7,16 @@ export default class niveaufeu extends Phaser.Scene {
   }
 
   init(data) {
+    this.respawnX = 768;
+    this.respawnY = 736;
     this.playerStartX = data.startX || 768;
     this.playerStartY = data.startY || 736;
     this.returnMap = data.returnMap || 'mapcentral';
     this.returnX = data.returnX || 100;
     this.returnY = data.returnY || 450;
     this.teleportEnCours = false;
+    this.joueurMort = false;
+    this.joueurInvulnerable = false;
   }
 
   preload() {
@@ -21,25 +25,27 @@ export default class niveaufeu extends Phaser.Scene {
     this.load.spritesheet('haut_perso',   'src/assets/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
     this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
     this.load.spritesheet('porte_feu', 'src/assets/porte_feu.png', { frameWidth: 96, frameHeight: 120 });
+    this.load.spritesheet('monstre1', 'src/assets/Monstre1.png', { frameWidth: 216, frameHeight: 228 });
+    this.load.image('boule_feu', 'src/assets/boule_feu.png');
+    this.load.image('feu', 'src/assets/feu.png');
 
     this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
     this.load.image('terrain', 'src/assets/terrain.png');
     this.load.image('top_down_quarter__4_-removebg-preview', 'src/assets/top_down_quarter__4_-removebg-preview.png');
     this.load.audio('pirate', 'src/assets/pirate.mp3');
     this.load.audio('musique', 'src/assets/theme.wav');
-    
   }
 
   create() {
     this.sound.stopAll();
     const musique = this.sound.get('musique');
-    if (musique) {
-        musique.stop();
-    }
+    if (musique) musique.stop();
     this.son_musique = this.sound.add('pirate');
     this.son_musique.play();
 
+    // -------------------------------------------------------
     // CARTE
+    // -------------------------------------------------------
     this.map = this.make.tilemap({ key: 'lave' });
     const terrainTileset = this.map.addTilesetImage('terrain', 'terrain');
     const quarterTileset = this.map.addTilesetImage(
@@ -49,37 +55,27 @@ export default class niveaufeu extends Phaser.Scene {
     const tilesets = [terrainTileset, quarterTileset].filter(Boolean);
 
     if (tilesets.length === 0) {
-      console.error('Erreur : aucun tileset charge pour la carte lave');
+      console.error('Erreur : aucun tileset chargé pour la carte lave');
       return;
     }
 
-    const chargerCalque = (nomDuCalque, profondeur) => {
-      if (this.map.getLayerIndex(nomDuCalque) === null) {
-        return null;
-      }
-
-      const calque = this.map.createLayer(nomDuCalque, tilesets, 0, 0);
+    const chargerCalque = (nom, profondeur) => {
+      if (this.map.getLayerIndex(nom) === null) return null;
+      const calque = this.map.createLayer(nom, tilesets, 0, 0);
       calque.setDepth(profondeur);
       return calque;
     };
 
-    // chargement du calque Calque de Tuiles 1
-    this.calqueFond = chargerCalque('Calque de Tuiles 1', 10);
-
-    // chargement du calque Calque de Tuiles 3
-    this.calqueHaut = chargerCalque('Calque de Tuiles 3', 30);
-
-    // chargement du calque Calque de Tuiles 4
+    this.calqueFond   = chargerCalque('Calque de Tuiles 1', 10);
+    this.calqueHaut   = chargerCalque('Calque de Tuiles 3', 30);
     this.calqueQuatre = chargerCalque('Calque de Tuiles 4', 40);
 
-    // Collisions
+    // Collisions tuiles solides
     const setSolidOnLayer = (layer) => {
       if (!layer) return;
       layer.forEachTile((tile) => {
         const prop = tile.properties?.estsolide;
-        if (prop === true || prop === 'true') {
-          tile.setCollision(true);
-        }
+        if (prop === true || prop === 'true') tile.setCollision(true);
       });
     };
     setSolidOnLayer(this.calqueFond);
@@ -90,7 +86,9 @@ export default class niveaufeu extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
+    // -------------------------------------------------------
     // JOUEUR
+    // -------------------------------------------------------
     this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
     this.player.setScale(0.3);
     this.player.setCollideWorldBounds(true);
@@ -98,39 +96,51 @@ export default class niveaufeu extends Phaser.Scene {
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
-    // Collisions joueur
     if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
     if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
     if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
+
     this.creerCollisionsBords();
     this.creerPorteRetourFeu();
+    this.creerProjectilesFeu();   // créer le groupe AVANT les monstres
+    this.creerMonstresFeu();
+    this.creerObjetSacreFeu();
 
+    // -------------------------------------------------------
     // CAMERA
+    // -------------------------------------------------------
     this.cameras.main.setZoom(3);
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
     this.cameras.main.setRoundPixels(true);
 
+    // -------------------------------------------------------
     // CLAVIER
+    // -------------------------------------------------------
     this.clavier = this.input.keyboard.createCursorKeys();
     this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
+    // -------------------------------------------------------
     // ANIMATIONS
+    // -------------------------------------------------------
     creerAnimationsDuPerso(this);
     this.creerAnimationPorteRetour('anim_ouvreporte_retour_feu', 0, 5);
     this.creerAnimationPorteRetour('anim_fermeporte_retour_feu', 5, 0);
   }
 
+  // -------------------------------------------------------
+  // COLLISIONS BORDS
+  // -------------------------------------------------------
   creerCollisionsBords() {
     const epaisseur = 16;
     const largeur = this.map.widthInPixels;
     const hauteur = this.map.heightInPixels;
 
     const bords = [
-      this.add.rectangle(largeur / 2, epaisseur / 2, largeur, epaisseur, 0x000000, 0),
-      this.add.rectangle(largeur / 2, hauteur - epaisseur / 2, largeur, epaisseur, 0x000000, 0),
-      this.add.rectangle(epaisseur / 2, hauteur / 2, epaisseur, hauteur, 0x000000, 0),
-      this.add.rectangle(largeur - epaisseur / 2, hauteur / 2, epaisseur, hauteur, 0x000000, 0)
+      this.add.rectangle(largeur / 2,           epaisseur / 2,         largeur,   epaisseur, 0x000000, 0),
+      this.add.rectangle(largeur / 2,           hauteur - epaisseur / 2, largeur, epaisseur, 0x000000, 0),
+      this.add.rectangle(epaisseur / 2,         hauteur / 2,           epaisseur, hauteur,   0x000000, 0),
+      this.add.rectangle(largeur - epaisseur / 2, hauteur / 2,         epaisseur, hauteur,   0x000000, 0)
     ];
 
     this.bordsCollision = bords.map((bord) => {
@@ -140,6 +150,9 @@ export default class niveaufeu extends Phaser.Scene {
     });
   }
 
+  // -------------------------------------------------------
+  // PORTE RETOUR
+  // -------------------------------------------------------
   creerPorteRetourFeu() {
     this.porteRetourFeu = this.physics.add.staticSprite(this.playerStartX, this.playerStartY, 'porte_feu', 0);
     this.porteRetourFeu.setOrigin(0.5, 1);
@@ -160,10 +173,7 @@ export default class niveaufeu extends Phaser.Scene {
   }
 
   creerAnimationPorteRetour(key, start, end) {
-    if (this.anims.exists(key)) {
-      return;
-    }
-
+    if (this.anims.exists(key)) return;
     this.anims.create({
       key,
       frames: this.anims.generateFrameNumbers('porte_feu', { start, end }),
@@ -172,7 +182,145 @@ export default class niveaufeu extends Phaser.Scene {
     });
   }
 
+  creerMonstresFeu() {
+    const positions = [
+      { x: 144, y: 608 },
+      { x: 160, y: 96  },
+      { x: 160, y: 395}
+    ];
+
+    this.monstresFeu = positions.map(({ x, y }) => {
+      const monstre = this.physics.add.sprite(x, y, 'monstre1', 0);
+      monstre.setImmovable(true);
+      monstre.body.allowGravity = false;
+      monstre.setDepth(80);
+      monstre.setScale(0.17);
+      monstre.setFrame(0);
+
+      this.time.addEvent({
+        delay: 1500,
+        loop: true,
+        callback: () => {
+          if (!monstre.active) {
+            return;
+          }
+
+          monstre.setFlipX(this.player.x < monstre.x);
+          this.tirer(monstre);
+        }
+      });
+
+      return monstre;
+    });
+  }
+
+  creerObjetSacreFeu() {
+    if (this.registry.get('artefactFeuRecupere') === true) {
+      this.artefactFeu = null;
+      return;
+    }
+
+    this.artefactFeu = this.physics.add.sprite(48, 16, 'feu');
+    this.artefactFeu.setDepth(95);
+    this.artefactFeu.setScale(0.12);
+    this.artefactFeu.body.allowGravity = false;
+    this.artefactFeu.setImmovable(true);
+
+    this.physics.add.overlap(this.player, this.artefactFeu, this.recupererArtefactFeu, null, this);
+  }
+
+  recupererArtefactFeu(player, artefact) {
+    if (!artefact || !artefact.active) {
+      return;
+    }
+
+    this.registry.set('artefactFeuRecupere', true);
+    this.registry.set('artefactFeuAnnonceParMerlin', false);
+    artefact.destroy();
+
+    const message = this.add.text(player.x, player.y - 34, 'Objet sacre du feu recupere !\nRetourne voir Merlin.', {
+      font: '14px Arial',
+      fill: '#ffe08a',
+      align: 'center',
+      backgroundColor: '#4a1b0f',
+      padding: { left: 8, right: 8, top: 6, bottom: 6 }
+    }).setOrigin(0.5).setDepth(150);
+
+    this.time.delayedCall(1500, () => {
+      if (message.active) {
+        message.destroy();
+      }
+
+      this.registry.set('resumeKey', 'selection');
+      this.scene.start('accueil');
+    });
+  }
+
+  // -------------------------------------------------------
+  // PROJECTILES
+  // -------------------------------------------------------
+  creerProjectilesFeu() {
+    this.groupeBoulesFeu = this.physics.add.group();
+  }
+
+  mortJoueur() {
+    if (this.joueurMort) {
+      return;
+    }
+
+    this.joueurMort = true;
+    this.joueurInvulnerable = true;
+    this.player.setTint(0xff6666);
+    this.player.setVelocity(0);
+    this.player.anims.play('anim_face');
+
+    this.time.delayedCall(300, () => {
+      if (this.groupeBoulesFeu) {
+        this.groupeBoulesFeu.clear(true, true);
+      }
+
+      this.respawnJoueur();
+    });
+  }
+
+  respawnJoueur() {
+    this.player.setPosition(this.respawnX, this.respawnY);
+    this.player.body.reset(this.respawnX, this.respawnY);
+    this.player.clearTint();
+    this.player.setActive(true);
+    this.player.setVisible(true);
+    this.player.setVelocity(0);
+    this.player.anims.play('anim_face');
+    this.joueurMort = false;
+    this.cameras.main.flash(150, 255, 255, 255);
+
+    this.time.delayedCall(1000, () => {
+      this.joueurInvulnerable = false;
+    });
+  }
+
+  tirer(monstre) {
+    const direction = this.player.x >= monstre.x ? 1 : -1;
+
+    const boule = this.groupeBoulesFeu.create(
+      monstre.x + (26 * direction),
+      monstre.y - 18,
+      'boule_feu'
+    );
+
+    boule.setScale(0.05);
+    boule.setDepth(90);
+    boule.body.allowGravity = false;
+    boule.setCollideWorldBounds(false);
+    boule.body.setSize(80, 80, true);
+    boule.setVelocityX(700 * direction);
+  }
+
+  // -------------------------------------------------------
+  // UPDATE
+  // -------------------------------------------------------
   update() {
+    // Touche P → pause et retour à l'accueil
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
       this.registry.set('resumeKey', 'niveaufeu');
       this.scene.pause('niveaufeu');
@@ -181,8 +329,30 @@ export default class niveaufeu extends Phaser.Scene {
       return;
     }
 
+    if (this.joueurMort) {
+      this.player.setVelocity(0);
+      return;
+    }
+
+    if (this.groupeBoulesFeu) {
+      this.groupeBoulesFeu.getChildren().forEach((boule) => {
+        const distance = Phaser.Math.Distance.Between(
+          this.player.body.center.x,
+          this.player.body.center.y,
+          boule.body.center.x,
+          boule.body.center.y
+        );
+
+        if (distance < 34 && !this.joueurMort && !this.joueurInvulnerable) {
+          boule.destroy();
+          this.mortJoueur();
+        }
+      });
+    }
+
     this.handlePorteRetourFeu();
 
+    // Déplacement joueur
     const speed = 100;
     this.player.setVelocity(0);
     let moving = false;
@@ -208,10 +378,11 @@ export default class niveaufeu extends Phaser.Scene {
     if (!moving) this.player.anims.play('anim_face');
   }
 
+  // -------------------------------------------------------
+  // GESTION PORTE RETOUR
+  // -------------------------------------------------------
   handlePorteRetourFeu() {
-    if (!this.porteRetourFeu) {
-      return;
-    }
+    if (!this.porteRetourFeu) return;
 
     const estSurLaPorte = this.physics.overlap(this.player, this.porteRetourFeu);
     const estDansEntree = this.zoneEntreePorteRetourFeu

@@ -8,6 +8,11 @@ export default class mapeau extends Phaser.Scene {
   init(data) {
     this.playerStartX = data.startX || 100;
     this.playerStartY = data.startY || 450;
+    this.returnMap = data.returnMap || 'mapcentral';
+    this.returnX = data.returnX || 100;
+    this.returnY = data.returnY || 450;
+    this.teleportEnCours = false;
+    this.timerTeleportRetourEau = null;
   }
 
   preload() {
@@ -65,21 +70,23 @@ export default class mapeau extends Phaser.Scene {
 
     // JOUEUR
     this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
-    this.player.setScale(0.45);
+    this.player.setScale(0.55);
     this.player.setCollideWorldBounds(true);
     this.player.body.setSize(28, 20);
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
     this.physics.add.collider(this.player, this.calqueEau);
+    this.creerZoneRetourEau();
 
     // CAMERA
-    this.cameras.main.setZoom(2);
+    this.cameras.main.setZoom(1.6);
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
     this.cameras.main.setRoundPixels(true);
 
     // CLAVIER
     this.clavier = this.input.keyboard.createCursorKeys();
+    this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // MUSIQUE
@@ -91,6 +98,11 @@ export default class mapeau extends Phaser.Scene {
     creerAnimationsDuPerso(this);
   }
 
+  creerZoneRetourEau() {
+    this.zoneRetourEau = this.add.zone(640, 288, 32, 32);
+    this.physics.add.existing(this.zoneRetourEau, true);
+  }
+
   update() {
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
       this.registry.set('resumeKey', 'mapeau');
@@ -99,6 +111,8 @@ export default class mapeau extends Phaser.Scene {
       this.scene.bringToTop('accueil');
       return;
     }
+
+    this.handleZoneRetourEau();
 
     const speed = 100;
     this.player.setVelocity(0);
@@ -127,6 +141,30 @@ export default class mapeau extends Phaser.Scene {
 
     if (!moving) {
       this.player.anims.play('anim_face');
+    }
+  }
+
+  handleZoneRetourEau() {
+    if (!this.zoneRetourEau || this.teleportEnCours) {
+      return;
+    }
+
+    const estDansZone = this.physics.overlap(this.player, this.zoneRetourEau);
+
+    if (estDansZone) {
+      if (!this.timerTeleportRetourEau) {
+        this.timerTeleportRetourEau = this.time.delayedCall(3000, () => {
+          this.teleportEnCours = true;
+          this.scene.start('selection', {
+            map: this.returnMap,
+            startX: this.returnX,
+            startY: this.returnY
+          });
+        });
+      }
+    } else if (this.timerTeleportRetourEau) {
+      this.timerTeleportRetourEau.remove();
+      this.timerTeleportRetourEau = null;
     }
   }
 }

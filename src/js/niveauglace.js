@@ -45,6 +45,7 @@ export default class niveauglace extends Phaser.Scene {
     this.load.image('surface', 'src/assets/surface.png');
     this.load.image('haut', 'src/assets/haut.png');
     this.load.image('quatre', 'src/assets/quatre.png');
+    this.load.image('objet_sacre_glace', 'src/assets/glace.png');
     this.load.spritesheet('porte_retourglace', 'src/assets/porte_retourglace.png', {
       frameWidth: 96,
       frameHeight: 120
@@ -158,6 +159,7 @@ export default class niveauglace extends Phaser.Scene {
     creerAnimationsDuPerso(this);
     this.creerAnimationPorteRetour('anim_ouvreporte_retour_glace', 0, 5);
     this.creerAnimationPorteRetour('anim_fermeporte_retour_glace', 5, 0);
+    this.creerObjetSacreGlace();
 
   }
 
@@ -171,6 +173,47 @@ export default class niveauglace extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('porte_retourglace', { start, end }),
       frameRate: 10,
       repeat: 0
+    });
+  }
+
+  creerObjetSacreGlace() {
+    if (this.registry.get('artefactGlaceRecupere') === true) {
+      this.artefactGlace = null;
+      return;
+    }
+
+    this.artefactGlace = this.physics.add.sprite(48, 16, 'objet_sacre_glace');
+    this.artefactGlace.setDepth(95);
+    this.artefactGlace.setScale(0.12);
+    this.artefactGlace.body.allowGravity = false;
+    this.artefactGlace.setImmovable(true);
+
+    this.physics.add.overlap(this.player, this.artefactGlace, this.recupererArtefactGlace, null, this);
+  }
+
+  recupererArtefactGlace(player, artefact) {
+    if (!artefact || !artefact.active) {
+      return;
+    }
+
+    this.registry.set('artefactGlaceRecupere', true);
+    artefact.destroy();
+
+    const message = this.add.text(player.x, player.y - 34, 'Objet sacre de glace recupere !', {
+      font: '14px Arial',
+      fill: '#d8f4ff',
+      align: 'center',
+      backgroundColor: '#173b52',
+      padding: { left: 8, right: 8, top: 6, bottom: 6 }
+    }).setOrigin(0.5).setDepth(150);
+
+    this.time.delayedCall(1500, () => {
+      if (message.active) {
+        message.destroy();
+      }
+
+      this.registry.set('resumeKey', 'selection');
+      this.scene.start('accueil');
     });
   }
 
