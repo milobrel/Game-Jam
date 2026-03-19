@@ -54,6 +54,7 @@ export default class mapeau extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // Jouer la musique shatta une seule fois
     this.sound.play('shatta', { loop: false });
@@ -91,40 +92,19 @@ export default class mapeau extends Phaser.Scene {
   }
 
   update() {
-    const speed = 120;
+    const speed = 100;
     this.player.setVelocity(0);
     let isMoving = false;
 
-    // Vérifier les mouvements diagonaux et cardinaux
-    if (this.cursors.right.isDown && this.cursors.up.isDown) {
-      // Diagonal haut-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
+    if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
+      this.registry.set('resumeKey', 'mapeau');
+      this.scene.pause('mapeau');
+      this.scene.run('accueil');
+      this.scene.bringToTop('accueil');
+      return;
     }
-    else if (this.cursors.right.isDown && this.cursors.down.isDown) {
-      // Diagonal bas-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_droite', true);
-      isMoving = true;
-    }
-    else if (this.cursors.left.isDown && this.cursors.up.isDown) {
-      // Diagonal haut-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
-    }
-    else if (this.cursors.left.isDown && this.cursors.down.isDown) {
-      // Diagonal bas-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_gauche', true);
-      isMoving = true;
-    }
-    else if (this.cursors.right.isDown) {
+
+    if (this.cursors.right.isDown) {
       this.player.setVelocityX(speed);
       this.player.anims.play('anim_tourne_droite', true);
       isMoving = true;
