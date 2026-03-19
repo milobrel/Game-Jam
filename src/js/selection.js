@@ -1,247 +1,16 @@
 
 export default class selection extends Phaser.Scene {
- 
+
   constructor() {
-     super({key : "selection"}); // mettre le meme nom que le nom de la classe
+    super({ key: "selection" }); // nom de la scène, doit correspondre à scene.start('selection')
   }
 
+  // init() est appelé avant preload, il reçoit les données de scene.start/restart
   init(data) {
-    this.currentMap = data.map || 'mapcentral';
-    this.playerStartX = data.startX || 100;
-    this.playerStartY = data.startY || 450;
-    this.teleportEnCours = false;
-  }
-
-  loadMap(mapKey) {
-    // Supprimer les anciens éléments si existants
-    if (this.map) this.map.destroy();
-    if (this.calqueFond) this.calqueFond.destroy();
-    if (this.calqueMilieu) this.calqueMilieu.destroy();
-    if (this.calqueHaut) this.calqueHaut.destroy();
-    if (this.porteAir) this.porteAir.destroy();
-    if (this.ombrePorteAir) this.ombrePorteAir.destroy();
-    if (this.zoneEntreePorteAir) this.zoneEntreePorteAir.destroy();
-    if (this.porteFeu) this.porteFeu.destroy();
-    if (this.ombrePorteFeu) this.ombrePorteFeu.destroy();
-    if (this.zoneEntreePorteFeu) this.zoneEntreePorteFeu.destroy();
-    if (this.porteGlace) this.porteGlace.destroy();
-    if (this.ombrePorteGlace) this.ombrePorteGlace.destroy();
-    if (this.zoneEntreePorteGlace) this.zoneEntreePorteGlace.destroy();
-    if (this.zoneTeleportPont) this.zoneTeleportPont.destroy();
-    if (this.merlin) this.merlin.destroy();
-    if (this.maison) this.maison.destroy();
-    if (this.zoneEntreeMaison) this.zoneEntreeMaison.destroy();
-    if (this.ombreMaison) this.ombreMaison.destroy();
-
-    if (this.calqueQuatre) this.calqueQuatre.destroy();
-
-    // Créer la nouvelle carte
-    this.map = this.make.tilemap({ key: mapKey });
-    if (mapKey === 'map_eau') {
-      this.tileset1 = this.map.addTilesetImage('Map eau', 'tileset_16x16_interior');
-      this.tilesets = [this.tileset1];
-
-      // Map "eau" ne possède qu'un calque principal
-      this.calqueFond = this.map.createLayer('calques eau', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-      this.calqueMilieu = null;
-      this.calqueHaut = null;
-      this.calqueQuatre = null;
-    } else {
-      this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
-      this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
-      this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
-      this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
-
-      // Création des calques dans l'ordre voulu (3 d'abord, puis 1, 2, 4)
-      // Calque 3 (secondaire, doit être en-dessous)
-      if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
-        this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
-        this.calqueHaut.setDepth(10); // profondeur basse
-      } else {
-        this.calqueHaut = null;
-      }
-      // Calque 1 (primaire)
-      if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
-        this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
-        this.calqueFond.setDepth(30);
-      } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
-        this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
-        this.calqueFond.setDepth(30);
-      } else {
-        this.calqueFond = null;
-      }
-      // Calque 2 (primaire)
-      if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
-        this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
-        this.calqueMilieu.setDepth(40);
-      } else if (this.map.getLayerIndex('calque_surface') !== null) {
-        this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
-        this.calqueMilieu.setDepth(40);
-      } else {
-        this.calqueMilieu = null;
-      }
-      // Calque 4 (primaire)
-      if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
-        this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
-        this.calqueQuatre.setDepth(50);
-      } else {
-        this.calqueQuatre = null;
-      }
-    }
-
-    // Collisions sur tous les calques présents
-    const setSolidOnLayer = (layer) => {
-      if (!layer) return;
-      layer.forEachTile((tile) => {
-        const prop = tile.properties?.estsolide;
-        if (prop === true || prop === "true") {
-          tile.setCollision(true);
-        }
-      });
-    };
-    setSolidOnLayer(this.calqueFond);
-    setSolidOnLayer(this.calqueMilieu);
-    setSolidOnLayer(this.calqueHaut);
-    setSolidOnLayer(this.calqueQuatre);
-
-    // Configurer la caméra
-    const mapWidth = this.map.widthInPixels;
-    const mapHeight = this.map.heightInPixels;
-    this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
-    this.physics.world.setBounds(0, 0, mapWidth, mapHeight);
-
-    if (mapKey === 'mapcentral') {
-      // Porte animable sur le modele du tutoriel : sprite statique + frames
-      const doorX = 52 - this.map.tileWidth * 3;
-      const doorY = 300;
-      const doorWidth = this.map.tileWidth * 3.5;
-      const doorHeight = this.map.tileHeight * 2.4;
-
-      this.ombrePorteAir = this.add.ellipse(doorX, doorY - 2, doorWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-
-      this.porteAir = this.physics.add.staticSprite(doorX, doorY, 'porte_air', 0);
-      this.porteAir.setOrigin(0.5, 1);
-      this.porteAir.setDisplaySize(doorWidth, doorHeight);
-      this.porteAir.refreshBody();
-      this.porteAir.body.setSize(doorWidth - 14, doorHeight - 10, true);
-      this.porteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteAir.ouverte = false;
-      this.porteAir.enAnimation = false;
-
-      this.zoneEntreePorteAir = this.add.zone(doorX, doorY - doorHeight + 16, doorWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteAir, true);
-
-      // Porte Feu - meme modele que porte_air
-      const doorFeuX = 300;
-      const doorFeuWidth = this.map.tileWidth * 3.5;
-      const doorFeuHeight = this.map.tileHeight * 2.4;
-      const doorFeuY = doorFeuHeight;
-
-      this.ombrePorteFeu = this.add.ellipse(doorFeuX, doorFeuY - 2, doorFeuWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-
-      this.porteFeu = this.physics.add.staticSprite(doorFeuX, doorFeuY, 'porte_feu', 0);
-      this.porteFeu.setOrigin(0.5, 1);
-      this.porteFeu.setDisplaySize(doorFeuWidth, doorFeuHeight);
-      this.porteFeu.refreshBody();
-      this.porteFeu.body.setSize(doorFeuWidth - 14, doorFeuHeight - 10, true);
-      this.porteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteFeu.ouverte = false;
-      this.porteFeu.enAnimation = false;
-
-      this.zoneEntreePorteFeu = this.add.zone(doorFeuX, doorFeuY - doorFeuHeight + 16, doorFeuWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteFeu, true);
-
-      // Porte Glace - meme modele que porte_air
-      const doorGlaceX = 588 - this.map.tileWidth * 1;
-      const doorGlaceY = 228 + this.map.tileHeight * 7;
-      const doorGlaceWidth = this.map.tileWidth * 3.5;
-      const doorGlaceHeight = this.map.tileHeight * 2.4;
-
-      this.ombrePorteGlace = this.add.ellipse(doorGlaceX, doorGlaceY - 2, doorGlaceWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-
-      this.porteGlace = this.physics.add.staticSprite(doorGlaceX, doorGlaceY, 'porte_glace', 0);
-      this.porteGlace.setOrigin(0.5, 1);
-      this.porteGlace.setDisplaySize(doorGlaceWidth, doorGlaceHeight);
-      this.porteGlace.refreshBody();
-      this.porteGlace.body.setSize(doorGlaceWidth - 14, doorGlaceHeight - 10, true);
-      this.porteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteGlace.ouverte = false;
-      this.porteGlace.enAnimation = false;
-
-      this.zoneEntreePorteGlace = this.add.zone(doorGlaceX, doorGlaceY - doorGlaceHeight + 16, doorGlaceWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteGlace, true);
-
-      // Zone de teleportation automatique au bout du pont
-      const pontX = 252;
-      const pontY = 504;
-      const pontWidth = this.map.tileWidth * 3;
-      const pontHeight = this.map.tileHeight * 1;
-      this.zoneTeleportPont = this.add.zone(pontX, pontY, pontWidth, pontHeight);
-      this.physics.add.existing(this.zoneTeleportPont, true);
-      this.timerTeleportPont = null;
-
-      // PNJ Merlin
-      this.merlin = this.physics.add.staticSprite(324, 348 + this.map.tileHeight * 2, 'merlin');
-      this.merlin.setOrigin(0.5, 1);
-      this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
-      this.merlin.refreshBody();
-      this.merlin.setDepth(100);
-
-      // Maison au centre de la carte
-      const maisonX = 340;
-      const maisonY = 260;
-      const maisonWidth = this.map.tileWidth * 3;
-      const maisonHeight = this.map.tileHeight * 3;
-
-      // Ombre sous la maison
-      this.ombreMaison = this.add.ellipse(maisonX, maisonY + maisonHeight / 2 + 10, maisonWidth - 10, 10, 0x000000, 0.22);
-      this.ombreMaison.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-
-      // Sprite maison (rectangle placeholder en attendant une vraie spritesheet)
-      this.maison = this.physics.add.staticSprite(maisonX, maisonY, 'merlin'); // On utilise merlin comme placeholder
-      this.maison.setOrigin(0.5, 0.5);
-      this.maison.setDisplaySize(maisonWidth, maisonHeight);
-      this.maison.setAlpha(0.7); // Transparent pour voir que c'est un placeholder
-      this.maison.refreshBody();
-      this.maison.setDepth(30);
-
-      // Zone pour entrer dans la maison (zone au-dessus)
-      this.zoneEntreeMaison = this.add.zone(maisonX, maisonY - maisonHeight / 2 + 10, maisonWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreeMaison, true);
-    } else {
-      this.porteAir = null;
-      this.ombrePorteAir = null;
-      this.zoneEntreePorteAir = null;
-      this.porteFeu = null;
-      this.ombrePorteFeu = null;
-      this.zoneEntreePorteFeu = null;
-      this.porteGlace = null;
-      this.ombrePorteGlace = null;
-      this.zoneEntreePorteGlace = null;
-      this.zoneTeleportPont = null;
-      this.timerTeleportPont = null;
-      this.merlin = null;
-      this.maison = null;
-      this.zoneEntreeMaison = null;
-      this.ombreMaison = null;
-    }
-
-    // Calcul du zoom pour remplir l'écran sans bordures noires
-    let zoomX = window.innerWidth / mapWidth;
-    let zoomY = window.innerHeight / mapHeight;
-    let zoom = Math.min(zoomX, zoomY);
-    // Si la map est plus petite que l'écran, zoom maximal sans dépasser la map
-    if (mapWidth < window.innerWidth || mapHeight < window.innerHeight) {
-      zoom = Math.max(zoomX, zoomY);
-    }
-    // Zoom très rapproché sur le joueur (effet RPG)
-    this.cameras.main.setZoom(2.5);
-
-    // Ne pas faire startFollow ici, il sera fait après la création du joueur dans create()
+    this.currentMap = data.map || 'mapcentral';   // quelle carte charger
+    this.playerStartX = data.startX || 100;       // position de départ X
+    this.playerStartY = data.startY || 450;       // position de départ Y
+    this.teleportEnCours = false;                 // évite les doubles téléportations
   }
 
   preload() {
@@ -277,6 +46,7 @@ export default class selection extends Phaser.Scene {
     this.load.image('surface', 'src/assets/surface.png');
     this.load.image('haut', 'src/assets/haut.png');
     this.load.image('quatre', 'src/assets/quatre.png');
+    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/ChatGPT Image 17 mars 2026, 10_34_01.png');
     this.load.spritesheet('porte_air', 'src/assets/porte_air.png', {
       frameWidth: 96,
       frameHeight: 120
@@ -293,46 +63,177 @@ export default class selection extends Phaser.Scene {
 
   create() {
     this.son_musique = this.sound.add('musique');
-    this.son_musique.play();
-
-    // Charger la carte initiale AVANT de créer le joueur
-    this.loadMap(this.currentMap);
-
-    // Chercher une position non solide autour du point de départ
-    let startX = this.playerStartX;
-    let startY = this.playerStartY;
-    if (!startX || startX < 0 || startX > this.map.widthInPixels) {
-      startX = this.map.widthInPixels / 2;
+    if (!this.sound.get('musique')?.isPlaying) {
+      this.son_musique.play();
     }
-    if (!startY || startY < 0 || startY > this.map.heightInPixels) {
-      startY = this.map.heightInPixels / 2;
-    }
-    // Trouver une tuile non solide autour du point de départ
-    const tileSize = this.map.tileWidth;
-    let found = false;
-    let px = startX, py = startY;
-    for (let r = 0; r < 10 && !found; r++) {
-      for (let dx = -r; dx <= r && !found; dx++) {
-        for (let dy = -r; dy <= r && !found; dy++) {
-          let tx = Math.floor((startX / tileSize) + dx);
-          let ty = Math.floor((startY / tileSize) + dy);
-          if (tx < 0 || ty < 0 || tx >= this.map.width || ty >= this.map.height) continue;
-          let blocked = false;
-          [this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre].forEach(layer => {
-            if (layer) {
-              const tile = layer.getTileAt(tx, ty);
-              if (tile && (tile.properties?.estsolide === true || tile.properties?.estsolide === "true")) blocked = true;
-            }
-          });
-          if (!blocked) {
-            px = tx * tileSize + tileSize / 2;
-            py = ty * tileSize + tileSize / 2;
-            found = true;
-          }
-        }
+
+    // -------------------------------------------------------
+    // CARTE : créer la tilemap et ses calques
+    // -------------------------------------------------------
+    const mapKey = this.currentMap;
+    this.map = this.make.tilemap({ key: mapKey });
+
+    if (mapKey === 'map_eau') {
+      // Carte eau : un seul tileset et un seul calque
+      this.tileset1 = this.map.addTilesetImage('Map eau', 'tileset_16x16_interior');
+      this.tilesets = [this.tileset1];
+      this.calqueFond = this.map.createLayer('calques eau', this.tilesets, 0, 0);
+      this.calqueFond.setDepth(30);
+      this.calqueMilieu = null;
+      this.calqueHaut = null;
+      this.calqueQuatre = null;
+    } else {
+      // Cartes principales : 3 tilesets, jusqu'à 4 calques
+      this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
+      this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
+      this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
+      this.tileset4 = this.map.addTilesetImage('ChatGPT Image 17 mars 2026, 10_34_01', 'ChatGPT Image 17 mars 2026, 10_34_01');
+      this.tilesets = [this.tileset1, this.tileset2, this.tileset3, this.tileset4];
+
+      // Calque 3 en premier (profondeur basse, en-dessous du reste)
+      if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
+        this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
+        this.calqueHaut.setDepth(10);
+      } else {
+        this.calqueHaut = null;
+      }
+      // Calque 1 (sol principal)
+      if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
+        this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
+        this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else {
+        this.calqueFond = null;
+      }
+      // Calque 2 (objets au sol)
+      if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
+        this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else if (this.map.getLayerIndex('calque_surface') !== null) {
+        this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else {
+        this.calqueMilieu = null;
+      }
+      // Calque 4 (objets en hauteur, au-dessus du joueur)
+      if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
+        this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
+        this.calqueQuatre.setDepth(50);
+      } else {
+        this.calqueQuatre = null;
       }
     }
-    // Créer le joueur à la position trouvée
+
+    // Activer les collisions sur les tuiles ayant la propriété "estsolide = true" dans Tiled
+    const setSolidOnLayer = (layer) => {
+      if (!layer) return;
+      layer.forEachTile((tile) => {
+        const prop = tile.properties?.estsolide;
+        if (prop === true || prop === "true") {
+          tile.setCollision(true);
+        }
+      });
+    };
+    setSolidOnLayer(this.calqueFond);
+    setSolidOnLayer(this.calqueMilieu);
+    setSolidOnLayer(this.calqueHaut);
+    setSolidOnLayer(this.calqueQuatre);
+
+    // Limites de la caméra et du monde physique = taille de la carte
+    const mapWidth = this.map.widthInPixels;
+    const mapHeight = this.map.heightInPixels;
+    this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
+    this.physics.world.setBounds(0, 0, mapWidth, mapHeight);
+
+    // -------------------------------------------------------
+    // PORTES et OBJETS 
+    // -------------------------------------------------------
+    if (mapKey === 'mapcentral') {
+      // Porte Air
+      const doorX = 52 - this.map.tileWidth * 3;
+      const doorY = 300;
+      const doorWidth = this.map.tileWidth * 3.5;
+      const doorHeight = this.map.tileHeight * 2.4;
+      this.ombrePorteAir = this.add.ellipse(doorX, doorY - 2, doorWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteAir = this.physics.add.staticSprite(doorX, doorY, 'porte_air', 0);
+      this.porteAir.setOrigin(0.5, 1);
+      this.porteAir.setDisplaySize(doorWidth, doorHeight);
+      this.porteAir.refreshBody();
+      this.porteAir.body.setSize(doorWidth - 14, doorHeight - 10, true);
+      this.porteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteAir.ouverte = false;
+      this.porteAir.enAnimation = false;
+      this.zoneEntreePorteAir = this.add.zone(doorX, doorY - doorHeight + 16, doorWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteAir, true);
+
+      // Porte Feu
+      const doorFeuX = 300;
+      const doorFeuWidth = this.map.tileWidth * 3.5;
+      const doorFeuHeight = this.map.tileHeight * 2.4;
+      const doorFeuY = doorFeuHeight;
+      this.ombrePorteFeu = this.add.ellipse(doorFeuX, doorFeuY - 2, doorFeuWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteFeu = this.physics.add.staticSprite(doorFeuX, doorFeuY, 'porte_feu', 0);
+      this.porteFeu.setOrigin(0.5, 1);
+      this.porteFeu.setDisplaySize(doorFeuWidth, doorFeuHeight);
+      this.porteFeu.refreshBody();
+      this.porteFeu.body.setSize(doorFeuWidth - 14, doorFeuHeight - 10, true);
+      this.porteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteFeu.ouverte = false;
+      this.porteFeu.enAnimation = false;
+      this.zoneEntreePorteFeu = this.add.zone(doorFeuX, doorFeuY - doorFeuHeight + 16, doorFeuWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteFeu, true);
+
+      // Porte Glace
+      const doorGlaceX = 588 - this.map.tileWidth * 1;
+      const doorGlaceY = 228 + this.map.tileHeight * 7;
+      const doorGlaceWidth = this.map.tileWidth * 3.5;
+      const doorGlaceHeight = this.map.tileHeight * 2.4;
+      this.ombrePorteGlace = this.add.ellipse(doorGlaceX, doorGlaceY - 2, doorGlaceWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteGlace = this.physics.add.staticSprite(doorGlaceX, doorGlaceY, 'porte_glace', 0);
+      this.porteGlace.setOrigin(0.5, 1);
+      this.porteGlace.setDisplaySize(doorGlaceWidth, doorGlaceHeight);
+      this.porteGlace.refreshBody();
+      this.porteGlace.body.setSize(doorGlaceWidth - 14, doorGlaceHeight - 10, true);
+      this.porteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteGlace.ouverte = false;
+      this.porteGlace.enAnimation = false;
+      this.zoneEntreePorteGlace = this.add.zone(doorGlaceX, doorGlaceY - doorGlaceHeight + 16, doorGlaceWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteGlace, true);
+
+      // Zone pont (rester 2 secondes dessus = téléport vers la carte eau)
+      this.zoneTeleportPont = this.add.zone(252, 504, this.map.tileWidth * 3, this.map.tileHeight);
+      this.physics.add.existing(this.zoneTeleportPont, true);
+      this.timerTeleportPont = null;
+
+      // PNJ Merlin
+      this.merlin = this.physics.add.staticSprite(324, 348 + this.map.tileHeight * 2, 'merlin');
+      this.merlin.setOrigin(0.5, 1);
+      this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
+      this.merlin.refreshBody();
+      this.merlin.setDepth(100);
+
+
+    } else {
+      // Sur les autres cartes, ces objets n'existent pas
+      this.porteAir = null; this.ombrePorteAir = null; this.zoneEntreePorteAir = null;
+      this.porteFeu = null; this.ombrePorteFeu = null; this.zoneEntreePorteFeu = null;
+      this.porteGlace = null; this.ombrePorteGlace = null; this.zoneEntreePorteGlace = null;
+      this.zoneTeleportPont = null; this.timerTeleportPont = null;
+      this.merlin = null;
+    }
+
+    this.cameras.main.setZoom(3); // zoom RPG rapproché
+
+    // Position de spawn : coordonnées passées via scene.start/restart
+    const px = this.playerStartX;
+    const py = this.playerStartY;
+
+    // Créer le joueur à la position de spawn
     if (this.textures.exists('bas_perso')) {
       this.player = this.physics.add.sprite(px, py, 'bas_perso');
     } else {
@@ -360,6 +261,7 @@ export default class selection extends Phaser.Scene {
     this.clavier = this.input.keyboard.createCursorKeys();
     this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.toucheE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // Collision avec Merlin
     if (this.merlin) {
@@ -376,32 +278,34 @@ export default class selection extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
     this.cameras.main.setRoundPixels(true);
 
+    // Animations de marche (4 directions) + idle face
+    // key = nom unique, frames = liste d'images, frameRate = vitesse, repeat: -1 = boucle infinie
     this.anims.create({
-        key: "anim_tourne_gauche", // key est le nom de l'animation : doit etre unique poru la scene.
-        frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
-        frameRate: 10, // vitesse de défilement des frames
-        repeat: -1 // nombre de répétitions de l'animation. -1 = infini
-      }); 
+        key: "anim_tourne_gauche",
+        frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
     this.anims.create({
-        key: "anim_tourne_droite", // key est le nom de l'animation : doit etre unique poru la scene.
-        frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
-        frameRate: 10, // vitesse de défilement des frames
-        repeat: -1 // nombre de répétitions de l'animation. -1 = infini
-      }); 
+        key: "anim_tourne_droite",
+        frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
     this.anims.create({
-        key: "anim_tourne_haut", // key est le nom de l'animation : doit etre unique poru la scene.
-        frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
-        frameRate: 10, // vitesse de défilement des frames
-        repeat: -1 // nombre de répétitions de l'animation. -1 = infini
-      }); 
+        key: "anim_tourne_haut",
+        frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
     this.anims.create({
-        key: "anim_tourne_bas", // key est le nom de l'animation : doit etre unique poru la scene.
-        frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }), // on prend toutes les frames de img perso numerotées de 0 à 3
-        frameRate: 10, // vitesse de défilement des frames
-        repeat: -1 // nombre de répétitions de l'animation. -1 = infini
-      }); 
+        key: "anim_tourne_bas",
+        frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+      });
     this.anims.create({
-        key: "anim_face",
+        key: "anim_face", // immobile, regarde vers le bas
         frames: [{ key: "bas_perso", frame: 0 }],
         frameRate: 20
       }); 
@@ -463,6 +367,15 @@ export default class selection extends Phaser.Scene {
   }
 
   update() {
+    // Touche P : retour à l'accueil (la scène reste en mémoire)
+    if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
+      this.registry.set('resumeKey', 'selection');
+      this.scene.pause('selection');
+      this.scene.run('accueil');
+      this.scene.bringToTop('accueil');
+      return;
+    }
+
     // Bloquer le mouvement pendant le dialogue
     if (this.dialogueActif) {
       this.player.setVelocity(0);
@@ -476,36 +389,7 @@ export default class selection extends Phaser.Scene {
     const speed = 100; // Vitesse réduite
     let isMoving = false;
 
-    // Vérifier les mouvements diagonaux et cardinaux
-    if (this.clavier.right.isDown && this.clavier.up.isDown) {
-      // Diagonal haut-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
-    } 
-    else if (this.clavier.right.isDown && this.clavier.down.isDown) {
-      // Diagonal bas-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_droite', true);
-      isMoving = true;
-    } 
-    else if (this.clavier.left.isDown && this.clavier.up.isDown) {
-      // Diagonal haut-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
-    } 
-    else if (this.clavier.left.isDown && this.clavier.down.isDown) {
-      // Diagonal bas-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_gauche', true);
-      isMoving = true;
-    }
-    else if (this.clavier.right.isDown) {
+    if (this.clavier.right.isDown) {
       this.player.setVelocityX(speed);
       this.player.anims.play('anim_tourne_droite', true);
       isMoving = true;
@@ -534,12 +418,13 @@ export default class selection extends Phaser.Scene {
     this.handleDoorFeuInteraction();
     this.handleDoorGlaceInteraction();
     this.handleTeleportPont();
-    this.handleMaisonInteraction();
     this.handleMerlinInteraction();
 
     // Vérifier les transitions de carte
     this.checkMapTransitions();
   }
+
+  // === PORTES : Espace pour ouvrir/fermer, entrer dans la zone du haut pour changer de scène ===
 
   handleDoorInteraction() {
     if (!this.porteAir || this.currentMap !== 'mapcentral') {
@@ -703,6 +588,7 @@ export default class selection extends Phaser.Scene {
     });
   }
 
+  // Rester 2 secondes sur le pont = téléportation vers la carte eau
   handleTeleportPont() {
     if (!this.zoneTeleportPont || this.currentMap !== 'mapcentral' || this.teleportEnCours) {
       return;
@@ -728,7 +614,7 @@ export default class selection extends Phaser.Scene {
   }
 
   checkMapTransitions() {
-    // Exemple : si le joueur est à une position spécifique, changer de carte
+    // Téléporte le joueur quand il atteint les bords de la carte
     // Pour mapcentral vers map_air
     if (this.currentMap === 'mapcentral' && this.player.x > 1400 && this.player.y < 200) {
       this.scene.restart({ map: 'map_air', startX: 50, startY: 300 });
@@ -744,26 +630,6 @@ export default class selection extends Phaser.Scene {
     // Retour à mapcentral depuis glace
     else if (this.currentMap === 'glace' && this.player.y < 50) {
       this.scene.restart({ map: 'mapcentral', startX: 100, startY: 1400 });
-    }
-  }
-
-  // === INTERACTION AVEC LA MAISON ===
-
-  handleMaisonInteraction() {
-    if (!this.maison || this.currentMap !== 'mapcentral') {
-      return;
-    }
-
-    const estSurLaMaison = this.physics.overlap(this.player, this.maison);
-    const estDansEntree = this.zoneEntreeMaison
-      ? this.physics.overlap(this.player, this.zoneEntreeMaison)
-      : false;
-
-    if (estDansEntree && !this.teleportEnCours) {
-      this.teleportEnCours = true;
-      this.time.delayedCall(150, () => {
-        this.scene.start('interieur', { startX: 100, startY: 450 });
-      });
     }
   }
 

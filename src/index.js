@@ -3,7 +3,9 @@
 /***********************************************************************/
 /** CONFIGURATION GLOBALE DU JEU ET LANCEMENT 
 /***********************************************************************/
+import accueil from "./js/accueil.js";
 import selection from "./js/selection.js";
+import niveau_air from "./js/niveau_air.js";
 import niveau1 from "./js/niveauglace.js";
 import mapeau from "./js/mapeau.js";
 import interieur from "./js/interieur.js";
@@ -19,7 +21,7 @@ var config = {
       debug: false
     }
   },
-  scene: [selection, niveau1, mapeau, interieur] // ✅ corrigé
+  scene: [accueil, selection, niveau_air, niveau1, mapeau, interieur]
 };
 
 var game = new Phaser.Game(config);

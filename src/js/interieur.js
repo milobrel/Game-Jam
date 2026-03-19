@@ -54,6 +54,7 @@ export default class interieur extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.toucheE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     // Créer les animations directionnelles
     this.anims.create({
@@ -92,36 +93,15 @@ export default class interieur extends Phaser.Scene {
     this.player.setVelocity(0);
     let isMoving = false;
 
-    // Vérifier les mouvements diagonaux et cardinaux
-    if (this.cursors.right.isDown && this.cursors.up.isDown) {
-      // Diagonal haut-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
+    if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
+      this.registry.set('resumeKey', 'interieur');
+      this.scene.pause('interieur');
+      this.scene.run('accueil');
+      this.scene.bringToTop('accueil');
+      return;
     }
-    else if (this.cursors.right.isDown && this.cursors.down.isDown) {
-      // Diagonal bas-droite
-      this.player.setVelocityX(speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_droite', true);
-      isMoving = true;
-    }
-    else if (this.cursors.left.isDown && this.cursors.up.isDown) {
-      // Diagonal haut-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
-    }
-    else if (this.cursors.left.isDown && this.cursors.down.isDown) {
-      // Diagonal bas-gauche
-      this.player.setVelocityX(-speed);
-      this.player.setVelocityY(speed);
-      this.player.anims.play('anim_tourne_gauche', true);
-      isMoving = true;
-    }
-    else if (this.cursors.right.isDown) {
+
+    if (this.cursors.right.isDown) {
       this.player.setVelocityX(speed);
       this.player.anims.play('anim_tourne_droite', true);
       isMoving = true;
