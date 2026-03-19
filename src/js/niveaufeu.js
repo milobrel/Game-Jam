@@ -25,10 +25,19 @@ export default class niveaufeu extends Phaser.Scene {
     this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
     this.load.image('terrain', 'src/assets/terrain.png');
     this.load.image('top_down_quarter__4_-removebg-preview', 'src/assets/top_down_quarter__4_-removebg-preview.png');
+    this.load.audio('pirate', 'src/assets/pirate.mp3');
+    this.load.audio('musique', 'src/assets/theme.wav');
+    
   }
 
   create() {
     this.sound.stopAll();
+    const musique = this.sound.get('musique');
+    if (musique) {
+        musique.stop();
+    }
+    this.son_musique = this.sound.add('pirate');
+    this.son_musique.play();
 
     // CARTE
     this.map = this.make.tilemap({ key: 'lave' });

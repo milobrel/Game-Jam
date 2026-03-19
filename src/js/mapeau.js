@@ -32,11 +32,16 @@ export default class mapeau extends Phaser.Scene {
     });
 
     this.load.audio('shatta', 'src/assets/shatta.mp3');
+    this.load.audio('musique', 'src/assets/theme.wav');
+    
   }
 
   create() {
     this.sound.stopAll();
-
+    const musique = this.sound.get('musique');
+    if (musique) {
+        musique.stop();
+    }
     // CARTE
     this.map = this.make.tilemap({ key: 'carte_eau' });
     const tileset = this.map.addTilesetImage(

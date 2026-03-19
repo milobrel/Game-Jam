@@ -18,15 +18,24 @@ export default class niveau_air extends Phaser.Scene {
     this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
 
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
-    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/ChatGPT Image 17 mars 2026, 10_34_01.png');
+    this.load.image('tile_air', 'src/assets/tile_air.png');
+    this.load.audio('stayready', 'src/assets/stayready.mp3');
+    this.load.audio('musique', 'src/assets/theme.wav');
+    
   }
 
   create() {
     this.sound.stopAll();
+    const musique = this.sound.get('musique');
+    if (musique) {
+        musique.stop();
+    }
+    this.son_musique = this.sound.add('stayready');
+    this.son_musique.play();
 
     // CARTE
     this.map = this.make.tilemap({ key: 'map_air' });
-    const tileset = this.map.addTilesetImage('ChatGPT Image 17 mars 2026, 10_34_01', 'ChatGPT Image 17 mars 2026, 10_34_01');
+    const tileset = this.map.addTilesetImage('tile_air', 'tile_air');
 
     const chargerCalque = (nomDuCalque, profondeur) => {
       if (this.map.getLayerIndex(nomDuCalque) === null) {
