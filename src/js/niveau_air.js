@@ -19,10 +19,19 @@ export default class niveau_air extends Phaser.Scene {
 
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.image('tile_air', 'src/assets/tile_air.png');
+    this.load.audio('stayready', 'src/assets/stayready.mp3');
+    this.load.audio('musique', 'src/assets/theme.wav');
+    
   }
 
   create() {
     this.sound.stopAll();
+    const musique = this.sound.get('musique');
+    if (musique) {
+        musique.stop();
+    }
+    this.son_musique = this.sound.add('stayready');
+    this.son_musique.play();
 
     // CARTE
     this.map = this.make.tilemap({ key: 'map_air' });
