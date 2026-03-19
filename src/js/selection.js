@@ -392,7 +392,7 @@ export default class selection extends Phaser.Scene {
       porte: this.porteAir,
       zoneEntree: this.zoneEntreePorteAir,
       sceneAction: () => {
-        this.scene.restart({ map: 'map_air', startX: 120, startY: 320 });
+        this.scene.start('niveau_air', { startX: 120, startY: 320 });
       },
       ouvrir: () => this.ouvrirPorteAir(),
       fermer: () => this.fermerPorteAir()
@@ -526,14 +526,14 @@ export default class selection extends Phaser.Scene {
     // Téléporte le joueur quand il atteint les bords de la carte
     // Pour mapcentral vers map_air
     if (this.currentMap === 'mapcentral' && this.player.x > 1400 && this.player.y < 200) {
-      this.scene.restart({ map: 'map_air', startX: 50, startY: 300 });
+      this.scene.restart({ map: 'niveau_air', startX: 50, startY: 300 });
     }
     // Pour mapcentral vers glace
     else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
       this.scene.start('niveauglace', { startX: 0, startY: 50 });
     }
     // Retour à mapcentral depuis map_air
-    else if (this.currentMap === 'map_air' && this.player.x < 50) {
+    else if (this.currentMap === 'niveau_air' && this.player.x < 50) {
       this.scene.restart({ map: 'mapcentral', startX: 1400, startY: 200 });
     }
     // Retour à mapcentral depuis glace

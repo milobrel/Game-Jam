@@ -18,7 +18,7 @@ export default class niveau_air extends Phaser.Scene {
     this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
 
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
-    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/ChatGPT Image 17 mars 2026, 10_34_01.png');
+    this.load.image('ChatGPT Image Mar 17, 2026, 03_03_44 PM', 'src\\assets\\ChatGPT Image Mar 17, 2026, 03_03_44 PM.png');
   }
 
   create() {
@@ -26,7 +26,7 @@ export default class niveau_air extends Phaser.Scene {
 
     // CARTE
     this.map = this.make.tilemap({ key: 'map_air' });
-    const tileset = this.map.addTilesetImage('ChatGPT Image 17 mars 2026, 10_34_01', 'ChatGPT Image 17 mars 2026, 10_34_01');
+    const tileset = this.map.addTilesetImage('ChatGPT Image Mar 17, 2026, 03_03_44 PM', 'ChatGPT Image Mar 17, 2026, 03_03_44 PM');
 
     const chargerCalque = (nomDuCalque, profondeur) => {
       if (this.map.getLayerIndex(nomDuCalque) === null) {
