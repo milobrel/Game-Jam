@@ -1,103 +1,92 @@
+import { creerAnimationsDuPerso } from './animations_perso.js';
+
 export default class mapeau extends Phaser.Scene {
   constructor() {
     super({ key: 'mapeau' });
   }
 
-  preload() {
-    // On charge les images et la map.
-    // ATTENTION : on enlève "src/" car tes dossiers sont à la racine
-    this.load.image('tiles_eau', 'src/assets/Water-themed adventure level layout.png');
-    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau4.tmj');
-    this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
-        frameWidth: 48,
-        frameHeight: 68
-      });
-    this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
-        frameWidth: 48,
-        frameHeight: 68
-      });
-    this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
-        frameWidth: 48,
-        frameHeight: 68
-      });
-    this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
-        frameWidth: 48,
-        frameHeight: 68
-      });
-    this.load.audio('shatta', 'src/assets/shatta.mp3');
-}
+  init(data) {
+    this.playerStartX = data.startX || 100;
+    this.playerStartY = data.startY || 450;
+  }
 
-  create(data) {
+  preload() {
+    this.load.image('Water-themed adventure level layout', 'src/assets/Water-themed adventure level layout.png');
+    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau4.tmj');
+
+    this.load.spritesheet('droite_perso', 'src/assets/playerRight.png', {
+      frameWidth: 48,
+      frameHeight: 68
+    });
+    this.load.spritesheet('gauche_perso', 'src/assets/playerLeft.png', {
+      frameWidth: 48,
+      frameHeight: 68
+    });
+    this.load.spritesheet('haut_perso', 'src/assets/playerUp.png', {
+      frameWidth: 48,
+      frameHeight: 68
+    });
+    this.load.spritesheet('bas_perso', 'src/assets/playerDown.png', {
+      frameWidth: 48,
+      frameHeight: 68
+    });
+
+    this.load.audio('shatta', 'src/assets/shatta.mp3');
+  }
+
+  create() {
     this.sound.stopAll();
 
-    // Création de la carte
-    const map = this.make.tilemap({ key: 'carte_eau' });
+    // CARTE
+    this.map = this.make.tilemap({ key: 'carte_eau' });
+    const tileset = this.map.addTilesetImage(
+      'Water-themed adventure level layout',
+      'Water-themed adventure level layout'
+    );
 
-    // Ajout du jeu de tuiles (le nom doit correspondre au champ "name" dans Map eau.tsj)
-    const tileset = map.addTilesetImage('terrain', 'terrain');
+    this.calqueEau = this.map.createLayer('calques eau', tileset, 0, 0);
+    this.calqueEau.setDepth(30);
 
-    // Calque solide principal
-    const calque_sol = map.createLayer('calques eau', tileset, 0, 0);
-    calque_sol.setCollisionByProperty({ estSolide: true });
+    this.calqueEau.forEachTile((tile) => {
+      const prop = tile.properties?.estSolide;
+      if (prop === true || prop === 'true') {
+        tile.setCollision(true);
+      }
+    });
 
-    // Position de départ
-    const startX = data.startX || 100;
-    const startY = data.startY || 450;
-    this.player = this.physics.add.sprite(startX, startY, 'bas_perso');
-    this.player.setScale(0.6);
+    // MONDE
+    this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
+    // JOUEUR
+    this.player = this.physics.add.sprite(this.playerStartX, this.playerStartY, 'bas_perso');
+    this.player.setScale(0.3);
     this.player.setCollideWorldBounds(true);
+    this.player.body.setSize(28, 20);
+    this.player.body.setOffset(10, 48);
+    this.player.setDepth(100);
 
-    // Collisions
-    this.physics.add.collider(this.player, calque_sol);
+    this.physics.add.collider(this.player, this.calqueEau);
 
-    // Caméra
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    // CAMERA
+    this.cameras.main.setZoom(2);
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
+    this.cameras.main.setRoundPixels(true);
 
-    this.cursors = this.input.keyboard.createCursorKeys();
+    // CLAVIER
+    this.clavier = this.input.keyboard.createCursorKeys();
     this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
-    // Jouer la musique shatta une seule fois
-    this.sound.play('shatta', { loop: false });
+    // MUSIQUE
+    if (!this.sound.get('shatta')?.isPlaying) {
+      this.sound.play('shatta', { loop: true });
+    }
 
-    // Créer les animations directionnelles
-    this.anims.create({
-        key: "anim_tourne_gauche",
-        frames: this.anims.generateFrameNumbers("gauche_perso", { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-      });
-    this.anims.create({
-        key: "anim_tourne_droite",
-        frames: this.anims.generateFrameNumbers("droite_perso", { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-      });
-    this.anims.create({
-        key: "anim_tourne_haut",
-        frames: this.anims.generateFrameNumbers("haut_perso", { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-      });
-    this.anims.create({
-        key: "anim_tourne_bas",
-        frames: this.anims.generateFrameNumbers("bas_perso", { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-      });
-    this.anims.create({
-        key: "anim_face",
-        frames: [{ key: "bas_perso", frame: 0 }],
-        frameRate: 20
-      });
+    // ANIMATIONS
+    creerAnimationsDuPerso(this);
   }
 
   update() {
-    const speed = 100;
-    this.player.setVelocity(0);
-    let isMoving = false;
-
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
       this.registry.set('resumeKey', 'mapeau');
       this.scene.pause('mapeau');
@@ -106,28 +95,32 @@ export default class mapeau extends Phaser.Scene {
       return;
     }
 
-    if (this.cursors.right.isDown) {
+    const speed = 100;
+    this.player.setVelocity(0);
+    let moving = false;
+
+    if (this.clavier.right.isDown) {
       this.player.setVelocityX(speed);
       this.player.anims.play('anim_tourne_droite', true);
-      isMoving = true;
+      moving = true;
     }
-    else if (this.cursors.left.isDown) {
+    else if (this.clavier.left.isDown) {
       this.player.setVelocityX(-speed);
       this.player.anims.play('anim_tourne_gauche', true);
-      isMoving = true;
+      moving = true;
     }
-    else if (this.cursors.up.isDown) {
+    else if (this.clavier.up.isDown) {
       this.player.setVelocityY(-speed);
       this.player.anims.play('anim_tourne_haut', true);
-      isMoving = true;
+      moving = true;
     }
-    else if (this.cursors.down.isDown) {
+    else if (this.clavier.down.isDown) {
       this.player.setVelocityY(speed);
       this.player.anims.play('anim_tourne_bas', true);
-      isMoving = true;
+      moving = true;
     }
 
-    if (!isMoving) {
+    if (!moving) {
       this.player.anims.play('anim_face');
     }
   }

@@ -18,12 +18,6 @@ export default class selection extends Phaser.Scene {
     this.chargerSpritesheetsJoueur();
     this.load.audio('musique', 'src/assets/theme.wav');
     this.load.image('merlin', 'src/assets/Merlin.png');
-    this.load.spritesheet('merlin_dialogue', 'src/assets/merlin22.png', {
-      frameWidth: 186,
-      frameHeight: 223,
-      margin: 0,
-      spacing: 0
-    });
 
     // Charger les cartes
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
@@ -111,13 +105,13 @@ export default class selection extends Phaser.Scene {
     // Systeme de dialogue
     this.dialogueActif = false;
     this.dialogueEtape = 0;
-    this.dialogueUI = null;
+    this.dialogueMode = 'intro';
+    this.dialogueElements = null;
+    this.initialiserDialogueMerlin();
 
     // Configurer la caméra pour suivre le joueur (après création du joueur)
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
     this.cameras.main.setRoundPixels(true);
-    this.uiCamera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
-    this.uiCamera.ignore(this.children.list);
 
     // Animations de marche (4 directions) + idle face
     creerAnimationsDuPerso(this);
@@ -276,6 +270,21 @@ export default class selection extends Phaser.Scene {
     this.zoneTeleportPont = null;
     this.timerTeleportPont = null;
     this.merlin = null;
+  }
+
+  initialiserDialogueMerlin() {
+    this.dialoguePages = [
+      "Je suis Merlin, le gardien des royaumes.",
+      "Je peux te guider vers chaque epreuve.",
+      "Appuie sur espace pour lire, puis choisis un royaume."
+    ];
+
+    this.choixRoyaumesMerlin = [
+      { nom: 'Air', couleur: '#88ccff', texte: "Air : Barbe Blanche t'attend a l'ouest." },
+      { nom: 'Eau', couleur: '#44bbff', texte: "Eau : Luffy t'attend au sud, vers le pont." },
+      { nom: 'Feu', couleur: '#ff7755', texte: "Feu : Ace t'attend au nord." },
+      { nom: 'Glace', couleur: '#ccf6ff', texte: "Glace : Aokiji t'attend a l'est." }
+    ];
   }
 
   creerJoueur() {
@@ -547,210 +556,108 @@ export default class selection extends Phaser.Scene {
   ouvrirDialogueMerlin() {
     this.dialogueActif = true;
     this.dialogueEtape = 0;
-
-    this.dialoguePages = [
-      "Ah... te voici enfin. Les vents anciens murmuraient deja ton arrivee, voyageur.",
-      "Je suis Merlin, gardien des quatre royaumes et veilleur des equilibres brises.",
-      "L'air, l'eau, le feu et la glace portent chacun une blessure que nul n'a su apaiser.",
-      "Choisis avec sagesse. Chaque royaume mettra ton courage a l'epreuve."
-    ];
+    this.dialogueMode = 'intro';
     this.afficherDialogueTexte(this.dialoguePages[0]);
   }
 
-  obtenirFrameMerlinPourEtape(etape) {
-    const frames = [2, 2, 3, 3];
-    return frames[etape] ?? frames[frames.length - 1];
-  }
-
-  obtenirDecalageMerlinFrame(frame) {
-    const decalages = {
-      1: { x: 28, y: 1 },
-      2: { x: 34, y: 0 },
-      3: { x: 35, y: 0 },
-      4: { x: 31, y: 1 }
-    };
-
-    return decalages[frame] ?? { x: 0, y: 0 };
-  }
-
-  creerFenetreDialogue(hauteur, frameMerlin = 0) {
+  afficherDialogueTexte(texte) {
     this.fermerDialogueUI();
 
-    const W = this.scale.width;
-    const H = this.scale.height;
-    const panW = Math.min(760, W * 0.82);
-    const panH = hauteur;
-    const panX = W / 2;
-    const panY = H / 2;
+    const bubbleX = this.merlin.x;
+    const bubbleY = this.merlin.y - this.map.tileHeight * 4.6;
+    const bubbleWidth = 250;
+    const bubbleHeight = 100;
 
-    this.dialogueElements = [];
-
-    const ombre = this.add.rectangle(0, 0, W, H, 0x000000, 0.72).setOrigin(0, 0).setDepth(1000);
-    const fond = this.add.rectangle(panX, panY, panW, panH, 0x0d1533).setStrokeStyle(3, 0x8888ff).setDepth(1001);
-    const titre = this.add.text(panX, panY - panH / 2 + 28, 'Merlin', {
-      font: 'bold 26px serif',
-      fill: '#f5c842'
-    }).setOrigin(0.5).setDepth(1002);
-    const portraitX = panX - panW / 2 + 94;
-    const portraitY = panY;
-    const decalagePortrait = this.obtenirDecalageMerlinFrame(frameMerlin);
-    const portraitFond = this.add.rectangle(portraitX, portraitY, 96, 132, 0x101b3a)
-      .setStrokeStyle(2, 0x6699ff).setDepth(1002);
-    const portrait = this.add.sprite(
-      portraitX - 18 + decalagePortrait.x,
-      portraitY + 10 + decalagePortrait.y,
-      'merlin_dialogue'
-    )
-      .setOrigin(0.42, 0.6)
-      .setScale(0.46)
-      .setDepth(1003);
-    portrait.setFrame(frameMerlin);
-    const portraitMaskShape = this.make.graphics({ x: 0, y: 0, add: false });
-    portraitMaskShape.fillRect(portraitX - 48, portraitY - 66, 96, 132);
-    portrait.setMask(portraitMaskShape.createGeometryMask());
-
-    this.dialogueElements.push(ombre, fond, titre, portraitFond, portrait);
-    this.cameras.main.ignore(this.dialogueElements);
-    return { panW, panH, panX, panY };
-  }
-
-  afficherDialogueTexte(texte) {
-    const frameMerlin = this.obtenirFrameMerlinPourEtape(this.dialogueEtape);
-    const { panW, panH, panX, panY } = this.creerFenetreDialogue(320, frameMerlin);
-
-    const contenu = this.add.text(panX - panW / 2 + 190, panY - 74, texte, {
-      font: '22px Arial',
+    const fond = this.add.rectangle(bubbleX, bubbleY, bubbleWidth, bubbleHeight, 0x0d1533, 0.95)
+      .setStrokeStyle(2, 0x8888ff)
+      .setDepth(150);
+    const contenu = this.add.text(bubbleX, bubbleY - 8, texte, {
+      font: '15px Arial',
       fill: '#f2f5ff',
-      wordWrap: { width: panW - 240 },
-      lineSpacing: 10
-    }).setDepth(1003);
-
-    const suite = this.add.text(panX, panY + panH / 2 - 30, '[ESPACE] pour continuer', {
-      font: '18px Arial',
+      align: 'center',
+      wordWrap: { width: bubbleWidth - 26 }
+    }).setOrigin(0.5).setDepth(151);
+    const suite = this.add.text(bubbleX, bubbleY + 34, '[ESPACE] continuer', {
+      font: '12px Arial',
       fill: '#9ab0dd'
-    }).setOrigin(0.5).setDepth(1003);
+    }).setOrigin(0.5).setDepth(151);
 
-    this.dialogueElements.push(contenu, suite);
-    this.cameras.main.ignore([contenu, suite]);
+    this.dialogueElements = [fond, contenu, suite];
   }
 
-  afficherChoixRoyaumes(avecExit) {
-    const { panW, panH, panX, panY } = this.creerFenetreDialogue(340, 2);
+  afficherChoixRoyaumes() {
+    this.fermerDialogueUI();
 
-    const titre = this.add.text(panX - panW / 2 + 190, panY - 86, 'Quel royaume veux-tu explorer ?', {
-      font: '22px Arial',
-      fill: '#f2f5ff'
-    }).setDepth(1003);
-    this.dialogueElements.push(titre);
+    const bubbleX = this.merlin.x;
+    const bubbleY = this.merlin.y - this.map.tileHeight * 4.9;
+    const bubbleWidth = 300;
+    const bubbleHeight = 168;
 
-    const royaumes = [
-      { nom: 'Air', couleur: '#88ccff', quete: "Le royaume de l'air est assailli par des tempetes eternelles. Barbe Blanche t'attend la-bas." },
-      { nom: 'Eau', couleur: '#4488ff', quete: "Le royaume de l'eau est envahi par des creatures des profondeurs. Luffy t'attend la-bas." },
-      { nom: 'Feu', couleur: '#ff6644', quete: "Le royaume du feu est devore par les flammes du chaos. Ace t'attend la-bas." },
-      { nom: 'Glace', couleur: '#aaeeff', quete: "Le royaume de glace est pris par un hiver sans fin. Aokiji t'attend la-bas." }
-    ];
+    const fond = this.add.rectangle(bubbleX, bubbleY, bubbleWidth, bubbleHeight, 0x0d1533, 0.95)
+      .setStrokeStyle(2, 0x8888ff)
+      .setDepth(150);
+    const titre = this.add.text(bubbleX, bubbleY - 60, 'Choisis un royaume', {
+      font: '16px Arial',
+      fill: '#f5c842'
+    }).setOrigin(0.5).setDepth(151);
 
-    const btnW = 120;
-    const btnH = 44;
-    const btnY = panY + 8;
+    this.dialogueElements = [fond, titre];
 
-    royaumes.forEach((r, i) => {
-      const bx = panX - 192 + i * 128;
-      const btnFond = this.add.rectangle(bx, btnY, btnW, btnH, 0x243554, 0.95)
-        .setStrokeStyle(2, 0xd6e2ff).setDepth(1003);
-      btnFond.setInteractive({ useHandCursor: true });
+    this.choixRoyaumesMerlin.forEach((royaume, index) => {
+      const y = bubbleY - 20 + index * 28;
+      const choix = this.add.text(bubbleX, y, royaume.nom, {
+        font: '15px Arial',
+        fill: royaume.couleur,
+        backgroundColor: '#243554',
+        padding: { left: 8, right: 8, top: 4, bottom: 4 }
+      }).setOrigin(0.5).setDepth(151);
 
-      const btnTexte = this.add.text(bx, btnY, r.nom, {
-        font: '18px Arial',
-        fill: r.couleur
-      }).setOrigin(0.5).setDepth(1004);
-
-      btnFond.on('pointerover', () => btnFond.setFillStyle(0x35507d, 1));
-      btnFond.on('pointerout', () => btnFond.setFillStyle(0x243554, 0.95));
-      btnFond.on('pointerdown', () => {
-        this.dialogueEtape = 10;
-        this.queteChoisie = r;
-        this.afficherDialogueTexte(r.quete);
+      choix.setInteractive({ useHandCursor: true });
+      choix.on('pointerdown', () => {
+        this.afficherDetailRoyaume(royaume);
       });
 
-      this.dialogueElements.push(btnFond, btnTexte);
+      this.dialogueElements.push(choix);
     });
 
-    if (avecExit) {
-      const exitTexte = this.add.text(panX, panY + panH / 2 - 26, '[E] Quitter', {
-        font: '18px Arial',
-        fill: '#ff9a9a'
-      }).setOrigin(0.5).setDepth(1003);
-      this.dialogueElements.push(exitTexte);
-    }
+    const aide = this.add.text(bubbleX, bubbleY + 58, '[E] fermer', {
+      font: '12px Arial',
+      fill: '#9ab0dd'
+    }).setOrigin(0.5).setDepth(151);
 
-    this.cameras.main.ignore(this.dialogueElements);
+    this.dialogueElements.push(aide);
   }
 
-  afficherAdieu() {
-    const { panW, panH, panX, panY } = this.creerFenetreDialogue(320, 3);
-
-    const texte = this.add.text(
-      panX - panW / 2 + 190,
-      panY - 74,
-      "Bonne chance ! Barbe Blanche (air), Luffy (eau), Ace (feu), Aokiji (glace).",
-      {
-        font: '22px Arial',
-        fill: '#f2f5ff',
-        wordWrap: { width: panW - 240 },
-        lineSpacing: 10
-      }
-    ).setDepth(1003);
-
-    const suite = this.add.text(panX, panY + panH / 2 - 30, '[ESPACE] pour fermer', {
-      font: '18px Arial',
-      fill: '#9ab0dd'
-    }).setOrigin(0.5).setDepth(1003);
-
-    this.dialogueElements.push(texte, suite);
-    this.cameras.main.ignore([texte, suite]);
-    this.dialogueEtape = 99;
+  afficherDetailRoyaume(royaume) {
+    this.dialogueMode = 'detail';
+    this.afficherDialogueTexte(royaume.texte);
   }
 
   handleMerlinDialogue() {
     if (!this.dialogueActif) return;
 
-    // Pages d'intro (etapes 0-3) : Espace pour avancer
-    if (this.dialogueEtape < this.dialoguePages.length - 1) {
+    if (this.dialogueMode === 'intro' && this.dialogueEtape < this.dialoguePages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.dialogueEtape++;
         this.afficherDialogueTexte(this.dialoguePages[this.dialogueEtape]);
       }
     }
-    // Derniere page d'intro -> afficher choix
-    else if (this.dialogueEtape === this.dialoguePages.length - 1) {
+    else if (this.dialogueMode === 'intro' && this.dialogueEtape === this.dialoguePages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
-        this.dialogueEtape = 5;
-        this.afficherChoixRoyaumes(false);
+        this.dialogueMode = 'choix';
+        this.afficherChoixRoyaumes();
       }
     }
-    // Menu choix (premier affichage, sans exit)
-    else if (this.dialogueEtape === 5) {
-      // Les clics souris gerent le choix, rien a faire ici
-    }
-    // Apres avoir lu la quete -> retour au menu avec Exit
-    else if (this.dialogueEtape === 10) {
-      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
-        this.dialogueEtape = 11;
-        this.afficherChoixRoyaumes(true);
-      }
-    }
-    // Menu avec Exit
-    else if (this.dialogueEtape === 11) {
+    else if (this.dialogueMode === 'choix') {
       if (Phaser.Input.Keyboard.JustDown(this.toucheE)) {
-        this.afficherAdieu();
-      }
-    }
-    // Message d'adieu -> fermer
-    else if (this.dialogueEtape === 99) {
-      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.fermerDialogueUI();
         this.dialogueActif = false;
+      }
+    }
+    else if (this.dialogueMode === 'detail') {
+      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
+        this.dialogueMode = 'choix';
+        this.afficherChoixRoyaumes();
       }
     }
   }
@@ -759,10 +666,6 @@ export default class selection extends Phaser.Scene {
     if (this.dialogueElements) {
       this.dialogueElements.forEach(el => el.destroy());
       this.dialogueElements = null;
-    }
-    if (this.dialogueUI) {
-      this.dialogueUI.destroy(true);
-      this.dialogueUI = null;
     }
   }
 }

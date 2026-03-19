@@ -88,6 +88,7 @@ export default class niveaufeu extends Phaser.Scene {
     if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
     if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
     if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
+    this.creerCollisionsBords();
 
     // CAMERA
     this.cameras.main.setZoom(3);
@@ -100,6 +101,25 @@ export default class niveaufeu extends Phaser.Scene {
 
     // ANIMATIONS
     creerAnimationsDuPerso(this);
+  }
+
+  creerCollisionsBords() {
+    const epaisseur = 16;
+    const largeur = this.map.widthInPixels;
+    const hauteur = this.map.heightInPixels;
+
+    const bords = [
+      this.add.rectangle(largeur / 2, epaisseur / 2, largeur, epaisseur, 0x000000, 0),
+      this.add.rectangle(largeur / 2, hauteur - epaisseur / 2, largeur, epaisseur, 0x000000, 0),
+      this.add.rectangle(epaisseur / 2, hauteur / 2, epaisseur, hauteur, 0x000000, 0),
+      this.add.rectangle(largeur - epaisseur / 2, hauteur / 2, epaisseur, hauteur, 0x000000, 0)
+    ];
+
+    this.bordsCollision = bords.map((bord) => {
+      this.physics.add.existing(bord, true);
+      this.physics.add.collider(this.player, bord);
+      return bord;
+    });
   }
 
   update() {
