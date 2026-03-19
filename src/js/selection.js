@@ -12,6 +12,238 @@ export default class selection extends Phaser.Scene {
     this.teleportEnCours = false;
   }
 
+  loadMap(mapKey) {
+    // Supprimer les anciens éléments si existants
+    if (this.map) this.map.destroy();
+    if (this.calqueFond) this.calqueFond.destroy();
+    if (this.calqueMilieu) this.calqueMilieu.destroy();
+    if (this.calqueHaut) this.calqueHaut.destroy();
+    if (this.porteAir) this.porteAir.destroy();
+    if (this.ombrePorteAir) this.ombrePorteAir.destroy();
+    if (this.zoneEntreePorteAir) this.zoneEntreePorteAir.destroy();
+    if (this.porteFeu) this.porteFeu.destroy();
+    if (this.ombrePorteFeu) this.ombrePorteFeu.destroy();
+    if (this.zoneEntreePorteFeu) this.zoneEntreePorteFeu.destroy();
+    if (this.porteGlace) this.porteGlace.destroy();
+    if (this.ombrePorteGlace) this.ombrePorteGlace.destroy();
+    if (this.zoneEntreePorteGlace) this.zoneEntreePorteGlace.destroy();
+    if (this.zoneTeleportPont) this.zoneTeleportPont.destroy();
+    if (this.merlin) this.merlin.destroy();
+    if (this.maison) this.maison.destroy();
+    if (this.zoneEntreeMaison) this.zoneEntreeMaison.destroy();
+    if (this.ombreMaison) this.ombreMaison.destroy();
+
+    if (this.calqueQuatre) this.calqueQuatre.destroy();
+
+    // Créer la nouvelle carte
+    this.map = this.make.tilemap({ key: mapKey });
+    if (mapKey === 'map_eau') {
+      this.tileset1 = this.map.addTilesetImage('Map eau', 'tileset_16x16_interior');
+      this.tilesets = [this.tileset1];
+
+      // Map "eau" ne possède qu'un calque principal
+      this.calqueFond = this.map.createLayer('calques eau', this.tilesets, 0, 0);
+      this.calqueFond.setDepth(30);
+      this.calqueMilieu = null;
+      this.calqueHaut = null;
+      this.calqueQuatre = null;
+    } else {
+      this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
+      this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
+      this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
+      this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
+
+      // Création des calques dans l'ordre voulu (3 d'abord, puis 1, 2, 4)
+      // Calque 3 (secondaire, doit être en-dessous)
+      if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
+        this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
+        this.calqueHaut.setDepth(10); // profondeur basse
+      } else {
+        this.calqueHaut = null;
+      }
+      // Calque 1 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
+        this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
+        this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
+        this.calqueFond.setDepth(30);
+      } else {
+        this.calqueFond = null;
+      }
+      // Calque 2 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
+        this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else if (this.map.getLayerIndex('calque_surface') !== null) {
+        this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
+        this.calqueMilieu.setDepth(40);
+      } else {
+        this.calqueMilieu = null;
+      }
+      // Calque 4 (primaire)
+      if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
+        this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
+        this.calqueQuatre.setDepth(50);
+      } else {
+        this.calqueQuatre = null;
+      }
+    }
+
+    // Collisions sur tous les calques présents
+    const setSolidOnLayer = (layer) => {
+      if (!layer) return;
+      layer.forEachTile((tile) => {
+        const prop = tile.properties?.estsolide;
+        if (prop === true || prop === "true") {
+          tile.setCollision(true);
+        }
+      });
+    };
+    setSolidOnLayer(this.calqueFond);
+    setSolidOnLayer(this.calqueMilieu);
+    setSolidOnLayer(this.calqueHaut);
+    setSolidOnLayer(this.calqueQuatre);
+
+    // Configurer la caméra
+    const mapWidth = this.map.widthInPixels;
+    const mapHeight = this.map.heightInPixels;
+    this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
+    this.physics.world.setBounds(0, 0, mapWidth, mapHeight);
+
+    if (mapKey === 'mapcentral') {
+      // Porte animable sur le modele du tutoriel : sprite statique + frames
+      const doorX = 52 - this.map.tileWidth * 3;
+      const doorY = 300;
+      const doorWidth = this.map.tileWidth * 3.5;
+      const doorHeight = this.map.tileHeight * 2.4;
+
+      this.ombrePorteAir = this.add.ellipse(doorX, doorY - 2, doorWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+
+      this.porteAir = this.physics.add.staticSprite(doorX, doorY, 'porte_air', 0);
+      this.porteAir.setOrigin(0.5, 1);
+      this.porteAir.setDisplaySize(doorWidth, doorHeight);
+      this.porteAir.refreshBody();
+      this.porteAir.body.setSize(doorWidth - 14, doorHeight - 10, true);
+      this.porteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteAir.ouverte = false;
+      this.porteAir.enAnimation = false;
+
+      this.zoneEntreePorteAir = this.add.zone(doorX, doorY - doorHeight + 16, doorWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteAir, true);
+
+      // Porte Feu - meme modele que porte_air
+      const doorFeuX = 300;
+      const doorFeuWidth = this.map.tileWidth * 3.5;
+      const doorFeuHeight = this.map.tileHeight * 2.4;
+      const doorFeuY = doorFeuHeight;
+
+      this.ombrePorteFeu = this.add.ellipse(doorFeuX, doorFeuY - 2, doorFeuWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+
+      this.porteFeu = this.physics.add.staticSprite(doorFeuX, doorFeuY, 'porte_feu', 0);
+      this.porteFeu.setOrigin(0.5, 1);
+      this.porteFeu.setDisplaySize(doorFeuWidth, doorFeuHeight);
+      this.porteFeu.refreshBody();
+      this.porteFeu.body.setSize(doorFeuWidth - 14, doorFeuHeight - 10, true);
+      this.porteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteFeu.ouverte = false;
+      this.porteFeu.enAnimation = false;
+
+      this.zoneEntreePorteFeu = this.add.zone(doorFeuX, doorFeuY - doorFeuHeight + 16, doorFeuWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteFeu, true);
+
+      // Porte Glace - meme modele que porte_air
+      const doorGlaceX = 588 - this.map.tileWidth * 1;
+      const doorGlaceY = 228 + this.map.tileHeight * 7;
+      const doorGlaceWidth = this.map.tileWidth * 3.5;
+      const doorGlaceHeight = this.map.tileHeight * 2.4;
+
+      this.ombrePorteGlace = this.add.ellipse(doorGlaceX, doorGlaceY - 2, doorGlaceWidth - 10, 10, 0x000000, 0.22);
+      this.ombrePorteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+
+      this.porteGlace = this.physics.add.staticSprite(doorGlaceX, doorGlaceY, 'porte_glace', 0);
+      this.porteGlace.setOrigin(0.5, 1);
+      this.porteGlace.setDisplaySize(doorGlaceWidth, doorGlaceHeight);
+      this.porteGlace.refreshBody();
+      this.porteGlace.body.setSize(doorGlaceWidth - 14, doorGlaceHeight - 10, true);
+      this.porteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+      this.porteGlace.ouverte = false;
+      this.porteGlace.enAnimation = false;
+
+      this.zoneEntreePorteGlace = this.add.zone(doorGlaceX, doorGlaceY - doorGlaceHeight + 16, doorGlaceWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreePorteGlace, true);
+
+      // Zone de teleportation automatique au bout du pont
+      const pontX = 252;
+      const pontY = 504;
+      const pontWidth = this.map.tileWidth * 3;
+      const pontHeight = this.map.tileHeight * 1;
+      this.zoneTeleportPont = this.add.zone(pontX, pontY, pontWidth, pontHeight);
+      this.physics.add.existing(this.zoneTeleportPont, true);
+      this.timerTeleportPont = null;
+
+      // PNJ Merlin
+      this.merlin = this.physics.add.staticSprite(324, 348 + this.map.tileHeight * 2, 'merlin');
+      this.merlin.setOrigin(0.5, 1);
+      this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
+      this.merlin.refreshBody();
+      this.merlin.setDepth(100);
+
+      // Maison au centre de la carte
+      const maisonX = 340;
+      const maisonY = 260;
+      const maisonWidth = this.map.tileWidth * 3;
+      const maisonHeight = this.map.tileHeight * 3;
+
+      // Ombre sous la maison
+      this.ombreMaison = this.add.ellipse(maisonX, maisonY + maisonHeight / 2 + 10, maisonWidth - 10, 10, 0x000000, 0.22);
+      this.ombreMaison.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
+
+      // Sprite maison (rectangle placeholder en attendant une vraie spritesheet)
+      this.maison = this.physics.add.staticSprite(maisonX, maisonY, 'merlin'); // On utilise merlin comme placeholder
+      this.maison.setOrigin(0.5, 0.5);
+      this.maison.setDisplaySize(maisonWidth, maisonHeight);
+      this.maison.setAlpha(0.7); // Transparent pour voir que c'est un placeholder
+      this.maison.refreshBody();
+      this.maison.setDepth(30);
+
+      // Zone pour entrer dans la maison (zone au-dessus)
+      this.zoneEntreeMaison = this.add.zone(maisonX, maisonY - maisonHeight / 2 + 10, maisonWidth - 24, 16);
+      this.physics.add.existing(this.zoneEntreeMaison, true);
+    } else {
+      this.porteAir = null;
+      this.ombrePorteAir = null;
+      this.zoneEntreePorteAir = null;
+      this.porteFeu = null;
+      this.ombrePorteFeu = null;
+      this.zoneEntreePorteFeu = null;
+      this.porteGlace = null;
+      this.ombrePorteGlace = null;
+      this.zoneEntreePorteGlace = null;
+      this.zoneTeleportPont = null;
+      this.timerTeleportPont = null;
+      this.merlin = null;
+      this.maison = null;
+      this.zoneEntreeMaison = null;
+      this.ombreMaison = null;
+    }
+
+    // Calcul du zoom pour remplir l'écran sans bordures noires
+    let zoomX = window.innerWidth / mapWidth;
+    let zoomY = window.innerHeight / mapHeight;
+    let zoom = Math.min(zoomX, zoomY);
+    // Si la map est plus petite que l'écran, zoom maximal sans dépasser la map
+    if (mapWidth < window.innerWidth || mapHeight < window.innerHeight) {
+      zoom = Math.max(zoomX, zoomY);
+    }
+    // Zoom très rapproché sur le joueur (effet RPG)
+    this.cameras.main.setZoom(2.5);
+
+    // Ne pas faire startFollow ici, il sera fait après la création du joueur dans create()
+  }
+
   preload() {
     this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
         frameWidth: 48,
@@ -36,9 +268,15 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
+    this.load.tilemapTiledJSON('map_eau', 'src/assets/map_eau.tmj');
+    this.load.image('tileset_16x16_interior', 'src/assets/tileset_16x16_interior.png');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
     this.load.image('terrain', 'src/assets/terrain.png');
+    this.load.image('nuage', 'src/assets/nuage.png');
+    this.load.image('surface', 'src/assets/surface.png');
+    this.load.image('haut', 'src/assets/haut.png');
+    this.load.image('quatre', 'src/assets/quatre.png');
     this.load.spritesheet('porte_air', 'src/assets/porte_air.png', {
       frameWidth: 96,
       frameHeight: 120
@@ -57,144 +295,8 @@ export default class selection extends Phaser.Scene {
     this.son_musique = this.sound.add('musique');
     this.son_musique.play();
 
-    // chargement de la carte
-    this.map = this.make.tilemap({ key: this.currentMap });
-    this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
-    this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
-    this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
-    this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
-
-    // création des calques
-    if (this.map.getLayerIndex('Calque de Tuiles 3') !== null) {
-      this.calqueHaut = this.map.createLayer('Calque de Tuiles 3', this.tilesets, 0, 0);
-      this.calqueHaut.setDepth(10);
-    } else {
-      this.calqueHaut = null;
-    }
-    if (this.map.getLayerIndex('Calque de Tuiles 1') !== null) {
-      this.calqueFond = this.map.createLayer('Calque de Tuiles 1', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-    } else if (this.map.getLayerIndex('Calque_nuage') !== null) {
-      this.calqueFond = this.map.createLayer('Calque_nuage', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-    } else {
-      this.calqueFond = null;
-    }
-    if (this.map.getLayerIndex('Calque de Tuiles 2') !== null) {
-      this.calqueMilieu = this.map.createLayer('Calque de Tuiles 2', this.tilesets, 0, 0);
-      this.calqueMilieu.setDepth(40);
-    } else if (this.map.getLayerIndex('calque_surface') !== null) {
-      this.calqueMilieu = this.map.createLayer('calque_surface', this.tilesets, 0, 0);
-      this.calqueMilieu.setDepth(40);
-    } else {
-      this.calqueMilieu = null;
-    }
-    if (this.map.getLayerIndex('Calque de Tuiles 4') !== null) {
-      this.calqueQuatre = this.map.createLayer('Calque de Tuiles 4', this.tilesets, 0, 0);
-      this.calqueQuatre.setDepth(50);
-    } else {
-      this.calqueQuatre = null;
-    }
-
-    // collisions sur les calques solides
-    if (this.calqueFond) this.calqueFond.setCollisionByProperty({ estsolide: true });
-    if (this.calqueMilieu) this.calqueMilieu.setCollisionByProperty({ estsolide: true });
-    if (this.calqueHaut) this.calqueHaut.setCollisionByProperty({ estsolide: true });
-    if (this.calqueQuatre) this.calqueQuatre.setCollisionByProperty({ estsolide: true });
-
-    // limites du monde et de la caméra
-    const mapWidth = this.map.widthInPixels;
-    const mapHeight = this.map.heightInPixels;
-    this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
-    this.physics.world.setBounds(0, 0, mapWidth, mapHeight);
-    this.cameras.main.setZoom(2.5);
-
-    // création des portes et PNJ (seulement sur mapcentral)
-    if (this.currentMap === 'mapcentral') {
-      // Porte Air
-      const doorX = 52 - this.map.tileWidth * 3;
-      const doorY = 300;
-      const doorWidth = this.map.tileWidth * 3.5;
-      const doorHeight = this.map.tileHeight * 2.4;
-
-      this.ombrePorteAir = this.add.ellipse(doorX, doorY - 2, doorWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteAir = this.physics.add.staticSprite(doorX, doorY, 'porte_air', 0);
-      this.porteAir.setOrigin(0.5, 1);
-      this.porteAir.setDisplaySize(doorWidth, doorHeight);
-      this.porteAir.refreshBody();
-      this.porteAir.body.setSize(doorWidth - 14, doorHeight - 10, true);
-      this.porteAir.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteAir.ouverte = false;
-      this.porteAir.enAnimation = false;
-      this.zoneEntreePorteAir = this.add.zone(doorX, doorY - doorHeight + 16, doorWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteAir, true);
-
-      // Porte Feu
-      const doorFeuX = 300;
-      const doorFeuWidth = this.map.tileWidth * 3.5;
-      const doorFeuHeight = this.map.tileHeight * 2.4;
-      const doorFeuY = doorFeuHeight;
-      this.ombrePorteFeu = this.add.ellipse(doorFeuX, doorFeuY - 2, doorFeuWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteFeu = this.physics.add.staticSprite(doorFeuX, doorFeuY, 'porte_feu', 0);
-      this.porteFeu.setOrigin(0.5, 1);
-      this.porteFeu.setDisplaySize(doorFeuWidth, doorFeuHeight);
-      this.porteFeu.refreshBody();
-      this.porteFeu.body.setSize(doorFeuWidth - 14, doorFeuHeight - 10, true);
-      this.porteFeu.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteFeu.ouverte = false;
-      this.porteFeu.enAnimation = false;
-      this.zoneEntreePorteFeu = this.add.zone(doorFeuX, doorFeuY - doorFeuHeight + 16, doorFeuWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteFeu, true);
-
-      // Porte Glace
-      const doorGlaceX = 588 - this.map.tileWidth * 1;
-      const doorGlaceY = 228 + this.map.tileHeight * 7;
-      const doorGlaceWidth = this.map.tileWidth * 3.5;
-      const doorGlaceHeight = this.map.tileHeight * 2.4;
-      this.ombrePorteGlace = this.add.ellipse(doorGlaceX, doorGlaceY - 2, doorGlaceWidth - 10, 10, 0x000000, 0.22);
-      this.ombrePorteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteGlace = this.physics.add.staticSprite(doorGlaceX, doorGlaceY, 'porte_glace', 0);
-      this.porteGlace.setOrigin(0.5, 1);
-      this.porteGlace.setDisplaySize(doorGlaceWidth, doorGlaceHeight);
-      this.porteGlace.refreshBody();
-      this.porteGlace.body.setSize(doorGlaceWidth - 14, doorGlaceHeight - 10, true);
-      this.porteGlace.setDepth(this.calqueMilieu ? this.calqueMilieu.depth : 40);
-      this.porteGlace.ouverte = false;
-      this.porteGlace.enAnimation = false;
-      this.zoneEntreePorteGlace = this.add.zone(doorGlaceX, doorGlaceY - doorGlaceHeight + 16, doorGlaceWidth - 24, 16);
-      this.physics.add.existing(this.zoneEntreePorteGlace, true);
-
-      // Zone de teleportation au bout du pont
-      const pontX = 252;
-      const pontY = 504;
-      const pontWidth = this.map.tileWidth * 3;
-      const pontHeight = this.map.tileHeight * 1;
-      this.zoneTeleportPont = this.add.zone(pontX, pontY, pontWidth, pontHeight);
-      this.physics.add.existing(this.zoneTeleportPont, true);
-      this.timerTeleportPont = null;
-
-      // PNJ Merlin
-      this.merlin = this.physics.add.staticSprite(324, 348 + this.map.tileHeight * 2, 'merlin');
-      this.merlin.setOrigin(0.5, 1);
-      this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
-      this.merlin.refreshBody();
-      this.merlin.setDepth(100);
-    } else {
-      this.porteAir = null;
-      this.ombrePorteAir = null;
-      this.zoneEntreePorteAir = null;
-      this.porteFeu = null;
-      this.ombrePorteFeu = null;
-      this.zoneEntreePorteFeu = null;
-      this.porteGlace = null;
-      this.ombrePorteGlace = null;
-      this.zoneEntreePorteGlace = null;
-      this.zoneTeleportPont = null;
-      this.timerTeleportPont = null;
-      this.merlin = null;
-    }
+    // Charger la carte initiale AVANT de créer le joueur
+    this.loadMap(this.currentMap);
 
     // Chercher une position non solide autour du point de départ
     let startX = this.playerStartX;
@@ -251,11 +353,7 @@ export default class selection extends Phaser.Scene {
     if (this.calqueHaut) {
       this.physics.add.collider(this.player, this.calqueHaut);
     }
-    if (this.calqueQuatre) {
-      this.physics.add.collider(this.player, this.calqueQuatre);
-    }
-
-      
+    
     
 
     this.clavier = this.input.keyboard.createCursorKeys();
@@ -435,6 +533,7 @@ export default class selection extends Phaser.Scene {
     this.handleDoorFeuInteraction();
     this.handleDoorGlaceInteraction();
     this.handleTeleportPont();
+    this.handleMaisonInteraction();
     this.handleMerlinInteraction();
 
     // Vérifier les transitions de carte
@@ -570,7 +669,7 @@ export default class selection extends Phaser.Scene {
     if (estDansEntree && this.porteGlace.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        this.scene.restart({ map: 'glace', startX: 120, startY: 320 });
+        this.scene.start('niveauglace', { startX: 12, startY: 300 });
       });
     }
   }
@@ -615,7 +714,7 @@ export default class selection extends Phaser.Scene {
         this.timerTeleportPont = this.time.delayedCall(2000, () => {
           if (!this.teleportEnCours) {
             this.teleportEnCours = true;
-            this.scene.restart({ map: 'map_eau', startX: 120, startY: 320 });
+            this.scene.start('mapeau', { startX: 120, startY: 320 });
           }
         });
       }
@@ -635,7 +734,7 @@ export default class selection extends Phaser.Scene {
     }
     // Pour mapcentral vers glace
     else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
-      this.scene.restart({ map: 'glace', startX: 400, startY: 50 });
+     this.scene.start('niveauglace', { startX: 0, startY: 50 });
     }
     // Retour à mapcentral depuis map_air
     else if (this.currentMap === 'map_air' && this.player.x < 50) {
@@ -647,8 +746,27 @@ export default class selection extends Phaser.Scene {
     }
   }
 
+  // === INTERACTION AVEC LA MAISON ===
+
+  handleMaisonInteraction() {
+    if (!this.maison || this.currentMap !== 'mapcentral') {
+      return;
+    }
+
+    const estSurLaMaison = this.physics.overlap(this.player, this.maison);
+    const estDansEntree = this.zoneEntreeMaison
+      ? this.physics.overlap(this.player, this.zoneEntreeMaison)
+      : false;
+
+    if (estDansEntree && !this.teleportEnCours) {
+      this.teleportEnCours = true;
+      this.time.delayedCall(150, () => {
+        this.scene.start('interieur', { startX: 100, startY: 450 });
+      });
+    }
+  }
+
   // === SYSTEME DE DIALOGUE MERLIN ===
-  // Le texte s'affiche au-dessus de la tete de Merlin
 
   handleMerlinInteraction() {
     if (!this.merlin || this.currentMap !== 'mapcentral' || this.dialogueActif) return;
@@ -661,118 +779,193 @@ export default class selection extends Phaser.Scene {
 
   ouvrirDialogueMerlin() {
     this.dialogueActif = true;
-    this.dialogueEtape = 'intro';
-    this.dialogueIntroIndex = 0;
+    this.dialogueEtape = 0;
 
-    this.dialogueIntro = [
-      "Salut jeune aventurier !",
-      "Je suis Merlin, le gardien\ndes quatre royaumes.",
-      "Choisis ton royaume :"
+    this.dialoguePages = [
+      "Salut jeune aventurier ! Je sens ta soif d'aventure...",
+      "Je suis Merlin, le gardien des quatre royaumes.",
+      "Chaque royaume est menace par de terribles dangers...",
+      "Choisis le royaume que tu veux explorer !"
+    ];
+    this.afficherDialogueTexte(this.dialoguePages[0]);
+  }
+
+  afficherDialogueTexte(texte) {
+    this.fermerDialogueUI();
+
+    const cam = this.cameras.main;
+    const vw = cam.width / cam.zoom;
+    const vh = cam.height / cam.zoom;
+    const boxW = vw * 0.94;
+    const boxH = 24;
+    const boxX = (vw - boxW) / 2;
+    const boxY = vh - boxH - 2;
+
+    this.dialogueElements = [];
+
+    const fond = this.add.rectangle(boxX + boxW / 2, boxY + boxH / 2, boxW, boxH, 0x000000, 0.88)
+      .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
+
+    const nomMerlin = this.add.text(boxX + 5, boxY + 3, 'Merlin :', {
+      font: 'bold 9px Arial', fill: '#ffdd44'
+    }).setScrollFactor(0).setDepth(1001);
+
+    const contenu = this.add.text(boxX + 48, boxY + 3, texte, {
+      font: '8px Arial', fill: '#ffffff', wordWrap: { width: boxW - 70 }
+    }).setScrollFactor(0).setDepth(1001);
+
+    const suite = this.add.text(boxX + boxW - 32, boxY + boxH - 9, '[ESPACE]', {
+      font: '5px Arial', fill: '#aaaaaa'
+    }).setScrollFactor(0).setDepth(1001);
+
+    this.dialogueElements.push(fond, nomMerlin, contenu, suite);
+  }
+
+  afficherChoixRoyaumes(avecExit) {
+    this.fermerDialogueUI();
+
+    const cam = this.cameras.main;
+    const vw = cam.width / cam.zoom;
+    const vh = cam.height / cam.zoom;
+    const boxW = vw * 0.94;
+    const boxH = avecExit ? 34 : 28;
+    const boxX = (vw - boxW) / 2;
+    const boxY = vh - boxH - 2;
+
+    this.dialogueElements = [];
+
+    const fond = this.add.rectangle(boxX + boxW / 2, boxY + boxH / 2, boxW, boxH, 0x000000, 0.88)
+      .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
+    this.dialogueElements.push(fond);
+
+    const titre = this.add.text(boxX + 5, boxY + 2, 'Merlin : Quel royaume veux-tu explorer ?', {
+      font: '7px Arial', fill: '#ffdd44'
+    }).setScrollFactor(0).setDepth(1001);
+    this.dialogueElements.push(titre);
+
+    const royaumes = [
+      { nom: 'Air', couleur: '#88ccff', quete: "Le royaume de l'air est assailli par des tempetes eternelles. Barbe Blanche t'attend la-bas." },
+      { nom: 'Eau', couleur: '#4488ff', quete: "Le royaume de l'eau est envahi par des creatures des profondeurs. Luffy t'attend la-bas." },
+      { nom: 'Feu', couleur: '#ff6644', quete: "Le royaume du feu est devore par les flammes du chaos. Ace t'attend la-bas." },
+      { nom: 'Glace', couleur: '#aaeeff', quete: "Le royaume de glace est pris par un hiver sans fin. Aokiji t'attend la-bas." }
     ];
 
-    this.royaumes = {
-      '1': { nom: 'Air', pnj: "Barbe Blanche t'attend\ndans le royaume de l'Air !" },
-      '2': { nom: 'Eau', pnj: "Luffy t'attend\ndans le royaume de l'Eau !" },
-      '3': { nom: 'Feu', pnj: "Ace t'attend\ndans le royaume du Feu !" },
-      '4': { nom: 'Glace', pnj: "Aokiji t'attend\ndans le royaume de Glace !" }
-    };
+    const btnW = (boxW - 25) / 4;
+    const btnY = boxY + 18;
 
-    this.afficherTexteSurTete(this.dialogueIntro[0]);
+    royaumes.forEach((r, i) => {
+      const bx = boxX + 5 + i * (btnW + 5);
+      const btnFond = this.add.rectangle(bx + btnW / 2, btnY, btnW, 10, 0x333333, 0.9)
+        .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1001);
+      btnFond.setInteractive({ useHandCursor: true });
+
+      const btnTexte = this.add.text(bx + btnW / 2, btnY, r.nom, {
+        font: '6px Arial', fill: r.couleur
+      }).setOrigin(0.5).setScrollFactor(0).setDepth(1002);
+
+      btnFond.on('pointerover', () => btnFond.setFillStyle(0x555555, 1));
+      btnFond.on('pointerout', () => btnFond.setFillStyle(0x333333, 0.9));
+      btnFond.on('pointerdown', () => {
+        this.dialogueEtape = 10;
+        this.queteChoisie = r;
+        this.afficherDialogueTexte(r.quete);
+      });
+
+      this.dialogueElements.push(btnFond, btnTexte);
+    });
+
+    if (avecExit) {
+      const exitTexte = this.add.text(boxX + boxW / 2, boxY + boxH - 5, '[E] Quitter', {
+        font: '5px Arial', fill: '#ff8888'
+      }).setOrigin(0.5).setScrollFactor(0).setDepth(1001);
+      this.dialogueElements.push(exitTexte);
+    }
   }
 
-  afficherTexteSurTete(texte) {
-    if (this.texteAuDessusMerlin) this.texteAuDessusMerlin.destroy();
+  afficherAdieu() {
+    this.fermerDialogueUI();
 
-    this.texteAuDessusMerlin = this.add.text(
-      this.merlin.x,
-      this.merlin.y - this.merlin.displayHeight - 10,
-      texte,
-      {
-        fontFamily: 'Georgia, serif',
-        fontSize: '12px',
-        color: '#ffffff',
-        backgroundColor: 'rgba(0, 0, 0, 0.85)',
-        padding: { x: 8, y: 5 },
-        align: 'center',
-        stroke: '#000000',
-        strokeThickness: 2,
-        shadow: { offsetX: 1, offsetY: 1, color: '#000000', blur: 2, fill: true }
-      }
-    );
-    this.texteAuDessusMerlin.setOrigin(0.5, 1);
-    this.texteAuDessusMerlin.setDepth(1000);
-  }
+    const cam = this.cameras.main;
+    const vw = cam.width / cam.zoom;
+    const vh = cam.height / cam.zoom;
+    const boxW = vw * 0.94;
+    const boxH = 24;
+    const boxX = (vw - boxW) / 2;
+    const boxY = vh - boxH - 2;
 
-  afficherMenuChoix() {
-    if (this.texteAuDessusMerlin) this.texteAuDessusMerlin.destroy();
+    this.dialogueElements = [];
 
-    this.texteAuDessusMerlin = this.add.text(
-      this.merlin.x,
-      this.merlin.y - this.merlin.displayHeight - 10,
-      "1: Air\n2: Eau\n3: Feu\n4: Glace",
-      {
-        fontFamily: 'Georgia, serif',
-        fontSize: '12px',
-        color: '#ffdd44',
-        backgroundColor: 'rgba(0, 0, 0, 0.85)',
-        padding: { x: 8, y: 5 },
-        align: 'center',
-        stroke: '#000000',
-        strokeThickness: 2,
-        shadow: { offsetX: 1, offsetY: 1, color: '#000000', blur: 2, fill: true }
-      }
-    );
-    this.texteAuDessusMerlin.setOrigin(0.5, 1);
-    this.texteAuDessusMerlin.setDepth(1000);
+    const fond = this.add.rectangle(boxX + boxW / 2, boxY + boxH / 2, boxW, boxH, 0x000000, 0.88)
+      .setStrokeStyle(1, 0xffffff).setScrollFactor(0).setDepth(1000);
+
+    const nomMerlin = this.add.text(boxX + 5, boxY + 2, 'Merlin :', {
+      font: 'bold 8px Arial', fill: '#ffdd44'
+    }).setScrollFactor(0).setDepth(1001);
+
+    const texte = this.add.text(boxX + 5, boxY + 12,
+      "Bonne chance ! Barbe Blanche (air), Luffy (eau), Ace (feu), Aokiji (glace).", {
+      font: '7px Arial', fill: '#ffffff', wordWrap: { width: boxW - 10 }
+    }).setScrollFactor(0).setDepth(1001);
+
+    const suite = this.add.text(boxX + boxW - 32, boxY + boxH - 9, '[ESPACE]', {
+      font: '5px Arial', fill: '#aaaaaa'
+    }).setScrollFactor(0).setDepth(1001);
+
+    this.dialogueElements.push(fond, nomMerlin, texte, suite);
+    this.dialogueEtape = 99;
   }
 
   handleMerlinDialogue() {
     if (!this.dialogueActif) return;
 
-    if (this.dialogueEtape === 'intro') {
-      // ESPACE pour avancer dans l'intro
+    // Pages d'intro (etapes 0-3) : Espace pour avancer
+    if (this.dialogueEtape < this.dialoguePages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
-        this.dialogueIntroIndex++;
-        if (this.dialogueIntroIndex < this.dialogueIntro.length) {
-          this.afficherTexteSurTete(this.dialogueIntro[this.dialogueIntroIndex]);
-        } else {
-          // afficher le menu de choix
-          this.dialogueEtape = 'choix';
-          this.afficherMenuChoix();
-        }
+        this.dialogueEtape++;
+        this.afficherDialogueTexte(this.dialoguePages[this.dialogueEtape]);
       }
     }
-    else if (this.dialogueEtape === 'choix') {
-      // touches 1, 2, 3, 4 pour choisir un royaume
-      const keys = this.input.keyboard;
-      if (keys.addKey('ONE').isDown || keys.addKey('NUMPAD_ONE').isDown) {
-        this.dialogueEtape = 'reponse';
-        this.afficherTexteSurTete(this.royaumes['1'].pnj);
-      } else if (keys.addKey('TWO').isDown || keys.addKey('NUMPAD_TWO').isDown) {
-        this.dialogueEtape = 'reponse';
-        this.afficherTexteSurTete(this.royaumes['2'].pnj);
-      } else if (keys.addKey('THREE').isDown || keys.addKey('NUMPAD_THREE').isDown) {
-        this.dialogueEtape = 'reponse';
-        this.afficherTexteSurTete(this.royaumes['3'].pnj);
-      } else if (keys.addKey('FOUR').isDown || keys.addKey('NUMPAD_FOUR').isDown) {
-        this.dialogueEtape = 'reponse';
-        this.afficherTexteSurTete(this.royaumes['4'].pnj);
+    // Derniere page d'intro -> afficher choix
+    else if (this.dialogueEtape === this.dialoguePages.length - 1) {
+      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
+        this.dialogueEtape = 5;
+        this.afficherChoixRoyaumes(false);
       }
     }
-    else if (this.dialogueEtape === 'reponse') {
-      // ESPACE pour fermer le dialogue
+    // Menu choix (premier affichage, sans exit)
+    else if (this.dialogueEtape === 5) {
+      // Les clics souris gerent le choix, rien a faire ici
+    }
+    // Apres avoir lu la quete -> retour au menu avec Exit
+    else if (this.dialogueEtape === 10) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
-        if (this.texteAuDessusMerlin) this.texteAuDessusMerlin.destroy();
-        this.texteAuDessusMerlin = null;
+        this.dialogueEtape = 11;
+        this.afficherChoixRoyaumes(true);
+      }
+    }
+    // Menu avec Exit
+    else if (this.dialogueEtape === 11) {
+      if (Phaser.Input.Keyboard.JustDown(this.toucheE)) {
+        this.afficherAdieu();
+      }
+    }
+    // Message d'adieu -> fermer
+    else if (this.dialogueEtape === 99) {
+      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
+        this.fermerDialogueUI();
         this.dialogueActif = false;
       }
     }
   }
 
   fermerDialogueUI() {
-    if (this.texteAuDessusMerlin) {
-      this.texteAuDessusMerlin.destroy();
-      this.texteAuDessusMerlin = null;
+    if (this.dialogueElements) {
+      this.dialogueElements.forEach(el => el.destroy());
+      this.dialogueElements = null;
+    }
+    if (this.dialogueUI) {
+      this.dialogueUI.destroy(true);
+      this.dialogueUI = null;
     }
   }
 }
