@@ -6,8 +6,8 @@ export default class mapeau extends Phaser.Scene {
   preload() {
     // On charge les images et la map.
     // ATTENTION : on enlève "src/" car tes dossiers sont à la racine
-    this.load.image('terrain', 'src/assets/terrain.png');
-    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau2.tmj');
+    this.load.image('tiles_eau', 'src/assets/Water-themed adventure level layout.png');
+    this.load.tilemapTiledJSON('carte_eau', 'src/assets/map_eau4.tmj');
     this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
         frameWidth: 48,
         frameHeight: 68
