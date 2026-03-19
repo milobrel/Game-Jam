@@ -38,6 +38,7 @@ export default class selection extends Phaser.Scene {
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
     this.load.tilemapTiledJSON('map_eau', 'src/assets/map_eau.tmj');
+    this.load.tilemapTiledJSON('carte_lave', 'src/assets/lave.tmj');
     this.load.image('tileset_16x16_interior', 'src/assets/tileset_16x16_interior.png');
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
@@ -447,7 +448,7 @@ export default class selection extends Phaser.Scene {
     if (estDansEntree && this.porteAir.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        this.scene.restart({ map: 'map_air', startX: 120, startY: 320 });
+        this.scene.start('mapair', { startX: 120, startY: 320 });
       });
     }
   }
@@ -501,7 +502,7 @@ export default class selection extends Phaser.Scene {
     if (estDansEntree && this.porteFeu.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        this.scene.restart({ map: 'glace', startX: 120, startY: 320 });
+        this.scene.start('maplave', { startX: 120, startY: 320 });
       });
     }
   }
