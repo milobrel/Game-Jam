@@ -25,6 +25,7 @@ export default class mapair extends Phaser.Scene {
     this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
     this.load.image('TilesA2', 'src/assets/TilesA2.png');
     this.load.image('terrain', 'src/assets/terrain.png');
+    this.load.image('tiles_air', 'src/assets/chatGPT Image Mar 17,2026,03_03_44 PM.png');
   }
 
   create(data) {
