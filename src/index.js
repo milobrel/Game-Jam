@@ -16,7 +16,7 @@ var config = {
       debug: false
     }
   },
-  scene: [selection, niveauglace]
+  scene: [selection, niveau1]
 };
 
 var game = new Phaser.Game(config);
