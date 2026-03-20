@@ -3,47 +3,45 @@ import { creerAnimationsDuPerso } from './animations_perso.js';
 export default class selection extends Phaser.Scene {
 
   constructor() {
-    super({ key: "selection" }); // nom de la scène, doit correspondre à scene.start('selection')
+    super({ key: 'selection' });
   }
 
-  // init() est appelé avant preload, il reçoit les données de scene.start/restart
   init(data) {
-    this.currentMap = data.map || 'mapcentral';   // quelle carte charger
-    this.playerStartX = data.startX || 100;       // position de départ X
-    this.playerStartY = data.startY || 450;       // position de départ Y
-    this.teleportEnCours = false;                 // évite les doubles téléportations
+    this.currentMap = data.map || 'mapcentral';
+    this.playerStartX = data.startX || 100;
+    this.playerStartY = data.startY || 450;
+    this.teleportEnCours = false;
   }
 
   preload() {
     this.chargerSpritesheetsJoueur();
-    this.load.audio('musique', 'src/assets/theme.wav');
-    this.load.image('merlin', 'src/assets/Merlin.png');
+    this.chargerAssetsCarte();
+    this.chargerSpritesheetsPortes();
+  }
 
-    // Charger les cartes
+  chargerAssetsCarte() {
+    this.load.audio('musique', 'src/assets/songs/theme.wav');
+    this.load.image('merlin', 'src/assets/images/Merlin.png');
+
+    // Cette partie charge les cartes encore accessibles depuis la selection.
     this.load.tilemapTiledJSON('mapcentral', 'src/assets/mapcentral..tmj');
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
-    this.load.tilemapTiledJSON('map_eau', 'src/assets/map_eau.tmj');
     this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
-    this.load.image('tileset_16x16_interior', 'src/assets/tileset_16x16_interior.png');
-    this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
-    this.load.image('TilesA2', 'src/assets/TilesA2.png');
-    this.load.image('terrain', 'src/assets/terrain.png');
-    this.load.image('nuage', 'src/assets/nuage.png');
-    this.load.image('surface', 'src/assets/surface.png');
-    this.load.image('haut', 'src/assets/haut.png');
-    this.load.image('quatre', 'src/assets/quatre.png');
-    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/ChatGPT Image 17 mars 2026, 10_34_01.png');
 
-    this.chargerSpritesheetsPortes();
+    // Cette partie charge les tilesets utiles aux cartes restantes.
+    this.load.image('First Asset pack', 'src/assets/tiles/First Asset pack.png');
+    this.load.image('TilesA2', 'src/assets/tiles/TilesA2.png');
+    this.load.image('terrain', 'src/assets/tiles/terrain.png');
+    this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/tiles/ChatGPT Image 17 mars 2026, 10_34_01.png');
   }
 
   chargerSpritesheetsJoueur() {
     const spritesheets = [
-      { key: 'droite_perso', path: 'src/assets/playerRight.png' },
-      { key: 'gauche_perso', path: 'src/assets/playerLeft.png' },
-      { key: 'haut_perso', path: 'src/assets/playerUp.png' },
-      { key: 'bas_perso', path: 'src/assets/playerDown.png' }
+      { key: 'droite_perso', path: 'src/assets/images/playerRight.png' },
+      { key: 'gauche_perso', path: 'src/assets/images/playerLeft.png' },
+      { key: 'haut_perso', path: 'src/assets/images/playerUp.png' },
+      { key: 'bas_perso', path: 'src/assets/images/playerDown.png' }
     ];
 
     spritesheets.forEach(({ key, path }) => {
@@ -58,7 +56,7 @@ export default class selection extends Phaser.Scene {
     const portes = ['porte_air', 'porte_feu', 'porte_retourglace'];
 
     portes.forEach((porte) => {
-      this.load.spritesheet(porte, `src/assets/${porte}.png`, {
+      this.load.spritesheet(porte, `src/assets/images/${porte}.png`, {
         frameWidth: 96,
         frameHeight: 120
       });
@@ -66,56 +64,67 @@ export default class selection extends Phaser.Scene {
   }
 
   create() {
-    this.son_musique = this.sound.add('musique');
-    if (!this.sound.get('musique')?.isPlaying) {
-      this.son_musique.play();
-    }
+    // Cette partie lance ou reprend la musique de la scene.
+    this.initialiserAudioSelection();
 
-    // -------------------------------------------------------
-    // CARTE : créer la tilemap et ses calques
-    // -------------------------------------------------------
+    // Cette partie construit la carte active.
     this.map = this.make.tilemap({ key: this.currentMap });
     this.chargerCalquesCarte();
     this.activerCollisionsDesCalques();
     this.configurerMonde();
 
-    // -------------------------------------------------------
-    // PORTES et OBJETS
-    // -------------------------------------------------------
+    // Cette partie pose les objets speciaux de la map centrale.
     if (this.currentMap === 'mapcentral') {
       this.creerObjetsMapCentrale();
     } else {
       this.reinitialiserObjetsCarteCentrale();
     }
 
-    this.cameras.main.setZoom(3); // zoom RPG rapproché
-
+    // Cette partie installe le joueur et ses collisions.
     this.creerJoueur();
     this.ajouterCollisionsCalques();
-
-    this.clavier = this.input.keyboard.createCursorKeys();
-    this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.toucheE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-    this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    this.initialiserCommandesSelection();
 
     if (this.merlin) {
       this.physics.add.collider(this.player, this.merlin);
     }
 
-    // Systeme de dialogue
+    // Cette partie prepare les dialogues de Merlin.
     this.dialogueActif = false;
     this.dialogueEtape = 0;
     this.dialogueMode = 'intro';
     this.dialogueElements = null;
     this.initialiserDialogueMerlin();
 
-    // Configurer la caméra pour suivre le joueur (après création du joueur)
+    // Cette partie regle la camera autour du joueur.
+    this.cameras.main.setZoom(3);
     this.cameras.main.startFollow(this.player, true, 0.7, 0.7);
     this.cameras.main.setRoundPixels(true);
 
-    // Animations de marche (4 directions) + idle face
+    // Cette partie active les animations utiles a la scene.
     creerAnimationsDuPerso(this);
+    this.initialiserAnimationsPortes();
+  }
 
+  initialiserAudioSelection() {
+    const musiqueExistante = this.sound.get('musique');
+    this.son_musique = musiqueExistante || this.sound.add('musique');
+
+    if (this.son_musique.isPaused) {
+      this.son_musique.resume();
+    } else if (!this.son_musique.isPlaying) {
+      this.son_musique.play();
+    }
+  }
+
+  initialiserCommandesSelection() {
+    this.clavier = this.input.keyboard.createCursorKeys();
+    this.toucheEspace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.toucheE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.toucheP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+  }
+
+  initialiserAnimationsPortes() {
     this.creerAnimationPorte('porte_air', 'anim_ouvreporte_air', 0, 5);
     this.creerAnimationPorte('porte_air', 'anim_fermeporte_air', 5, 0);
     this.creerAnimationPorte('porte_feu', 'anim_ouvreporte_feu', 0, 5);
@@ -125,19 +134,7 @@ export default class selection extends Phaser.Scene {
   }
 
   chargerCalquesCarte() {
-    if (this.currentMap === 'map_eau') {
-      // Carte eau : un seul tileset et un seul calque
-      this.tileset1 = this.map.addTilesetImage('Map eau', 'tileset_16x16_interior');
-      this.tilesets = [this.tileset1];
-      this.calqueFond = this.map.createLayer('calques eau', this.tilesets, 0, 0);
-      this.calqueFond.setDepth(30);
-      this.calqueMilieu = null;
-      this.calqueHaut = null;
-      this.calqueQuatre = null;
-      return;
-    }
-
-    // Cartes principales : 4 tilesets, jusqu'à 4 calques
+    // Cette partie charge les calques de toutes les cartes encore actives.
     this.tileset1 = this.map.addTilesetImage('First Asset pack', 'First Asset pack');
     this.tileset2 = this.map.addTilesetImage('TilesA2', 'TilesA2');
     this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
@@ -174,7 +171,7 @@ export default class selection extends Phaser.Scene {
 
       layer.forEachTile((tile) => {
         const prop = tile.properties?.estsolide;
-        if (prop === true || prop === "true") {
+        if (prop === true || prop === 'true') {
           tile.setCollision(true);
         }
       });
@@ -223,12 +220,7 @@ export default class selection extends Phaser.Scene {
       profondeur: profondeurObjet
     });
 
-    // Zone pont (rester 2 secondes dessus = téléport vers la carte eau)
-    this.zoneTeleportPont = this.add.zone(252, 504, this.map.tileWidth * 3, this.map.tileHeight);
-    this.physics.add.existing(this.zoneTeleportPont, true);
-    this.timerTeleportPont = null;
-
-    // PNJ Merlin
+    // Cette partie place Merlin au centre de la carte.
     this.merlin = this.physics.add.staticSprite(324, 348 + this.map.tileHeight * 2, 'merlin');
     this.merlin.setOrigin(0.5, 1);
     this.merlin.setDisplaySize(this.map.tileWidth * 3.2, this.map.tileHeight * 4);
@@ -267,8 +259,6 @@ export default class selection extends Phaser.Scene {
     this.porteGlace = null;
     this.ombrePorteGlace = null;
     this.zoneEntreePorteGlace = null;
-    this.zoneTeleportPont = null;
-    this.timerTeleportPont = null;
     this.merlin = null;
   }
 
@@ -276,12 +266,11 @@ export default class selection extends Phaser.Scene {
     this.dialoguePages = [
       "Jeune aventurier... je t'attendais.",
       "Ce monde n'est pas ce qu'il semble etre.",
-      "Ta quete est de retrouver les quatre objets sacres.",
+      "Ta quete est de retrouver les trois objets sacres.",
       "Observe chaque detail autour de toi.",
       "Deplace les blocs pour avancer.",
       "Le feu t'attend au nord.",
       "L'air souffle a l'ouest.",
-      "L'eau coule au sud.",
       "La glace repose a l'est.",
       "Quand tu auras tout rassemble...",
       "Tu accederas a la salle finale.",
@@ -294,11 +283,18 @@ export default class selection extends Phaser.Scene {
       "Reprends ton souffle, puis pars chercher les autres artefacts."
     ];
 
+    this.dialogueOnePiece = [
+      "Tu as reuni les trois objets sacres.",
+      "Je vais te reveler la verite sur le One Piece.",
+      "Le One Piece... c'est l'amitie."
+    ];
+
+    this.dialogueSecretFinal = "Le One Piece est revele. Les trois artefacts ont ouvert le quatrieme choix.";
+
     this.choixRoyaumesMerlin = [
-      { nom: 'Air', couleur: '#88ccff', texte: "Air : Barbe Blanche t'attend a l'ouest." },
-      { nom: 'Eau', couleur: '#44bbff', texte: "Eau : Luffy t'attend au sud, vers le pont." },
-      { nom: 'Feu', couleur: '#ff7755', texte: "Feu : Ace t'attend au nord." },
-      { nom: 'Glace', couleur: '#ccf6ff', texte: "Glace : Aokiji t'attend a l'est." }
+      { nom: 'Air', couleur: '#88ccff', texte: "Air : avance vers l'ouest." },
+      { nom: 'Feu', couleur: '#ff7755', texte: "Feu : avance vers le nord." },
+      { nom: 'Glace', couleur: '#ccf6ff', texte: "Glace : avance vers l'est." }
     ];
   }
 
@@ -306,7 +302,7 @@ export default class selection extends Phaser.Scene {
     const px = this.playerStartX;
     const py = this.playerStartY;
 
-    // Créer le joueur à la position de spawn
+    // Cette partie cree le joueur a sa position d'entree.
     if (this.textures.exists('bas_perso')) {
       this.player = this.physics.add.sprite(px, py, 'bas_perso');
     } else {
@@ -318,7 +314,7 @@ export default class selection extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body.setSize(28, 20);
     this.player.body.setOffset(10, 48);
-    this.player.setDepth(100); // Toujours au-dessus des calques
+    this.player.setDepth(100);
   }
 
   ajouterCollisionsCalques() {
@@ -343,7 +339,7 @@ export default class selection extends Phaser.Scene {
   }
 
   update() {
-    // Touche P : retour à l'accueil (la scène reste en mémoire)
+    // Cette partie renvoie a l'accueil quand on appuie sur P.
     if (Phaser.Input.Keyboard.JustDown(this.toucheP)) {
       this.registry.set('resumeKey', 'selection');
       this.scene.pause('selection');
@@ -352,7 +348,7 @@ export default class selection extends Phaser.Scene {
       return;
     }
 
-    // Bloquer le mouvement pendant le dialogue
+    // Cette partie bloque le joueur pendant les dialogues.
     if (this.dialogueActif) {
       this.player.setVelocity(0);
       this.player.anims.play('anim_face');
@@ -360,27 +356,35 @@ export default class selection extends Phaser.Scene {
       return;
     }
 
-    this.player.setVelocity(0);
+    this.gererMouvementJoueur();
+    this.handleDoorInteraction();
+    this.handleDoorFeuInteraction();
+    this.handleDoorGlaceInteraction();
+    this.handleMerlinInteraction();
 
-    const speed = 100; // Vitesse réduite
+    // Cette partie verifie les sorties speciales de la carte.
+    this.checkMapTransitions();
+  }
+
+  gererMouvementJoueur() {
+    const speed = 100;
     let isMoving = false;
+
+    this.player.setVelocity(0);
 
     if (this.clavier.right.isDown) {
       this.player.setVelocityX(speed);
       this.player.anims.play('anim_tourne_droite', true);
       isMoving = true;
-    }
-    else if (this.clavier.left.isDown) {
+    } else if (this.clavier.left.isDown) {
       this.player.setVelocityX(-speed);
       this.player.anims.play('anim_tourne_gauche', true);
       isMoving = true;
-    }
-    else if (this.clavier.up.isDown) {
+    } else if (this.clavier.up.isDown) {
       this.player.setVelocityY(-speed);
       this.player.anims.play('anim_tourne_haut', true);
       isMoving = true;
-    }
-    else if (this.clavier.down.isDown) {
+    } else if (this.clavier.down.isDown) {
       this.player.setVelocityY(speed);
       this.player.anims.play('anim_tourne_bas', true);
       isMoving = true;
@@ -389,25 +393,20 @@ export default class selection extends Phaser.Scene {
     if (!isMoving) {
       this.player.anims.play('anim_face');
     }
-
-    this.handleDoorInteraction();
-    this.handleDoorFeuInteraction();
-    this.handleDoorGlaceInteraction();
-    this.handleTeleportPont();
-    this.handleMerlinInteraction();
-
-    // Vérifier les transitions de carte
-    this.checkMapTransitions();
   }
-
-  // === PORTES : Espace pour ouvrir/fermer, entrer dans la zone du haut pour changer de scène ===
 
   handleDoorInteraction() {
     this.gererInteractionPorte({
       porte: this.porteAir,
       zoneEntree: this.zoneEntreePorteAir,
       sceneAction: () => {
-        this.scene.start('niveau_air', { startX: 120, startY: 320 });
+        this.scene.start('niveau_air', {
+          startX: 1280,
+          startY: 384,
+          returnMap: this.currentMap,
+          returnX: this.player.x,
+          returnY: this.player.y
+        });
       },
       ouvrir: () => this.ouvrirPorteAir(),
       fermer: () => this.fermerPorteAir()
@@ -480,9 +479,7 @@ export default class selection extends Phaser.Scene {
     }
 
     const estSurLaPorte = this.physics.overlap(this.player, porte);
-    const estDansEntree = zoneEntree
-      ? this.physics.overlap(this.player, zoneEntree)
-      : false;
+    const estDansEntree = zoneEntree ? this.physics.overlap(this.player, zoneEntree) : false;
 
     if (estSurLaPorte && Phaser.Input.Keyboard.JustDown(this.toucheEspace) && !porte.enAnimation) {
       if (porte.ouverte === false) {
@@ -526,43 +523,17 @@ export default class selection extends Phaser.Scene {
     });
   }
 
-  // Rester 2 secondes sur le pont = téléportation vers la carte eau
-  handleTeleportPont() {
-    if (!this.zoneTeleportPont || this.currentMap !== 'mapcentral' || this.teleportEnCours) {
-      return;
-    }
-
-    const estDansZone = this.physics.overlap(this.player, this.zoneTeleportPont);
-
-    if (estDansZone) {
-      if (Phaser.Input.Keyboard.JustDown(this.toucheEspace) && !this.timerTeleportPont) {
-        this.timerTeleportPont = this.time.delayedCall(2000, () => {
-          if (!this.teleportEnCours) {
-            this.teleportEnCours = true;
-            this.scene.start('mapeau', {
-              startX: 120,
-              startY: 320,
-              returnMap: this.currentMap,
-              returnX: this.player.x,
-              returnY: this.player.y
-            });
-          }
-        });
-      }
-    } else if (this.timerTeleportPont) {
-      this.timerTeleportPont.remove();
-      this.timerTeleportPont = null;
-    }
-  }
-
   checkMapTransitions() {
-    // Téléporte le joueur quand il atteint les bords de la carte
-    // Pour mapcentral vers map_air
+    // Cette partie gere les passages de carte par les bords.
     if (this.currentMap === 'mapcentral' && this.player.x > 1400 && this.player.y < 200) {
-      this.scene.restart({ map: 'niveau_air', startX: 50, startY: 300 });
-    }
-    // Pour mapcentral vers glace
-    else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
+      this.scene.start('niveau_air', {
+        startX: 1280,
+        startY: 384,
+        returnMap: this.currentMap,
+        returnX: this.player.x,
+        returnY: this.player.y
+      });
+    } else if (this.currentMap === 'mapcentral' && this.player.x < 100 && this.player.y > 1400) {
       this.scene.start('niveauglace', {
         startX: 0,
         startY: 50,
@@ -570,21 +541,15 @@ export default class selection extends Phaser.Scene {
         returnX: this.player.x,
         returnY: this.player.y
       });
-    }
-    // Retour à mapcentral depuis map_air
-    else if (this.currentMap === 'niveau_air' && this.player.x < 50) {
-      this.scene.restart({ map: 'mapcentral', startX: 1400, startY: 200 });
-    }
-    // Retour à mapcentral depuis glace
-    else if (this.currentMap === 'glace' && this.player.y < 50) {
+    } else if (this.currentMap === 'glace' && this.player.y < 50) {
       this.scene.restart({ map: 'mapcentral', startX: 100, startY: 1400 });
     }
   }
 
-  // === SYSTEME DE DIALOGUE MERLIN ===
-
   handleMerlinInteraction() {
-    if (!this.merlin || this.currentMap !== 'mapcentral' || this.dialogueActif) return;
+    if (!this.merlin || this.currentMap !== 'mapcentral' || this.dialogueActif) {
+      return;
+    }
 
     const dist = Phaser.Math.Distance.Between(this.player.x, this.player.y, this.merlin.x, this.merlin.y);
     if (dist < 40 && Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
@@ -601,8 +566,17 @@ export default class selection extends Phaser.Scene {
   }
 
   obtenirDialogueMerlinActuel() {
+    const artefactAirRecupere = this.registry.get('artefactAirRecupere') === true;
     const artefactFeuRecupere = this.registry.get('artefactFeuRecupere') === true;
+    const artefactGlaceRecupere = this.registry.get('artefactGlaceRecupere') === true;
+    const onePieceAnnonceParMerlin = this.registry.get('onePieceAnnonceParMerlin') === true;
     const artefactFeuAnnonceParMerlin = this.registry.get('artefactFeuAnnonceParMerlin') === true;
+    const troisObjetsRecuperes = artefactAirRecupere && artefactFeuRecupere && artefactGlaceRecupere;
+
+    if (troisObjetsRecuperes && !onePieceAnnonceParMerlin) {
+      this.registry.set('onePieceAnnonceParMerlin', true);
+      return this.dialogueOnePiece;
+    }
 
     if (artefactFeuRecupere && !artefactFeuAnnonceParMerlin) {
       this.registry.set('artefactFeuAnnonceParMerlin', true);
@@ -639,11 +613,12 @@ export default class selection extends Phaser.Scene {
 
   afficherChoixRoyaumes() {
     this.fermerDialogueUI();
+    const choixRoyaumes = this.obtenirChoixRoyaumesMerlin();
 
     const bubbleX = this.merlin.x;
     const bubbleY = this.merlin.y - this.map.tileHeight * 4.9;
     const bubbleWidth = 300;
-    const bubbleHeight = 168;
+    const bubbleHeight = choixRoyaumes.length > 3 ? 196 : 168;
 
     const fond = this.add.rectangle(bubbleX, bubbleY, bubbleWidth, bubbleHeight, 0x0d1533, 0.95)
       .setStrokeStyle(2, 0x8888ff)
@@ -655,7 +630,7 @@ export default class selection extends Phaser.Scene {
 
     this.dialogueElements = [fond, titre];
 
-    this.choixRoyaumesMerlin.forEach((royaume, index) => {
+    choixRoyaumes.forEach((royaume, index) => {
       const y = bubbleY - 20 + index * 28;
       const choix = this.add.text(bubbleX, y, royaume.nom, {
         font: '15px Arial',
@@ -680,13 +655,32 @@ export default class selection extends Phaser.Scene {
     this.dialogueElements.push(aide);
   }
 
+  obtenirChoixRoyaumesMerlin() {
+    const artefactAirRecupere = this.registry.get('artefactAirRecupere') === true;
+    const artefactFeuRecupere = this.registry.get('artefactFeuRecupere') === true;
+    const artefactGlaceRecupere = this.registry.get('artefactGlaceRecupere') === true;
+    const troisObjetsRecuperes = artefactAirRecupere && artefactFeuRecupere && artefactGlaceRecupere;
+
+    if (!troisObjetsRecuperes) {
+      return this.choixRoyaumesMerlin;
+    }
+
+    return [
+      ...this.choixRoyaumesMerlin,
+      { nom: 'One Piece', couleur: '#7ee7ff', texte: this.dialogueSecretFinal }
+    ];
+  }
+
   afficherDetailRoyaume(royaume) {
     this.dialogueMode = 'detail';
     this.afficherDialogueTexte(royaume.texte);
   }
 
   handleMerlinDialogue() {
-    if (!this.dialogueActif) return;
+    if (!this.dialogueActif) {
+      return;
+    }
+
     const pages = this.dialoguePagesActuelles || this.dialoguePages;
 
     if (Phaser.Input.Keyboard.JustDown(this.toucheE)) {
@@ -703,17 +697,12 @@ export default class selection extends Phaser.Scene {
         this.dialogueEtape++;
         this.afficherDialogueTexte(pages[this.dialogueEtape]);
       }
-    }
-    else if (this.dialogueMode === 'intro' && this.dialogueEtape === pages.length - 1) {
+    } else if (this.dialogueMode === 'intro' && this.dialogueEtape === pages.length - 1) {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.dialogueMode = 'choix';
         this.afficherChoixRoyaumes();
       }
-    }
-    else if (this.dialogueMode === 'choix') {
-      // Les clics souris gerent le choix, E ferme deja plus haut
-    }
-    else if (this.dialogueMode === 'detail') {
+    } else if (this.dialogueMode === 'detail') {
       if (Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
         this.dialogueMode = 'choix';
         this.afficherChoixRoyaumes();
@@ -723,7 +712,7 @@ export default class selection extends Phaser.Scene {
 
   fermerDialogueUI() {
     if (this.dialogueElements) {
-      this.dialogueElements.forEach(el => el.destroy());
+      this.dialogueElements.forEach((element) => element.destroy());
       this.dialogueElements = null;
     }
   }

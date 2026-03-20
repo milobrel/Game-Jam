@@ -10,6 +10,8 @@ export default class niveauglace extends Phaser.Scene {
     this.playerStartX = data.startX || 100;
     this.playerStartY = data.startY || 450;
     this.teleportEnCours = false;
+    this.artefactGlaceEnCours = false;
+    this.artefactGlaceActif = false;
     this.returnMap = data.returnMap || 'mapcentral';
     this.returnX = data.returnX || 100;
     this.returnY = data.returnY || 450;
@@ -17,45 +19,47 @@ export default class niveauglace extends Phaser.Scene {
 
   preload() {
     // Charger les assets du joueur
-    this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
+    this.load.spritesheet("droite_perso", "src/assets/images/playerRight.png", {
       frameWidth: 48,
       frameHeight: 68
     });
-    this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
+    this.load.spritesheet("gauche_perso", "src/assets/images/playerLeft.png", {
       frameWidth: 48,
       frameHeight: 68
     });
-    this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
+    this.load.spritesheet("haut_perso", "src/assets/images/playerUp.png", {
       frameWidth: 48,
       frameHeight: 68
     });
-    this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
+    this.load.spritesheet("bas_perso", "src/assets/images/playerDown.png", {
       frameWidth: 48,
       frameHeight: 68
     });
-    this.load.audio('musique', 'src/assets/theme.wav');
-    this.load.audio('passionfruit', 'src/assets/passionfruit.mp3');
+    this.load.audio('musique', 'src/assets/songs/theme.wav');
+    this.load.audio('passionfruit', 'src/assets/songs/passionfruit.mp3');
 
     // Charger la tilemap glace
     this.load.tilemapTiledJSON('glace', 'src/assets/glace.json');
-    this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
-    this.load.image('TilesA2', 'src/assets/TilesA2.png');
-    this.load.image('terrain', 'src/assets/terrain.png');
-    this.load.image('nuage', 'src/assets/nuage.png');
-    this.load.image('surface', 'src/assets/surface.png');
-    this.load.image('haut', 'src/assets/haut.png');
-    this.load.image('quatre', 'src/assets/quatre.png');
-    this.load.image('objet_sacre_glace', 'src/assets/glace.png');
-    this.load.spritesheet('porte_retourglace', 'src/assets/porte_retourglace.png', {
+    this.load.image('First Asset pack', 'src/assets/tiles/First Asset pack.png');
+    this.load.image('TilesA2', 'src/assets/tiles/TilesA2.png');
+    this.load.image('terrain', 'src/assets/tiles/terrain.png');
+    this.load.image('objet_sacre_glace', 'src/assets/images/glace .png');
+    this.load.spritesheet('porte_retourglace', 'src/assets/images/porte_retourglace.png', {
       frameWidth: 96,
       frameHeight: 120
     });
   }
 
   create() {
-    this.sound.stopAll();
-    this.son_musique = this.sound.add('passionfruit');
-    this.son_musique.play();
+    const musiquePrincipale = this.sound.get('musique');
+    if (musiquePrincipale?.isPlaying) {
+      musiquePrincipale.pause();
+    }
+
+    this.son_musique = this.sound.get('passionfruit') || this.sound.add('passionfruit');
+    if (!this.son_musique.isPlaying) {
+      this.son_musique.play();
+    }
 
     // -------------------------------------------------------
     // CARTE
@@ -161,6 +165,10 @@ export default class niveauglace extends Phaser.Scene {
     this.creerAnimationPorteRetour('anim_fermeporte_retour_glace', 5, 0);
     this.creerObjetSacreGlace();
 
+    this.time.delayedCall(500, () => {
+      this.artefactGlaceActif = true;
+    });
+
   }
 
   creerAnimationPorteRetour(key, start, end) {
@@ -182,9 +190,14 @@ export default class niveauglace extends Phaser.Scene {
       return;
     }
 
-    this.artefactGlace = this.physics.add.sprite(48, 16, 'objet_sacre_glace');
-    this.artefactGlace.setDepth(95);
-    this.artefactGlace.setScale(0.12);
+    this.artefactGlace = this.physics.add.sprite(
+      384 + this.map.tileWidth / 2,
+      12 + this.map.tileHeight / 2,
+      'objet_sacre_glace'
+    );
+    this.artefactGlace.setOrigin(0.5, 0.5);
+    this.artefactGlace.setDepth(120);
+    this.artefactGlace.setScale(0.08);
     this.artefactGlace.body.allowGravity = false;
     this.artefactGlace.setImmovable(true);
 
@@ -192,28 +205,55 @@ export default class niveauglace extends Phaser.Scene {
   }
 
   recupererArtefactGlace(player, artefact) {
-    if (!artefact || !artefact.active) {
+    if (!this.artefactGlaceActif || !artefact || !artefact.active || this.artefactGlaceEnCours) {
       return;
     }
 
+    this.artefactGlaceEnCours = true;
+    this.teleportEnCours = true;
     this.registry.set('artefactGlaceRecupere', true);
+    this.registry.set('artefactGlaceAnnonceParMerlin', false);
     artefact.destroy();
 
-    const message = this.add.text(player.x, player.y - 34, 'Objet sacre de glace recupere !', {
-      font: '14px Arial',
-      fill: '#d8f4ff',
-      align: 'center',
-      backgroundColor: '#173b52',
-      padding: { left: 8, right: 8, top: 6, bottom: 6 }
-    }).setOrigin(0.5).setDepth(150);
+    this.isSliding = false;
+    this.slideDir = { x: 0, y: 0 };
+    this.player.setVelocity(0);
+    this.player.anims.play('anim_face');
 
-    this.time.delayedCall(1500, () => {
+    const centreX = this.cameras.main.width / 2;
+    const centreY = this.cameras.main.height / 2;
+    const fondMessage = this.add.rectangle(centreX, centreY, 420, 90, 0x173b52, 0.95)
+      .setStrokeStyle(3, 0xd8f4ff)
+      .setScrollFactor(0)
+      .setDepth(1000);
+    const message = this.add.text(
+      centreX,
+      centreY,
+      'Vous avez trouver\nla perle de la glace',
+      {
+        font: '22px Arial',
+        fill: '#d8f4ff',
+        align: 'center'
+      }
+    ).setOrigin(0.5).setScrollFactor(0).setDepth(1001);
+
+    this.time.delayedCall(2000, () => {
+      if (fondMessage.active) {
+        fondMessage.destroy();
+      }
       if (message.active) {
         message.destroy();
       }
 
-      this.registry.set('resumeKey', 'selection');
-      this.scene.start('accueil');
+      if (this.son_musique?.isPlaying) {
+        this.son_musique.stop();
+      }
+
+      this.scene.start('selection', {
+        map: 'mapcentral',
+        startX: 100,
+        startY: 450
+      });
     });
   }
 
@@ -311,6 +351,10 @@ export default class niveauglace extends Phaser.Scene {
     if (estDansEntree && this.porteRetourGlace.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
+        if (this.son_musique?.isPlaying) {
+          this.son_musique.stop();
+        }
+
         this.scene.start('selection', {
           map: this.returnMap,
           startX: this.returnX,

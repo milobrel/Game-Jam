@@ -15,33 +15,38 @@ export default class niveaufeu extends Phaser.Scene {
     this.returnX = data.returnX || 100;
     this.returnY = data.returnY || 450;
     this.teleportEnCours = false;
+    this.artefactFeuEnCours = false;
+    this.artefactFeuActif = false;
     this.joueurMort = false;
     this.joueurInvulnerable = false;
   }
 
   preload() {
-    this.load.spritesheet('droite_perso', 'src/assets/playerRight.png', { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('gauche_perso', 'src/assets/playerLeft.png',  { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('haut_perso',   'src/assets/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('bas_perso',    'src/assets/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('porte_feu', 'src/assets/porte_feu.png', { frameWidth: 96, frameHeight: 120 });
-    this.load.spritesheet('monstre1', 'src/assets/Monstre1.png', { frameWidth: 216, frameHeight: 228 });
-    this.load.image('boule_feu', 'src/assets/boule_feu.png');
-    this.load.image('feu', 'src/assets/feu.png');
+    this.load.spritesheet('droite_perso', 'src/assets/images/playerRight.png', { frameWidth: 48, frameHeight: 68 });
+    this.load.spritesheet('gauche_perso', 'src/assets/images/playerLeft.png',  { frameWidth: 48, frameHeight: 68 });
+    this.load.spritesheet('haut_perso',   'src/assets/images/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
+    this.load.spritesheet('bas_perso',    'src/assets/images/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
+    this.load.spritesheet('porte_feu', 'src/assets/images/porte_feu.png', { frameWidth: 96, frameHeight: 120 });
+    this.load.spritesheet('monstre1', 'src/assets/images/Monstre1.png', { frameWidth: 216, frameHeight: 228 });
+    this.load.image('boule_feu', 'src/assets/images/boule_feu.png');
+    this.load.image('feu', 'src/assets/images/feu.png');
 
     this.load.tilemapTiledJSON('lave', 'src/assets/lave.tmj');
-    this.load.image('terrain', 'src/assets/terrain.png');
-    this.load.image('top_down_quarter__4_-removebg-preview', 'src/assets/top_down_quarter__4_-removebg-preview.png');
-    this.load.audio('pirate', 'src/assets/pirate.mp3');
-    this.load.audio('musique', 'src/assets/theme.wav');
+    this.load.image('terrain', 'src/assets/tiles/terrain.png');
+    this.load.image('top_down_quarter__4_-removebg-preview', 'src/assets/tiles/top_down_quarter__4_-removebg-preview.png');
+    this.load.audio('pirate', 'src/assets/songs/pirate.mp3');
+    this.load.audio('musique', 'src/assets/songs/theme.wav');
   }
 
   create() {
-    this.sound.stopAll();
     const musique = this.sound.get('musique');
-    if (musique) musique.stop();
-    this.son_musique = this.sound.add('pirate');
-    this.son_musique.play();
+    if (musique?.isPlaying) {
+      musique.pause();
+    }
+    this.son_musique = this.sound.get('pirate') || this.sound.add('pirate');
+    if (!this.son_musique.isPlaying) {
+      this.son_musique.play();
+    }
 
     // -------------------------------------------------------
     // CARTE
@@ -126,6 +131,10 @@ export default class niveaufeu extends Phaser.Scene {
     creerAnimationsDuPerso(this);
     this.creerAnimationPorteRetour('anim_ouvreporte_retour_feu', 0, 5);
     this.creerAnimationPorteRetour('anim_fermeporte_retour_feu', 5, 0);
+
+    this.time.delayedCall(500, () => {
+      this.artefactFeuActif = true;
+    });
   }
 
   // -------------------------------------------------------
@@ -230,29 +239,53 @@ export default class niveaufeu extends Phaser.Scene {
   }
 
   recupererArtefactFeu(player, artefact) {
-    if (!artefact || !artefact.active) {
+    if (!this.artefactFeuActif || !artefact || !artefact.active || this.artefactFeuEnCours) {
       return;
     }
 
+    this.artefactFeuEnCours = true;
+    this.teleportEnCours = true;
     this.registry.set('artefactFeuRecupere', true);
     this.registry.set('artefactFeuAnnonceParMerlin', false);
     artefact.destroy();
 
-    const message = this.add.text(player.x, player.y - 34, 'Objet sacre du feu recupere !\nRetourne voir Merlin.', {
-      font: '14px Arial',
-      fill: '#ffe08a',
-      align: 'center',
-      backgroundColor: '#4a1b0f',
-      padding: { left: 8, right: 8, top: 6, bottom: 6 }
-    }).setOrigin(0.5).setDepth(150);
+    this.player.setVelocity(0);
+    this.player.anims.play('anim_face');
 
-    this.time.delayedCall(1500, () => {
+    const centreX = this.cameras.main.width / 2;
+    const centreY = this.cameras.main.height / 2;
+    const fondMessage = this.add.rectangle(centreX, centreY, 420, 90, 0x4a1b0f, 0.95)
+      .setStrokeStyle(3, 0xffe08a)
+      .setScrollFactor(0)
+      .setDepth(1000);
+    const message = this.add.text(
+      centreX,
+      centreY,
+      'Vous avez trouver\nla perle du feu',
+      {
+        font: '22px Arial',
+        fill: '#ffe08a',
+        align: 'center'
+      }
+    ).setOrigin(0.5).setScrollFactor(0).setDepth(1001);
+
+    this.time.delayedCall(2000, () => {
+      if (fondMessage.active) {
+        fondMessage.destroy();
+      }
       if (message.active) {
         message.destroy();
       }
 
-      this.registry.set('resumeKey', 'selection');
-      this.scene.start('accueil');
+      if (this.son_musique?.isPlaying) {
+        this.son_musique.stop();
+      }
+
+      this.scene.start('selection', {
+        map: 'mapcentral',
+        startX: 300,
+        startY: 450
+      });
     });
   }
 
@@ -400,6 +433,10 @@ export default class niveaufeu extends Phaser.Scene {
     if (estDansEntree && this.porteRetourFeu.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
+        if (this.son_musique?.isPlaying) {
+          this.son_musique.stop();
+        }
+
         this.scene.start('selection', {
           map: this.returnMap,
           startX: this.returnX,

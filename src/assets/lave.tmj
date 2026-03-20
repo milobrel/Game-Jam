@@ -195,7 +195,7 @@
         {
          "columns":64,
          "firstgid":1,
-         "image":"terrain.png",
+         "image":"tiles/terrain.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -35423,7 +35423,7 @@
         {
          "columns":24,
          "firstgid":4097,
-         "image":"top_down_quarter__4_-removebg-preview.png",
+         "image":"tiles/top_down_quarter__4_-removebg-preview.png",
          "imageheight":256,
          "imagewidth":384,
          "margin":0,

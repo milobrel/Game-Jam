@@ -37,6 +37,16 @@ export default class accueil extends Phaser.Scene {
       shadow: { offsetX: 3, offsetY: 3, color: '#000000', blur: 6, fill: true }
     }).setOrigin(0.5);
 
+    this.add.rectangle(W / 2, H * 0.22, 620, 72, 0x0a0a1a).setOrigin(0.5);
+
+    this.add.text(W / 2, H * 0.22, 'ALL FOR ONE', {
+      font: 'bold 42px serif',
+      fill: '#f5c842',
+      stroke: '#5a3a00',
+      strokeThickness: 6,
+      shadow: { offsetX: 3, offsetY: 3, color: '#000000', blur: 6, fill: true }
+    }).setOrigin(0.5);
+
     this.add.text(W / 2, H * 0.33, 'Legends of the Four Elements', {
       font: 'italic 20px serif',
       fill: '#aaddff',

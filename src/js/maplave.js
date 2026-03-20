@@ -4,27 +4,27 @@ export default class maplave extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet("droite_perso", "src/assets/playerRight.png", {
+    this.load.spritesheet("droite_perso", "src/assets/images/playerRight.png", {
         frameWidth: 48,
         frameHeight: 68
       });
-    this.load.spritesheet("gauche_perso", "src/assets/playerLeft.png", {
+    this.load.spritesheet("gauche_perso", "src/assets/images/playerLeft.png", {
         frameWidth: 48,
         frameHeight: 68
       });
-    this.load.spritesheet("haut_perso", "src/assets/playerUp.png", {
+    this.load.spritesheet("haut_perso", "src/assets/images/playerUp.png", {
         frameWidth: 48,
         frameHeight: 68
       });
-    this.load.spritesheet("bas_perso", "src/assets/playerDown.png", {
+    this.load.spritesheet("bas_perso", "src/assets/images/playerDown.png", {
         frameWidth: 48,
         frameHeight: 68
       });
-    this.load.audio('pirate', 'src/assets/pirate.mp3');
+    this.load.audio('pirate', 'src/assets/songs/pirate.mp3');
     this.load.tilemapTiledJSON('carte_lave', 'src/assets/lave.tmj');
-    this.load.image('First Asset pack', 'src/assets/First Asset pack.png');
-    this.load.image('TilesA2', 'src/assets/TilesA2.png');
-    this.load.image('terrain', 'src/assets/terrain.png');
+    this.load.image('First Asset pack', 'src/assets/tiles/First Asset pack.png');
+    this.load.image('TilesA2', 'src/assets/tiles/TilesA2.png');
+    this.load.image('terrain', 'src/assets/tiles/terrain.png');
   }
 
   create(data) {
