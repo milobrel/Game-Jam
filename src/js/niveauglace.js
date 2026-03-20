@@ -1,4 +1,5 @@
 import { creerAnimationsDuPerso } from './animations_perso.js';
+import { activerCollisionsSolides, ajouterCollisionsJoueur, arreterMusique, chargerCalqueSiPresent, chargerSpritesheetsJoueur } from './scene_helpers.js';
 
 export default class niveauglace extends Phaser.Scene {
 
@@ -18,23 +19,8 @@ export default class niveauglace extends Phaser.Scene {
   }
 
   preload() {
-    // Charger les assets du joueur
-    this.load.spritesheet("droite_perso", "src/assets/images/playerRight.png", {
-      frameWidth: 48,
-      frameHeight: 68
-    });
-    this.load.spritesheet("gauche_perso", "src/assets/images/playerLeft.png", {
-      frameWidth: 48,
-      frameHeight: 68
-    });
-    this.load.spritesheet("haut_perso", "src/assets/images/playerUp.png", {
-      frameWidth: 48,
-      frameHeight: 68
-    });
-    this.load.spritesheet("bas_perso", "src/assets/images/playerDown.png", {
-      frameWidth: 48,
-      frameHeight: 68
-    });
+    // Cette partie charge les assets communs du joueur.
+    chargerSpritesheetsJoueur(this);
     this.load.audio('musique', 'src/assets/songs/theme.wav');
     this.load.audio('passionfruit', 'src/assets/songs/passionfruit.mp3');
 
@@ -70,41 +56,20 @@ export default class niveauglace extends Phaser.Scene {
     this.tileset3 = this.map.addTilesetImage('terrain', 'terrain');
     this.tilesets = [this.tileset1, this.tileset2, this.tileset3];
 
-    const chargerCalque = (nomDuCalque, profondeur) => {
-      if (this.map.getLayerIndex(nomDuCalque) === null) {
-        return null;
-      }
-
-      const calque = this.map.createLayer(nomDuCalque, this.tilesets, 0, 0);
-      calque.setDepth(profondeur);
-      return calque;
-    };
-
     // chargement du calque Calque de Tuiles 3
-    this.calqueHaut = chargerCalque('Calque de Tuiles 3', 10);
+    this.calqueHaut = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 3', this.tilesets, 10);
 
     // chargement du calque Calque de Tuiles 1
-    this.calqueFond = chargerCalque('Calque de Tuiles 1', 30);
+    this.calqueFond = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 1', this.tilesets, 30);
 
     // chargement du calque Calque de Tuiles 2
-    this.calqueMilieu = chargerCalque('Calque de Tuiles 2', 40);
+    this.calqueMilieu = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 2', this.tilesets, 40);
 
     // chargement du calque Calque de Tuiles 4
-    this.calqueQuatre = chargerCalque('Calque de Tuiles 4', 50);
+    this.calqueQuatre = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 4', this.tilesets, 50);
 
-    // Activer collisions sur tuiles estsolide
-    const setSolid = (layer) => {
-      if (!layer) return;
-      layer.forEachTile((tile) => {
-        if (tile.properties?.estsolide === true || tile.properties?.estsolide === "true") {
-          tile.setCollision(true);
-        }
-      });
-    };
-    setSolid(this.calqueFond);
-    setSolid(this.calqueMilieu);
-    setSolid(this.calqueHaut);
-    setSolid(this.calqueQuatre);
+    // Cette partie active les collisions des calques solides.
+    activerCollisionsSolides([this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre]);
 
     const mapWidth = this.map.widthInPixels;
     const mapHeight = this.map.heightInPixels;
@@ -121,10 +86,7 @@ export default class niveauglace extends Phaser.Scene {
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
-    if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
-    if (this.calqueMilieu) this.physics.add.collider(this.player, this.calqueMilieu);
-    if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
-    if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
+    ajouterCollisionsJoueur(this, this.player, [this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre]);
 
     this.porteRetourGlace = this.physics.add.staticSprite(0, 300, 'porte_retourglace', 0);
     this.porteRetourGlace.setOrigin(0, 0.5);
@@ -351,10 +313,7 @@ export default class niveauglace extends Phaser.Scene {
     if (estDansEntree && this.porteRetourGlace.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        if (this.son_musique?.isPlaying) {
-          this.son_musique.stop();
-        }
-
+        arreterMusique(this, this.son_musique);
         this.scene.start('selection', {
           map: this.returnMap,
           startX: this.returnX,

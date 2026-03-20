@@ -1,4 +1,5 @@
 import { creerAnimationsDuPerso } from './animations_perso.js';
+import { activerCollisionsSolides, ajouterCollisionsJoueur, arreterMusique, chargerCalqueSiPresent, chargerSpritesheetsJoueur } from './scene_helpers.js';
 
 export default class niveau_air extends Phaser.Scene {
 
@@ -19,10 +20,7 @@ export default class niveau_air extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet('droite_perso', 'src/assets/images/playerRight.png', { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('gauche_perso', 'src/assets/images/playerLeft.png',  { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('haut_perso',   'src/assets/images/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('bas_perso',    'src/assets/images/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
+    chargerSpritesheetsJoueur(this);
 
     this.load.tilemapTiledJSON('map_air', 'src/assets/map_air.tmj');
     this.load.image('tile_air', 'src/assets/tiles/tile_air.png');
@@ -79,31 +77,10 @@ export default class niveau_air extends Phaser.Scene {
     this.map = this.make.tilemap({ key: 'map_air' });
     const tileset = this.map.addTilesetImage('ChatGPT Image Mar 16, 2026, 09_07_56 PM', 'tile_air');
 
-    const chargerCalque = (nomDuCalque, profondeur) => {
-      if (this.map.getLayerIndex(nomDuCalque) === null) {
-        return null;
-      }
+    this.calqueFond = chargerCalqueSiPresent(this.map, 'Calque_nuage', tileset, 10);
+    this.calqueSurface = chargerCalqueSiPresent(this.map, 'calque_surface', tileset, 30);
 
-      const calque = this.map.createLayer(nomDuCalque, tileset, 0, 0);
-      calque.setDepth(profondeur);
-      return calque;
-    };
-
-    this.calqueFond = chargerCalque('Calque_nuage', 10);
-    this.calqueSurface = chargerCalque('calque_surface', 30);
-
-    [this.calqueFond, this.calqueSurface].forEach((layer) => {
-      if (!layer) {
-        return;
-      }
-
-      layer.forEachTile((tile) => {
-        const prop = tile.properties?.estsolide;
-        if (prop === true || prop === 'true') {
-          tile.setCollision(true);
-        }
-      });
-    });
+    activerCollisionsSolides([this.calqueFond, this.calqueSurface]);
 
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -117,12 +94,7 @@ export default class niveau_air extends Phaser.Scene {
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
-    if (this.calqueFond) {
-      this.physics.add.collider(this.player, this.calqueFond);
-    }
-    if (this.calqueSurface) {
-      this.physics.add.collider(this.player, this.calqueSurface);
-    }
+    ajouterCollisionsJoueur(this, this.player, [this.calqueFond, this.calqueSurface]);
   }
 
   initialiserCommandesAir() {
@@ -439,10 +411,7 @@ export default class niveau_air extends Phaser.Scene {
     if (estDansZoneRetour && Phaser.Input.Keyboard.JustDown(this.toucheEspace)) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        if (this.son_musique?.isPlaying) {
-          this.son_musique.stop();
-        }
-
+        arreterMusique(this, this.son_musique);
         this.scene.start('selection', {
           map: this.returnMap,
           startX: this.returnX,

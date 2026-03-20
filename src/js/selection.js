@@ -1,4 +1,5 @@
 import { creerAnimationsDuPerso } from './animations_perso.js';
+import { activerCollisionsSolides, ajouterCollisionsJoueur, chargerCalqueSiPresent, chargerSpritesheetsJoueur } from './scene_helpers.js';
 
 export default class selection extends Phaser.Scene {
 
@@ -14,7 +15,7 @@ export default class selection extends Phaser.Scene {
   }
 
   preload() {
-    this.chargerSpritesheetsJoueur();
+    chargerSpritesheetsJoueur(this);
     this.chargerAssetsCarte();
     this.chargerSpritesheetsPortes();
   }
@@ -34,22 +35,6 @@ export default class selection extends Phaser.Scene {
     this.load.image('TilesA2', 'src/assets/tiles/TilesA2.png');
     this.load.image('terrain', 'src/assets/tiles/terrain.png');
     this.load.image('ChatGPT Image 17 mars 2026, 10_34_01', 'src/assets/tiles/ChatGPT Image 17 mars 2026, 10_34_01.png');
-  }
-
-  chargerSpritesheetsJoueur() {
-    const spritesheets = [
-      { key: 'droite_perso', path: 'src/assets/images/playerRight.png' },
-      { key: 'gauche_perso', path: 'src/assets/images/playerLeft.png' },
-      { key: 'haut_perso', path: 'src/assets/images/playerUp.png' },
-      { key: 'bas_perso', path: 'src/assets/images/playerDown.png' }
-    ];
-
-    spritesheets.forEach(({ key, path }) => {
-      this.load.spritesheet(key, path, {
-        frameWidth: 48,
-        frameHeight: 68
-      });
-    });
   }
 
   chargerSpritesheetsPortes() {
@@ -141,41 +126,14 @@ export default class selection extends Phaser.Scene {
     this.tileset4 = this.map.addTilesetImage('ChatGPT Image 17 mars 2026, 10_34_01', 'ChatGPT Image 17 mars 2026, 10_34_01');
     this.tilesets = [this.tileset1, this.tileset2, this.tileset3, this.tileset4];
 
-    this.calqueHaut = this.chargerCalque('Calque de Tuiles 3', 10);
-    this.calqueFond = this.chargerCalque(['Calque de Tuiles 1', 'Calque_nuage'], 30);
-    this.calqueMilieu = this.chargerCalque(['Calque de Tuiles 2', 'calque_surface'], 40);
-    this.calqueQuatre = this.chargerCalque('Calque de Tuiles 4', 50);
-  }
-
-  chargerCalque(nomsDeCalque, profondeur) {
-    const noms = Array.isArray(nomsDeCalque) ? nomsDeCalque : [nomsDeCalque];
-
-    for (const nomDuCalque of noms) {
-      if (this.map.getLayerIndex(nomDuCalque) === null) {
-        continue;
-      }
-
-      const calque = this.map.createLayer(nomDuCalque, this.tilesets, 0, 0);
-      calque.setDepth(profondeur);
-      return calque;
-    }
-
-    return null;
+    this.calqueHaut = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 3', this.tilesets, 10);
+    this.calqueFond = chargerCalqueSiPresent(this.map, ['Calque de Tuiles 1', 'Calque_nuage'], this.tilesets, 30);
+    this.calqueMilieu = chargerCalqueSiPresent(this.map, ['Calque de Tuiles 2', 'calque_surface'], this.tilesets, 40);
+    this.calqueQuatre = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 4', this.tilesets, 50);
   }
 
   activerCollisionsDesCalques() {
-    [this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre].forEach((layer) => {
-      if (!layer) {
-        return;
-      }
-
-      layer.forEachTile((tile) => {
-        const prop = tile.properties?.estsolide;
-        if (prop === true || prop === 'true') {
-          tile.setCollision(true);
-        }
-      });
-    });
+    activerCollisionsSolides([this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre]);
   }
 
   configurerMonde() {
@@ -318,11 +276,7 @@ export default class selection extends Phaser.Scene {
   }
 
   ajouterCollisionsCalques() {
-    [this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre].forEach((layer) => {
-      if (layer) {
-        this.physics.add.collider(this.player, layer);
-      }
-    });
+    ajouterCollisionsJoueur(this, this.player, [this.calqueFond, this.calqueMilieu, this.calqueHaut, this.calqueQuatre]);
   }
 
   creerAnimationPorte(texture, key, start, end) {

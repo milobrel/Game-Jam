@@ -1,4 +1,5 @@
 import { creerAnimationsDuPerso } from './animations_perso.js';
+import { activerCollisionsSolides, ajouterCollisionsJoueur, arreterMusique, chargerCalqueSiPresent, chargerSpritesheetsJoueur } from './scene_helpers.js';
 
 export default class niveaufeu extends Phaser.Scene {
 
@@ -22,10 +23,7 @@ export default class niveaufeu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.spritesheet('droite_perso', 'src/assets/images/playerRight.png', { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('gauche_perso', 'src/assets/images/playerLeft.png',  { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('haut_perso',   'src/assets/images/playerUp.png',    { frameWidth: 48, frameHeight: 68 });
-    this.load.spritesheet('bas_perso',    'src/assets/images/playerDown.png',  { frameWidth: 48, frameHeight: 68 });
+    chargerSpritesheetsJoueur(this);
     this.load.spritesheet('porte_feu', 'src/assets/images/porte_feu.png', { frameWidth: 96, frameHeight: 120 });
     this.load.spritesheet('monstre1', 'src/assets/images/Monstre1.png', { frameWidth: 216, frameHeight: 228 });
     this.load.image('boule_feu', 'src/assets/images/boule_feu.png');
@@ -64,28 +62,12 @@ export default class niveaufeu extends Phaser.Scene {
       return;
     }
 
-    const chargerCalque = (nom, profondeur) => {
-      if (this.map.getLayerIndex(nom) === null) return null;
-      const calque = this.map.createLayer(nom, tilesets, 0, 0);
-      calque.setDepth(profondeur);
-      return calque;
-    };
+    this.calqueFond = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 1', tilesets, 10);
+    this.calqueHaut = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 3', tilesets, 30);
+    this.calqueQuatre = chargerCalqueSiPresent(this.map, 'Calque de Tuiles 4', tilesets, 40);
 
-    this.calqueFond   = chargerCalque('Calque de Tuiles 1', 10);
-    this.calqueHaut   = chargerCalque('Calque de Tuiles 3', 30);
-    this.calqueQuatre = chargerCalque('Calque de Tuiles 4', 40);
-
-    // Collisions tuiles solides
-    const setSolidOnLayer = (layer) => {
-      if (!layer) return;
-      layer.forEachTile((tile) => {
-        const prop = tile.properties?.estsolide;
-        if (prop === true || prop === 'true') tile.setCollision(true);
-      });
-    };
-    setSolidOnLayer(this.calqueFond);
-    setSolidOnLayer(this.calqueHaut);
-    setSolidOnLayer(this.calqueQuatre);
+    // Cette partie active les collisions des tuiles solides.
+    activerCollisionsSolides([this.calqueFond, this.calqueHaut, this.calqueQuatre]);
 
     // Limites monde
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -101,9 +83,7 @@ export default class niveaufeu extends Phaser.Scene {
     this.player.body.setOffset(10, 48);
     this.player.setDepth(100);
 
-    if (this.calqueFond)   this.physics.add.collider(this.player, this.calqueFond);
-    if (this.calqueHaut)   this.physics.add.collider(this.player, this.calqueHaut);
-    if (this.calqueQuatre) this.physics.add.collider(this.player, this.calqueQuatre);
+    ajouterCollisionsJoueur(this, this.player, [this.calqueFond, this.calqueHaut, this.calqueQuatre]);
 
     this.creerCollisionsBords();
     this.creerPorteRetourFeu();
@@ -433,10 +413,7 @@ export default class niveaufeu extends Phaser.Scene {
     if (estDansEntree && this.porteRetourFeu.ouverte && !this.teleportEnCours) {
       this.teleportEnCours = true;
       this.time.delayedCall(150, () => {
-        if (this.son_musique?.isPlaying) {
-          this.son_musique.stop();
-        }
-
+        arreterMusique(this, this.son_musique);
         this.scene.start('selection', {
           map: this.returnMap,
           startX: this.returnX,
